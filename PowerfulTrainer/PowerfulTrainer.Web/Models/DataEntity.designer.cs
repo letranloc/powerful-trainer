@@ -39,6 +39,9 @@ namespace PowerfulTrainer.Web.Models
     partial void InsertExercise(Exercise instance);
     partial void UpdateExercise(Exercise instance);
     partial void DeleteExercise(Exercise instance);
+    partial void InsertWorkoutPlan(WorkoutPlan instance);
+    partial void UpdateWorkoutPlan(WorkoutPlan instance);
+    partial void DeleteWorkoutPlan(WorkoutPlan instance);
     #endregion
 		
 		public DataEntityDataContext() : 
@@ -92,6 +95,14 @@ namespace PowerfulTrainer.Web.Models
 			get
 			{
 				return this.GetTable<Exercise>();
+			}
+		}
+		
+		public System.Data.Linq.Table<WorkoutPlan> WorkoutPlans
+		{
+			get
+			{
+				return this.GetTable<WorkoutPlan>();
 			}
 		}
 	}
@@ -737,6 +748,284 @@ namespace PowerfulTrainer.Web.Models
 					this._VideoId = value;
 					this.SendPropertyChanged("VideoId");
 					this.OnVideoIdChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="alo895cb_powerfultrainer.WorkoutPlan")]
+	public partial class WorkoutPlan : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Name;
+		
+		private System.Nullable<System.DateTime> _CreateDate;
+		
+		private System.Nullable<System.DateTime> _UpdateDate;
+		
+		private string _Username;
+		
+		private string _Data;
+		
+		private System.Nullable<int> _ParentPlan;
+		
+		private string _Image;
+		
+		private string _Owner;
+		
+		private System.Nullable<System.DateTime> _ShareTime;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnCreateDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreateDateChanged();
+    partial void OnUpdateDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnUpdateDateChanged();
+    partial void OnUsernameChanging(string value);
+    partial void OnUsernameChanged();
+    partial void OnDataChanging(string value);
+    partial void OnDataChanged();
+    partial void OnParentPlanChanging(System.Nullable<int> value);
+    partial void OnParentPlanChanged();
+    partial void OnImageChanging(string value);
+    partial void OnImageChanged();
+    partial void OnOwnerChanging(string value);
+    partial void OnOwnerChanged();
+    partial void OnShareTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnShareTimeChanged();
+    #endregion
+		
+		public WorkoutPlan()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreateDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreateDate
+		{
+			get
+			{
+				return this._CreateDate;
+			}
+			set
+			{
+				if ((this._CreateDate != value))
+				{
+					this.OnCreateDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreateDate = value;
+					this.SendPropertyChanged("CreateDate");
+					this.OnCreateDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdateDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> UpdateDate
+		{
+			get
+			{
+				return this._UpdateDate;
+			}
+			set
+			{
+				if ((this._UpdateDate != value))
+				{
+					this.OnUpdateDateChanging(value);
+					this.SendPropertyChanging();
+					this._UpdateDate = value;
+					this.SendPropertyChanged("UpdateDate");
+					this.OnUpdateDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(50)")]
+		public string Username
+		{
+			get
+			{
+				return this._Username;
+			}
+			set
+			{
+				if ((this._Username != value))
+				{
+					this.OnUsernameChanging(value);
+					this.SendPropertyChanging();
+					this._Username = value;
+					this.SendPropertyChanged("Username");
+					this.OnUsernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Data", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Data
+		{
+			get
+			{
+				return this._Data;
+			}
+			set
+			{
+				if ((this._Data != value))
+				{
+					this.OnDataChanging(value);
+					this.SendPropertyChanging();
+					this._Data = value;
+					this.SendPropertyChanged("Data");
+					this.OnDataChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentPlan", DbType="Int")]
+		public System.Nullable<int> ParentPlan
+		{
+			get
+			{
+				return this._ParentPlan;
+			}
+			set
+			{
+				if ((this._ParentPlan != value))
+				{
+					this.OnParentPlanChanging(value);
+					this.SendPropertyChanging();
+					this._ParentPlan = value;
+					this.SendPropertyChanged("ParentPlan");
+					this.OnParentPlanChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Image
+		{
+			get
+			{
+				return this._Image;
+			}
+			set
+			{
+				if ((this._Image != value))
+				{
+					this.OnImageChanging(value);
+					this.SendPropertyChanging();
+					this._Image = value;
+					this.SendPropertyChanged("Image");
+					this.OnImageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Owner", DbType="NVarChar(50)")]
+		public string Owner
+		{
+			get
+			{
+				return this._Owner;
+			}
+			set
+			{
+				if ((this._Owner != value))
+				{
+					this.OnOwnerChanging(value);
+					this.SendPropertyChanging();
+					this._Owner = value;
+					this.SendPropertyChanged("Owner");
+					this.OnOwnerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShareTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ShareTime
+		{
+			get
+			{
+				return this._ShareTime;
+			}
+			set
+			{
+				if ((this._ShareTime != value))
+				{
+					this.OnShareTimeChanging(value);
+					this.SendPropertyChanging();
+					this._ShareTime = value;
+					this.SendPropertyChanged("ShareTime");
+					this.OnShareTimeChanged();
 				}
 			}
 		}

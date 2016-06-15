@@ -20,5 +20,11 @@
         <elementListCompartment Id="ebde69cd-9a99-4c49-b97b-f27b3baa6703" absoluteBounds="3.6399999999999997, 2.46, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="cbd61612-c7f8-45a6-a42e-5b3fd7717581" absoluteBounds="5.625, 1.25, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/DataEntityDataContext/WorkoutPlan" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b3819e3b-93a7-4568-b87b-6d324ecc85c7" absoluteBounds="5.64, 1.71, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

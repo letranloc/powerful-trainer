@@ -234,6 +234,7 @@
     <Compile Include="Controllers\Api\CheckTokenController.cs" />
     <Compile Include="Controllers\Api\ExerciseController.cs" />
     <Compile Include="Controllers\Api\FriendController.cs" />
+    <Compile Include="Controllers\Api\PlanController.cs" />
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -241,6 +242,7 @@
     </Compile>
     <Compile Include="Models\Api\Account.cs" />
     <Compile Include="Models\Api\Friend.cs" />
+    <Compile Include="Models\Api\Plan.cs" />
     <Compile Include="Models\DataEntity.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
