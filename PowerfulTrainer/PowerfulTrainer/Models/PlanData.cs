@@ -10,8 +10,12 @@ namespace PowerfulTrainer.Models
     {
         public int ExerciseId;
         public int Sets;
-        public int Repetitions;
+        //Chi set gia tri 1 trong 2 Repetition hoac Duration
+        //So lan trong 1 set
+        public int? Repetitions;
+        //Thoi gian 1 set
         public string Duration;
+        //Thoi gian nghi giua cac set
         public string RestTime;
         public bool IsRestItem;
     }

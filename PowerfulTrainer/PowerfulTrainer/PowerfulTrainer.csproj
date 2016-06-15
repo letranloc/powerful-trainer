@@ -85,22 +85,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Images\Logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Images\Nav.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Images\AccelerometerX.png" />
-    <EmbeddedResource Include="Images\AccelerometerY.png" />
-    <EmbeddedResource Include="Images\AccelerometerZ.png" />
-    <EmbeddedResource Include="Images\Calories.png" />
-    <EmbeddedResource Include="Images\Distance.png" />
-    <EmbeddedResource Include="Images\HeartRate.png" />
-    <EmbeddedResource Include="Images\Speed.png" />
-    <EmbeddedResource Include="Images\Step.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Folder Include="Images\" />
     <Folder Include="TrainingModels\TrainingConditions\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
