@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-cloak>
+    <head>
+        <base href="/" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title ng-bind="($title || 'Dashboard') + ' - Powerful Trainer'"></title>
+
+        @if (HttpContext.Current.IsDebuggingEnabled)
+        {
+            <link rel="stylesheet" href="~/css/libs.css" />
+            <link rel="stylesheet" href="~/css/styles.css" />
+        }
+        else
+        {
+            <!-- update later -->
+            <link rel="stylesheet" href="~/css/styles.min.css" />
+        }
+    </head>
+    <body layout="column">
+        <md-content style="height: 100%;">
+            @RenderBody()
+        </md-content>
+
+        @if (HttpContext.Current.IsDebuggingEnabled)
+        {
+            <script src="~/js/libs.js"></script>
+            <script src="~/js/app.js" asp-append-version="true"></script>
+        }
+        else
+        {
+            <!-- update later -->
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
+        }
+    </body>
+</html>

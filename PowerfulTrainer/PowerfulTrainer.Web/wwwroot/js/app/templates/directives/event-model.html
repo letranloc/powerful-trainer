@@ -1,0 +1,4 @@
+﻿<input-control model="model.Frequency" disabled="type!='action'"
+                name="Frequency" type="Int"></input-control>
+<input-control ng-repeat="property in schema.Properties" model="eventModel[property.Name]"
+               name="{{property.Name}}" type="{{property.Type}}" ng-if="property.Name!='Name'" required="true"></input-control>

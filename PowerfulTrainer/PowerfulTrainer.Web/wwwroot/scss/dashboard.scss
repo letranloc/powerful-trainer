@@ -1,0 +1,94 @@
+﻿@import "variables.scss";
+
+#dashboard {
+    height: 100%;
+
+    md-toolbar, md-sidenav {
+        background-color: $main-color;
+        color: $main-text-color;
+    }
+
+    md-sidenav {
+
+        md-list, md-menu-sidenav {
+            md-divider {
+                background-color: lightgrey;
+            }
+
+            md-menu-sidenav-item {
+                color: $main-text-color;
+
+                md-menu-sidenav-title {
+                    h1, md-icon {
+                        color: $main-text-color;
+                    }
+                }
+
+                &.active {
+
+                    md-menu-sidenav-title {
+                        background-color: rgb(250,250,250);
+
+                        h1, md-icon {
+                            color: $main-color;
+                        }
+                    }
+                }
+
+                &.toggle-active {
+
+                    md-menu-sidenav-title {
+                        background-color: grey;
+
+                        h1, md-icon {
+                            color: $main-text-color;
+                        }
+                    }
+
+                    md-menu-sidenav-content {
+                        //max-height: 100% !important;
+                    }
+                }
+
+                md-menu-sidenav-content {
+                    background: $main-color;
+
+                    md-menu-sidenav-subitem {
+                        color: $main-text-color;
+
+                        &.active {
+                            color: $main-color;
+                            background-color: rgb(250,250,250);
+                        }
+                    }
+                }
+            }
+
+            md-list-item {
+
+                a {
+                    margin: inherit;
+                }
+
+                &.active {
+                    background-color: rgb(250,250,250);
+                    color: $main-color;
+                }
+
+                &.md-2-line.md-small-line {
+                    min-height: inherit;
+                }
+
+                .md-list-item-text {
+                    h3 {
+                        color: $main-text-color;
+                    }
+
+                    a, a:active, a:visited {
+                        color: $main-text-color;
+                    }
+                }
+            }
+        }
+    }
+}

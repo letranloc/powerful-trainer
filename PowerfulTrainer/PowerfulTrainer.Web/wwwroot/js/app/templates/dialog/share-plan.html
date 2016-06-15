@@ -1,0 +1,34 @@
+﻿<md-dialog style="min-width:30%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Share plan</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" aria-label="Close dialog" ng-click="cancel()">
+                <md-icon md-font-icon="fa fa-times fa-15x"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content" layout="column">
+            <div layout="row" layout-align="center center" ng-show="contacts.items.length==0">
+                <h3>You don't have any request.</h3>
+            </div>
+            <md-virtual-repeat-container class="virtual-repeat-infinite-scroll vertical-container">
+                <div md-virtual-repeat="contact in contacts" md-on-demand class="repeated-item" flex>
+                    <md-checkbox ng-checked="exists(contact, selected)" ng-click="toggle(contact, selected)">
+                        {{contact.Name || contact.Username}}
+                    </md-checkbox>
+                </div>
+            </md-virtual-repeat-container>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-accent" aria-label="Cancel" ng-click="cancel()">
+            Close
+        </md-button>
+        <md-button class="md-primary" aria-label="Share" ng-click="share(selected)">
+            Share
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

@@ -1,0 +1,34 @@
+﻿<div layout="column" layout-gt-xs="row" layout-align-gt-xs="center start">
+    <input-control model="sensor" name="sensor-type" type="BandSensorType"></input-control>
+    <md-input-container class="md-block" ng-show="sensor">
+        <label>Group</label>
+        <md-select ng-model="group" ng-change="options.toTime=options.fromTime">
+            <md-option ng-repeat="type in ['hourly', 'daily']" value="{{type}}">
+                {{type.capitalizeFirstLetter()}}
+            </md-option>
+        </md-select>
+    </md-input-container>
+    <md-input-container class="md-block" ng-show="group">
+        <label>Type</label>
+        <md-select ng-model="options.func">
+            <md-option ng-repeat="t in ['sum', 'avg']" value="{{t}}" ng-selected="$first">
+                {{t.capitalizeFirstLetter()}}
+            </md-option>
+        </md-select>
+    </md-input-container>
+    <div ng-show="group=='daily'" layout-gt-xs="row">
+        <mdp-date-picker mdp-open-on-click required name="fromDate" mdp-placeholder="From date (dd/mm/yyyy)"
+                         mdp-format="DD/MM/YYYY" ng-model="options.fromTime" ng-change="updateToTime()"></mdp-date-picker>
+        <mdp-date-picker mdp-open-on-click required name="toDate" mdp-placeholder="To date (dd/mm/yyyy)"
+                         mdp-format="DD/MM/YYYY" ng-model="options.toTime" mdp-date-filter="filterToTime"></mdp-date-picker>
+    </div>
+    <div ng-show="group=='hourly'" layout-gt-xs="row">
+        <mdp-date-picker mdp-open-on-click required name="onDate" mdp-placeholder="Date (dd/mm/yyyy)"
+                         mdp-format="DD/MM/YYYY" ng-model="options.fromTime" ng-change="options.toTime=options.fromTime"></mdp-date-picker>
+        <mdp-time-picker mdp-open-on-click required name="fromTime" mdp-placeholder="From time (HH:mm A)"
+                         mdp-format="HH:mm A" ng-model="options.fromTime" ng-change="updateToTime()"></mdp-time-picker>
+        <mdp-time-picker mdp-open-on-click required name="toTime" mdp-placeholder="To time (HH:mm A)"
+                         mdp-format="HH:mm A" ng-model="options.toTime" mdp-date-filter="filterToTime"></mdp-time-picker>
+    </div>
+</div>
+<highchart ng-show="showChart" config="chartConfig"></highchart>

@@ -1,0 +1,42 @@
+﻿<md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" flex layout="column">
+    <md-menu-sidenav flex>
+        <md-menu-sidenav-item ng-class="{'toggle-active': ('cpanel.index' | includedByState)||('cpanel.report' | includedByState)}">
+            <md-menu-sidenav-title>
+                <md-toogle-menu layout="row" flex>
+                    <h1 class="md-body-2" flex>Dashboard</h1>
+                </md-toogle-menu>
+                <md-icon md-font-icon="fa fa-caret-down"></md-icon>
+            </md-menu-sidenav-title>
+            <md-menu-sidenav-content>
+                <md-menu-sidenav-subitem ui-sref="cpanel.index" ui-sref-active="active">Dashboard</md-menu-sidenav-subitem>
+                <md-menu-sidenav-subitem ui-sref="cpanel.report.health" ui-sref-active="active">Health summary</md-menu-sidenav-subitem>
+                <md-menu-sidenav-subitem ui-sref="cpanel.report.workout" ui-sref-active="active">Workout summary</md-menu-sidenav-subitem>
+            </md-menu-sidenav-content>
+        </md-menu-sidenav-item>
+        <md-menu-sidenav-item ng-class="{active: ('cpanel.plan' | includedByState)}" ui-sref="cpanel.plan.index"  ng-click="toggleNavLeft()">
+            <md-menu-sidenav-title>
+                <h1 class="md-body-2" flex>Workout plans</h1>
+            </md-menu-sidenav-title>
+        </md-menu-sidenav-item>
+        <md-menu-sidenav-item ng-class="{active: ('cpanel.contact' | includedByState)}" ui-sref="cpanel.contact.index"  ng-click="toggleNavLeft()">
+            <md-menu-sidenav-title>
+                <h1 class="md-body-2" flex>My contacts</h1>
+            </md-menu-sidenav-title>
+        </md-menu-sidenav-item>
+    </md-menu-sidenav>
+
+    <md-list>
+        <md-divider></md-divider>
+        <md-list-item ui-sref="!#"  ng-click="toggleNavLeft()">
+            <p>Settings</p>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item class="md-2-line md-small-line">
+            <img src="../images/avatar-default.png" class="md-avatar" alt="John Jean" />
+            <div class="md-list-item-text">
+                <h3>{{User.Name || User.Username}}</h3>
+                <small><a href="!#" ng-click="logout()" ng-controller="AuthCtrl">Sign out</a></small>
+            </div>
+        </md-list-item>
+    </md-list>
+</md-sidenav>

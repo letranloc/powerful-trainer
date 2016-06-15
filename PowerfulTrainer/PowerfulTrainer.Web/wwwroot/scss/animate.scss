@@ -1,0 +1,9 @@
+﻿@import "../lib/animatewithsass/animate.scss";
+
+.animate-search {
+    @include flipInX();
+}
+
+.animate-search.ng-hide {
+    @include flipOutX();
+}

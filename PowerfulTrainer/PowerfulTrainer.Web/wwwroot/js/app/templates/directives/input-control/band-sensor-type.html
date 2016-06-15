@@ -1,0 +1,8 @@
+﻿<md-input-container class="md-block" ng-hide="hide||disabled">
+    <label>Sensor type</label>
+    <md-select ng-model="model">
+        <md-option ng-repeat="type in sensorTypes" value="{{type}}" ng-disabled="readonly" ng-selected="required&&$first">
+            {{type}}
+        </md-option>
+    </md-select>
+</md-input-container>

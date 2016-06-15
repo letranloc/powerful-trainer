@@ -1,0 +1,49 @@
+﻿@import "variables.scss";
+
+#login-page, #register-page {
+    background-image: url("../../images/bg-login.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+
+    md-card-header {
+        background-color: $main-color;
+        color: $main-text-color;
+
+        .md-button {
+            &:first-child {
+                top: -3px;
+                left: -15px;
+            }
+
+            &:last-child {
+                left: 36px;
+                margin: inherit;
+            }
+        }
+    }
+}
+
+#register-page {
+    height: auto;
+
+    @media(min-width: 600px) {
+        & {
+            padding: 100px 0 100px 0;
+        }
+    }
+
+    md-datepicker {
+        margin-right: inherit;
+
+        .md-button {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: -10px;
+        }
+
+        .md-datepicker-input-container {
+            margin-left: inherit;
+        }
+    }
+}

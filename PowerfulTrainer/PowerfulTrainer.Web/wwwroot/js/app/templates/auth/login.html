@@ -1,0 +1,36 @@
+﻿<div layout="row" layout-align="center center" id="login-page" ng-controller="AuthCtrl">
+    <md-card md-whiteframe="24">
+        <md-card-header class="md-primary">
+            <md-card-avatar>
+                <img src="../images/logo.png" />
+            </md-card-avatar>
+            <md-card-header-text>
+                <span class="md-headline">Powerful Trainer</span>
+            </md-card-header-text>
+            <md-button class="md-fab md-mini md-accent" aria-label="Register" ui-sref="register">
+                <md-tooltip md-direction="right" ng-hide="hideTooltipOnXS">
+                    Register
+                </md-tooltip>
+                <md-icon md-font-icon="fa fa-plus fa-15x"></md-icon>
+            </md-button>
+        </md-card-header>
+        <md-progress-linear ng-show="progressing" md-mode="indeterminate"></md-progress-linear>
+        <md-card-content layout="col" layout-align="center center">
+            <form name="loginForm" ng-submit="login(loginForm)">
+                <md-input-container class="md-block">
+                    <md-icon md-font-icon="fa fa-user"></md-icon>
+                    <input name="username" ng-model="user.username" type="text" placeholder="Username" required />
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <md-icon md-font-icon="fa fa-key"></md-icon>
+                    <input name="password" ng-model="user.password" type="password" placeholder="Password" required />
+                </md-input-container>
+                <div layout="row" layout-align="center center">
+                    <md-button type="submit" class="md-fab md-primary" ng-disabled="!isValidForm(loginForm) || progressing" title="Login" aria-label="Login" ng-click="login(loginForm)">
+                        <md-icon md-font-icon="fa fa-arrow-right fa-15x"></md-icon>
+                    </md-button>
+                </div>
+            </form>
+        </md-card-content>
+    </md-card>
+</div>
