@@ -15,7 +15,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
     {
         [Route("api/exercise")]
         [HttpGet]
-        public object Get(String BodyPart = null, string Level=null, string Focus = null)
+        public object Get(String BodyPart = null, string Level = null, string Focus = null)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 }
                 return SuccessResult(ListExercis.ToArray());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return FailResult(ex);
             }
@@ -46,7 +46,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
         {
             try
             {
-                return SuccessResult(DB.Exercises.Select(u=>u.DifficultyLevel).Distinct().Where(u=>!string.IsNullOrEmpty(u)).ToArray());
+                return SuccessResult(DB.Exercises.Select(u => u.DifficultyLevel).Distinct().Where(u => u != "").ToArray());
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
         {
             try
             {
-                var Focus = DB.Exercises.Select(u => u.Focus).Distinct().Where(u => !string.IsNullOrEmpty(u)).ToList();
+                var Focus = DB.Exercises.Select(u => u.Focus).Distinct().Where(u => u != "").ToList();
                 var ListFocus = new List<string>();
                 Focus.ForEach(u => u.Split(',').ToList().ForEach(v => ListFocus.Add(v.Trim())));
                 return SuccessResult(ListFocus.Distinct().ToArray());
@@ -77,7 +77,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
         {
             try
             {
-                return SuccessResult(DB.Exercises.Select(u => u.BodyParts).Distinct().Where(u => !string.IsNullOrEmpty(u)).ToArray());
+                return SuccessResult(DB.Exercises.Select(u => u.BodyParts).Distinct().Where(u => u != "").ToArray());
             }
             catch (Exception ex)
             {

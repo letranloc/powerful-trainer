@@ -7,6 +7,7 @@ using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System.Display;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,7 +29,7 @@ namespace PowerfulTrainer.UWP
             LoadApplication(new PowerfulTrainer.App());
         }
 
-        private void RegisterBackground()
+        private async void RegisterBackground()
         {
             var taskRegistered = false;
             var exampleTaskName = "BackgroundTask";
@@ -49,7 +50,9 @@ namespace PowerfulTrainer.UWP
                 builder.TaskEntryPoint = "PowerfulTrainer.UWP.Background.BackgroundTask";
                 builder.SetTrigger(new TimeTrigger(15,false));
                 builder.Register();
+               
             }
+           
         }
     }
 }
