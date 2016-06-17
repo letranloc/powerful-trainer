@@ -15,7 +15,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
     {
         [Route("api/exercise")]
         [HttpGet]
-        public object Get(String BodyPart = null, string Level = null, string Focus = null)
+        public object Get(String Name = null, String BodyPart = null, string Level = null, string Focus = null, int? page = null, int? size = null)
         {
             try
             {
@@ -32,7 +32,21 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 {
                     ListExercis = ListExercis.Where(u => u.Focus.Contains(Focus));
                 }
-                return SuccessResult(ListExercis.ToArray());
+                if(Name!=null)
+                {
+                    ListExercis = ListExercis.Where(u => u.Name.Contains(Name));
+                }
+                return PagingResult(ListExercis.Select(u => new
+                {
+                    Id = u.Id,
+                    Name = u.Name,
+                    Thumbnail = u.Thumbnail,
+                    VideoId = u.VideoId,
+                    BodyParts = u.BodyParts,
+                    DifficultyLevel = u.DifficultyLevel,
+                    Equipment = u.Equipment,
+                    Focus = u.Focus,
+                }).ToArray(), page, size);
             }
             catch (Exception ex)
             {
