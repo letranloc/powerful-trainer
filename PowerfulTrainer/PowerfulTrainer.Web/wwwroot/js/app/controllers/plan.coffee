@@ -21,7 +21,7 @@
     $scope.getPlans(true)
 
     $scope.startWorkout = (plan) ->
-        Plan.get(plan.ID).then (resp) ->
+        Plan.get(plan.Id).then (resp) ->
             invokeCSharpAction('plan:' + JSON.stringify(resp.data.Data))
         , (resp) ->
             mdToast.showSimple resp.data.Message, "danger"
@@ -30,7 +30,7 @@
         $mdMenu.hide()
         mdDialog.showContactsSelector(evt).then (contacts) ->
             for contact in contacts
-                Plan.share(plan.ID, contact.Username).then (resp) ->
+                Plan.share(plan.Id, contact.Username).then (resp) ->
                     mdToast.showSimple "Shared plan \"#{plan.Name}\" to #{contact.Name||contact.Username}", "success"
                 , (resp) ->
                     mdToast.showSimple resp.data.Message, "danger"
@@ -38,7 +38,7 @@
     $scope.delete = (evt, plan) ->
         mdDialog.showConfirm(evt, "Delete plan", "Are you sure?")
         .then ->
-            Plan.delete(plan.ID).then (resp) ->
+            Plan.delete(plan.Id).then (resp) ->
                 $scope.plans.remove(plan)
                 mdToast.showSimple resp.data.Message, "success"
             , (resp) ->
@@ -48,7 +48,7 @@
     if $stateParams.id
         Plan.get($stateParams.id).then (resp) ->
             $scope.plan = resp.data.Data
-            $scope.plan.ID = $stateParams.id
+            $scope.plan.Id = $stateParams.id
         , (resp) ->
             mdToast.showSimple resp.data.Message, "danger"
             $state.go('cpanel.plan.index')
@@ -112,10 +112,10 @@
     $scope.save = ->
         if $scope.validate($scope.plan)
             $scope.isSaving = true
-            if $scope.plan.ID
+            if $scope.plan.Id
                 Plan.update($scope.plan).then (resp) ->
                     mdToast.showSimple resp.data.Message, "success"
-                    $state.go("cpanel.plan.edit", {id: $scope.plan.ID})
+                    $state.go("cpanel.plan.edit", {id: $scope.plan.Id})
                     $scope.isSaving = false
                 , (resp) ->
                     mdToast.showSimple resp.data.Message, "danger"
@@ -123,7 +123,7 @@
             else
                 Plan.add($scope.plan).then (resp) ->
                     mdToast.showSimple resp.data.Message, "success"
-                    $state.go("cpanel.plan.edit", {id: resp.data.Data.ID})
+                    $state.go("cpanel.plan.edit", {id: resp.data.Data.Id})
                 , (resp) ->
                     mdToast.showSimple resp.data.Message, "danger"
                     $scope.isSaving = false

@@ -29,7 +29,10 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     UpdateDate = DateTime.Now
                 });
                 DB.SubmitChanges();
-                return SuccessResult(null);
+                return SuccessResult(new
+                {
+                    ID = DB.WorkoutPlans.Max(u => u.Id)
+                });
             }
             catch (Exception ex)
             {
