@@ -1,0 +1,86 @@
+﻿<md-dialog style="width:100%;height:100%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Select exercise</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" aria-label="Close dialog" ng-click="cancel()">
+                <md-icon md-font-icon="fa fa-times fa-15x"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content" layout="column" layout-align="center">
+            <div layout="column" layout-gt-sm="row" layout-align-gt-sm="center center" flex>
+                <md-input-container class="md-block" flex>
+                    <input type="text" ng-model="name" name="search" placeholder="Search..." ng-change="exercises.refresh()" />
+                    <u class="blue-text pointer" ng-click="showAdvanced=!showAdvanced"><small>{{showAdvanced?'Hide':'Show'}} advanced</small></u>
+                </md-input-container>
+                <div flex-gt-sm="20" layout-gt-sm="row" style="margin-top:-23px" ng-show="showAdvanced">
+                    <md-input-container class="md-block">
+                        <md-select placeholder="Level" ng-model="level" md-on-open="loadLevels()" style="min-width: 200px;">
+                            <md-option ng-value="lv" ng-repeat="lv in levels">{{lv}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <md-select placeholder="Body parts" ng-model="bodypart" md-on-open="loadBodyParts()" style="min-width: 200px;">
+                            <md-option ng-value="bp" ng-repeat="bp in bodyParts">{{bp}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <md-select placeholder="Focus" ng-model="focus" md-on-open="loadFocuss()" style="min-width: 200px;">
+                            <md-option ng-value="fs" ng-repeat="fs in focuss">{{fs}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </div>
+            <md-table-container>
+            </md-table-container>
+            <md-virtual-repeat-container style="height:250px">
+                <div md-virtual-repeat="ex in exercises" md-on-demand class="repeated-item" flex>
+                    <div layout="column">
+                        <div layout="row" layout-align="start center" class="pointer" ng-click="showPreview">
+                            <md-checkbox ng-checked="exists(ex, selected)" ng-click="toggle(ex, selected)" aria-label="{{ex.Name}}"></md-checkbox>
+                            <div ng-click="showPreview=!showPreview">
+                                <img src="" ng-src="{{ex.Thumbnail}}" class="md-avatar" />
+                                {{ex.Name}}
+                            </div>
+                        </div>
+                        <div layout="row" ng-if="showPreview">
+                            <video width="400" height="225" controls autoplay>
+                                <source src="" ng-src="{{getVideoSrc(ex.VideoId)}}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div layout="column" layout-padding>
+                                <div>
+                                    Difficulty level<br />
+                                    {{ex.DifficultyLevel}}
+                                </div>
+                                <div>
+                                    Focus<br />
+                                    {{ex.Focus}}
+                                </div>
+                                <div>
+                                    Equipment<br />
+                                    {{ex.Equipment}}
+                                </div>
+                                <div>
+                                    Body part(s)<br />
+                                    {{ex.BodyParts}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </md-virtual-repeat-container>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-accent" aria-label="Cancel" ng-click="cancel()">
+            Cancel
+        </md-button>
+        <md-button class="md-primary" aria-label="Ok" ng-click="close(selected)">
+            Ok
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

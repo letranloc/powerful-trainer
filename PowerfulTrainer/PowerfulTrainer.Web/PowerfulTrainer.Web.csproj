@@ -172,7 +172,10 @@
     <Content Include="wwwroot\js\app\templates\contact\index.html" />
     <Content Include="wwwroot\js\app\templates\dashboard\index.html" />
     <Content Include="wwwroot\js\app\templates\dialog\confirm.html" />
+    <Content Include="wwwroot\js\app\templates\dialog\edit-completion.html" />
     <Content Include="wwwroot\js\app\templates\dialog\event-model.html" />
+    <Content Include="wwwroot\js\app\templates\dialog\exercise-preview.html" />
+    <Content Include="wwwroot\js\app\templates\dialog\exercises-dialog.html" />
     <Content Include="wwwroot\js\app\templates\dialog\friend-requests.html" />
     <Content Include="wwwroot\js\app\templates\dialog\share-plan.html" />
     <Content Include="wwwroot\js\app\templates\directives\event-model.html" />
@@ -181,6 +184,7 @@
     <Content Include="wwwroot\js\app\templates\directives\input-control\string.html" />
     <Content Include="wwwroot\js\app\templates\directives\input-control\text.html" />
     <Content Include="wwwroot\js\app\templates\plan\build.html" />
+    <Content Include="wwwroot\js\app\templates\plan\build1.html" />
     <Content Include="wwwroot\js\app\templates\plan\index.html" />
     <Content Include="wwwroot\js\app\templates\layout\dashboard.html" />
     <Content Include="wwwroot\js\app\templates\layout\footer.html" />
@@ -224,6 +228,8 @@
     <Content Include="wwwroot\js\app\resources\report.coffee" />
     <Content Include="wwwroot\js\app\config\loading-bar.coffee" />
     <Content Include="wwwroot\js\app\controllers\report.coffee" />
+    <Content Include="wwwroot\js\app\resources\exercise.coffee" />
+    <Content Include="wwwroot\js\app\templates\dialog\edit-rest-between-sets.html" />
     <None Include="wwwroot\_references.js" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,7 @@
                 <span>Workout Plans</span>
             </h3>
             <span flex></span>
-            <md-button class="md-fab md-mini" aria-label="Add" ui-sref="cpanel.plan.create">
+            <md-button ng-if="false" class="md-fab md-mini" aria-label="Add" ui-sref="cpanel.plan.create">
                 <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
                     Add workout plan
                 </md-tooltip>
@@ -77,4 +77,10 @@
         <md-table-pagination ng-hide="query.total<=query.limit" md-limit="query.limit" md-limit-options="query.limitOptions" md-page="query.page" md-label="{page: 'Page:', rowsPerPage: 'Per page:', of: 'of'}"
                              md-total="{{query.total}}" md-on-paginate="getPlans" md-page-select></md-table-pagination>
     </md-content>
+    <md-button class="md-fab md-fab-bottom-right" aria-label="Add" ui-sref="cpanel.plan.create">
+        <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
+            Add workout plan
+        </md-tooltip>
+        <md-icon md-font-icon="fa fa-plus fa-2x"></md-icon>
+    </md-button>
 </div>

@@ -243,3 +243,11 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+**/wwwroot/css
+**/wwwroot/fonts
+**/wwwroot/lib
+**/wwwroot/js/*.js
+**/wwwroot/js/app/templates/templates.coffee
+/PowerfulTrainerCard/.idea
+/PowerfulTrainerCard/gradle/wrapper

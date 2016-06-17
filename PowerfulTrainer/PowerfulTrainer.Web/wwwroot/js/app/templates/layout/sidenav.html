@@ -1,8 +1,18 @@
-﻿<md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" flex layout="column">
+﻿<md-sidenav class="md-sidenav-left blue darken-3 white-text" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" flex layout="column">
+    <md-toolbar md-whiteframe="2" class="blue darken-4">
+        <span flex></span>
+        <div class="md-toolbar-tools">
+            <img src="../images/logo.png" width="50" height="50" />
+            <h2>
+                <b>Powerful Trainer</b>
+            </h2>
+        </div>
+    </md-toolbar>
     <md-menu-sidenav flex>
         <md-menu-sidenav-item ng-class="{'toggle-active': ('cpanel.index' | includedByState)||('cpanel.report' | includedByState)}">
             <md-menu-sidenav-title>
                 <md-toogle-menu layout="row" flex>
+                    <md-icon md-font-icon="fa fa-th-large"></md-icon>
                     <h1 class="md-body-2" flex>Dashboard</h1>
                 </md-toogle-menu>
                 <md-icon md-font-icon="fa fa-caret-down"></md-icon>
@@ -15,11 +25,13 @@
         </md-menu-sidenav-item>
         <md-menu-sidenav-item ng-class="{active: ('cpanel.plan' | includedByState)}" ui-sref="cpanel.plan.index"  ng-click="toggleNavLeft()">
             <md-menu-sidenav-title>
+                <md-icon md-font-icon="fa fa-leaf"></md-icon>
                 <h1 class="md-body-2" flex>Workout plans</h1>
             </md-menu-sidenav-title>
         </md-menu-sidenav-item>
         <md-menu-sidenav-item ng-class="{active: ('cpanel.contact' | includedByState)}" ui-sref="cpanel.contact.index"  ng-click="toggleNavLeft()">
             <md-menu-sidenav-title>
+                <md-icon md-font-icon="fa fa-users"></md-icon>
                 <h1 class="md-body-2" flex>My contacts</h1>
             </md-menu-sidenav-title>
         </md-menu-sidenav-item>
@@ -28,6 +40,7 @@
     <md-list>
         <md-divider></md-divider>
         <md-list-item ui-sref="!#"  ng-click="toggleNavLeft()">
+            <md-icon md-font-icon="fa fa-wrench white-text" style="margin-right:0"></md-icon>
             <p>Settings</p>
         </md-list-item>
         <md-divider></md-divider>

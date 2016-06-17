@@ -12,7 +12,7 @@
 
         md-list, md-menu-sidenav {
             md-divider {
-                background-color: lightgrey;
+                background-color: white;
             }
 
             md-menu-sidenav-item {
@@ -38,7 +38,7 @@
                 &.toggle-active {
 
                     md-menu-sidenav-title {
-                        background-color: grey;
+                        background-color: rgba(128, 128, 128, 0.25);
 
                         h1, md-icon {
                             color: $main-text-color;

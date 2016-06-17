@@ -1,8 +1,8 @@
 ﻿<div layout="column" layout-align="center center" layout-fill id="register-page" ng-controller="AuthCtrl">
     <md-card md-whiteframe="24">
-        <md-card-header>
+        <md-card-header class="blue darken-3 white-text" md-whiteframe="2">
             <md-button title="Login" aria-label="Login" class="md-icon-button" ui-sref="login">
-                <md-icon md-font-icon="fa fa-arrow-left fa-inverse fa-15x"></md-icon>
+                <md-icon class="white-text" md-font-icon="fa fa-arrow-left fa-inverse fa-15x"></md-icon>
             </md-button>
             <md-card-avatar>
                 <img src="../images/logo.png" />
@@ -12,7 +12,7 @@
             </md-card-header-text>
         </md-card-header>
         <md-progress-linear ng-show="progressing" md-mode="indeterminate"></md-progress-linear>
-        <md-card-content style="min-width:312px">
+        <md-card-content>
             <form layout="column" layout-gt-sm="row" name="registerForm" ng-submit="register(reigsterForm)">
                 <div flex layout-padding layout="column">
                     <md-input-container layout-align="center center" layout="row">
@@ -38,9 +38,9 @@
                     </md-input-container>
                     <md-input-container class="md-block">
                         <md-icon md-font-icon="fa fa-user-md"></md-icon>
-                        <input name="name" ng-model="user.name" type="text" placeholder="Full name" maxlength="15" />
+                        <input name="name" ng-model="user.name" type="text" placeholder="Full name" maxlength="40" />
                         <div ng-messages="registerForm.name.$error">
-                            <div ng-message="maxlength">The name is too long! (max: 15).</div>
+                            <div ng-message="maxlength">The name is too long! (max: 40).</div>
                         </div>
                     </md-input-container>
                     <div layout-gt-xs="row">

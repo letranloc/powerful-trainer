@@ -8,6 +8,7 @@
     'ngMessages'
     'ngMaterial'
     'mdPickers'
+    'ui.sortable'
     'ngMenuSidenav'
     'highcharts-ng'
     'hmTouchEvents'

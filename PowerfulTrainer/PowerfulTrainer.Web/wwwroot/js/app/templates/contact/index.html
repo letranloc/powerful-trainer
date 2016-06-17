@@ -10,7 +10,7 @@
             </md-button>
             <span flex></span>
             <md-chips style="display:inline-table">
-                <md-chip ng-click="showWaiting($event, waitingResponses)" class="pointer grey" ng-class="{'lighten-5': waitingResponses.length}">
+                <md-chip ng-click="showWaiting($event, waitingResponses)" class="pointer grey lighten-2" ng-class="{'lighten-5': waitingResponses.length}">
                     <i class="fa fa-signing"></i>
                     {{waitingResponses.length}}
                     <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS&&waitingResponses.length">
@@ -18,7 +18,7 @@
                         <span ng-show="waitingResponses.length">You have {{waitingResponses.length}} waiting response{{waitingResponses.length==1?'':'s'}}</span>
                     </md-tooltip>
                 </md-chip>
-                <md-chip ng-click="showRequests($event, requests)" class="pointer grey" ng-class="{'lighten-5': requests.length}">
+                <md-chip ng-click="showRequests($event, requests)" class="pointer grey  lighten-2" ng-class="{'lighten-5': requests.length}">
                     <i class="fa fa-user-plus"></i>
                     {{requests.length}}
                     <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS&&requests.length">
@@ -36,7 +36,7 @@
         </div>
     </md-toolbar>
     <md-content flex>
-        <form name="searchForm" class="grey lighten-3 animate-search" layout-fill ng-submit="search(searchForm)" ng-show="toggleSearch">
+        <form name="searchForm" class="grey lighten-3" layout-fill ng-submit="search(searchForm)" ng-show="toggleSearch">
             <div layout="row" layout-align="center center" style="margin-bottom:-32px">
                 <md-input-container class="md-block" flex flex-gt-xs="60">
                     <label>Search...</label>

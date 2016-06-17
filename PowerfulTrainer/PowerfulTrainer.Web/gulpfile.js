@@ -65,7 +65,7 @@ paths.libcss = [
     paths.webroot + "lib/font-awesome/css/font-awesome.css",
     paths.webroot + "lib/ng-inline-edit/dist/ng-inline-edit.css",
     paths.webroot + "lib/angular-material-data-table/dist/md-data-table.css",
-    paths.webroot + "lib/pace/themes/white/pace-theme-flash.css",
+    //paths.webroot + "lib/pace/themes/white/pace-theme-flash.css",
     paths.webroot + "lib/angular-material-sidenav-menu/material-menu-sidenav.css",
     paths.webroot + "lib/mdPickers/dist/mdPickers.css"
 ];

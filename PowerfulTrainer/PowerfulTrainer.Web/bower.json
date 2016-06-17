@@ -21,7 +21,8 @@
     "animatewithsass": "latest",
     "pace": "latest",
     "angular-material-sidenav-menu": "latest",
-    "mdPickers" : "latest"
+    "mdPickers": "latest",
+    "angular-ui-sortable": "latest"
   },
   "resolutions": {
     "angular-material": "master",

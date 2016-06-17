@@ -1,17 +1,17 @@
 ﻿<div layout="row" layout-align="center center" id="login-page" ng-controller="AuthCtrl">
     <md-card md-whiteframe="24">
-        <md-card-header class="md-primary">
+        <md-card-header class="blue darken-3 white-text" md-whiteframe="2">
             <md-card-avatar>
                 <img src="../images/logo.png" />
             </md-card-avatar>
             <md-card-header-text>
                 <span class="md-headline">Powerful Trainer</span>
             </md-card-header-text>
-            <md-button class="md-fab md-mini md-accent" aria-label="Register" ui-sref="register">
+            <md-button class="md-fab md-mini white" aria-label="Register" ui-sref="register">
                 <md-tooltip md-direction="right" ng-hide="hideTooltipOnXS">
                     Register
                 </md-tooltip>
-                <md-icon md-font-icon="fa fa-plus fa-15x"></md-icon>
+                <md-icon md-font-icon="fa fa-plus fa-15x" class="blue-grey-text"></md-icon>
             </md-button>
         </md-card-header>
         <md-progress-linear ng-show="progressing" md-mode="indeterminate"></md-progress-linear>

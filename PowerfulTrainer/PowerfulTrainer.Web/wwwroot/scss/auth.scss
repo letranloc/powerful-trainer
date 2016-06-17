@@ -7,8 +7,6 @@
     height: 100%;
 
     md-card-header {
-        background-color: $main-color;
-        color: $main-text-color;
 
         .md-button {
             &:first-child {
@@ -21,6 +19,10 @@
                 margin: inherit;
             }
         }
+    }
+
+    md-card-content {
+        min-width: 312px;
     }
 }
 

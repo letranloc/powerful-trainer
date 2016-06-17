@@ -1,0 +1,20 @@
+﻿<md-edit-dialog>
+    <md-content layout-padding>
+        <md-radio-group layout="column" ng-model="restTimeChecker">
+            <div layout="row">
+                <md-radio-button value="1"></md-radio-button>
+                <md-input-container style="max-width:50px">
+                    <input type="number" ng-model="restTimeMin" ng-disabled="restTimeChecker==0" min="0" max="99" placeholder="Min" />
+                </md-input-container>
+                <md-input-container style="max-width:50px">
+                    <input type="number" ng-model="restTimeSec" ng-disabled="restTimeChecker==0" min="0" max="59" placeholder="Sec" />
+                </md-input-container>
+            </div>
+            <md-radio-button value="0">As need</md-radio-button>
+        </md-radio-group>
+    </md-content>
+    <md-actions layout="row">
+        <md-button class="md-accent md-ink-ripple" ng-click="cancel()">CANCEL</md-button>
+        <md-button class="md-primary md-ink-ripple" ng-click="save()">SAVE</md-button>
+    </md-actions>
+</md-edit-dialog>

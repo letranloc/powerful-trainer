@@ -44,7 +44,7 @@
             , (resp) ->
                 mdToast.showSimple resp.data.Message, "danger"
 
-.controller "PlanCreateCtrl", ($scope, $stateParams, $state, $q, $timeout, cookies, mdDialog, mdToast, Plan, EventModel) ->
+.controller "PlanCreateCtrl", ($scope, $stateParams, $state, $q, $timeout, cookies, mdDialog, mdToast, Plan, Exercise) ->
     if $stateParams.id
         Plan.get($stateParams.id).then (resp) ->
             $scope.plan = resp.data.Data
@@ -61,19 +61,7 @@
         , 3000
 
     $scope.isSaving = false
-
-    $scope.eventModel = 
-        conditions: []
-        actions: []
-
-    EventModel.getConditions().then (resp) ->
-        $scope.eventModel.conditions = resp.data.Data
-    , (resp) ->
-        mdToast.showSimple resp.data.Message, "danger"
-    EventModel.getActions().then (resp) ->
-        $scope.eventModel.actions = resp.data.Data
-    , (resp) ->
-        mdToast.showSimple resp.data.Message, "danger"
+    $scope.selected = []
 
     $scope.showPlanImagePicker = ->
         $('#planImagePicker').click()
@@ -81,6 +69,32 @@
 
     $scope.setPlanImage = (event, objects, files) ->
         $scope.plan.Image = "data:" + objects[0].filetype + ";base64," + objects[0].base64
+
+    $scope.addExercise = ($event) ->
+        mdDialog.showExSelector($event).then (list) ->
+            for ex in list
+                ex.Sets = 1
+                $scope.plan.PlanData.push(ex)
+                
+
+    $scope.showExPreview = ($event, ex) ->
+        mdDialog.showExPreview($event, ex)
+
+    $scope.editSets = ($event, ex) ->
+        mdDialog.showSetEdit($event, ex)
+            
+    $scope.editCompletion = ($event, ex) ->
+        mdDialog.showCompletionEdit($event, ex)
+
+    $scope.editRestTime = ($event, ex) ->
+        if ex.Sets > 1
+            mdDialog.showRestTimeEdit($event, ex)
+
+    $scope.removeEx = ->
+        mdDialog.showConfirm(evt, "Delete plan", "Are you sure?")
+        .then ->
+            for ex, i in $scope.selected
+                $scope.plan.PlanData.splice(i, 1)
 
     $scope.addCondition = (evt, bundle) ->
         mdDialog.showEventSelector(evt, "condition", $scope.eventModel.conditions)
@@ -93,9 +107,7 @@
             event.Actions.push(model) if model                 
 
     $scope.validate = (plan) ->
-        for event in plan.PlanData
-            return false unless event.Actions.length
-        return true
+        return plan.PlanData.length > 0
 
     $scope.save = ->
         if $scope.validate($scope.plan)
@@ -116,4 +128,37 @@
                     mdToast.showSimple resp.data.Message, "danger"
                     $scope.isSaving = false
         else
-            mdToast.showSimple "Each event must have at least one action", "danger"
+            mdToast.showSimple "Each plan must have at least one exercise", "danger"
+
+.filter "CompletionFilter", ->
+    return (input) ->
+        if input.Repetitions
+            if input.Repetitions is -1
+                return "Max reps"
+            else return input.Repetitions + " reps"
+        else if input.Duration
+            min = Math.floor(input.Duration / 60);
+            sec = input.Duration % 60;
+            str = ""
+            if min > 0
+                if sec > 0 then str = min + " min " + sec + " sec"
+                else str = min + " minutes"
+            else str = sec + " seconds"
+            return str
+        else return "Select"
+
+.filter "RestTimeFilter", ->
+    return (input) ->
+        if input.Sets > 1
+            if input.RestTime is 'AsNeed'
+                return "As need"
+            else
+                min = Math.floor(input.RestTime / 60);
+                sec = input.RestTime % 60;
+                str = ""
+                if min > 0
+                    if sec > 0 then str = min + " min " + sec + " sec"
+                    else str = min + " minutes"
+                else str = sec + " seconds"
+                return str
+        else return ""

@@ -1,0 +1,31 @@
+﻿<md-edit-dialog>
+    <md-tabs md-selected="selectedIndex" style="min-height:200px">
+        <md-tab label="duration" ng-click="repetition=null;duration=1;">
+            <md-content layout-padding layout="row">
+                <md-input-container style="max-width:50px">
+                    <input type="number" ng-model="durationMin" min="0" max="99" placeholder="Min"/>
+                </md-input-container>
+                <md-input-container style="max-width:50px">
+                    <input type="number" ng-model="durationSec" min="0" max="59" placeholder="Sec" />
+                </md-input-container>
+            </md-content>
+        </md-tab>
+        <md-tab label="repetition" ng-click="duration=null;repetitionChecker=repetitionChecker||1;repetition=1">
+            <md-content layout-padding>
+                <md-radio-group layout="column" ng-model="repetitionChecker">
+                    <div layout="row">
+                        <md-radio-button value="1"></md-radio-button>
+                        <md-input-container style="max-width:50px">
+                            <input type="number" min="1" ng-model="repetitionCount" ng-disabled="repetitionChecker==0" max="999" placeholder="Reps" />
+                        </md-input-container>
+                    </div>
+                    <md-radio-button value="0">Max reps</md-radio-button>
+                </md-radio-group>
+            </md-content>
+        </md-tab>
+    </md-tabs>
+    <md-actions>
+        <md-button class="md-accent md-ink-ripple" ng-click="cancel()">CANCEL</md-button>
+        <md-button class="md-primary md-ink-ripple" ng-click="save()">SAVE</md-button>
+    </md-actions>
+</md-edit-dialog>

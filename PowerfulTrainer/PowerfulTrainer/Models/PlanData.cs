@@ -8,8 +8,8 @@ namespace PowerfulTrainer.Models
 {
     public class PlanItem
     {
-        public int ExerciseId;
-        public string ExerciseName;
+        public int Id;
+        public string Name;
         public int Sets;
         //Chi set gia tri 1 trong 2 Repetition hoac Duration
         //So lan trong 1 set

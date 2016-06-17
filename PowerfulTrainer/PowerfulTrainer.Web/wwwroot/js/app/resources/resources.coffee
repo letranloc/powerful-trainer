@@ -3,4 +3,5 @@
     "resources.contact"
     "resources.eventModel"
     "resources.report"
+    "resources.exercise"
 ]
