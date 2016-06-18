@@ -14,7 +14,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
     public class AccountController : BaseApiController
     {
         [NonAction]
-        private string MD5(string password)
+        public static string MD5(string password)
         {
             byte[] encodedPassword = new UTF8Encoding().GetBytes(password);
             byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
