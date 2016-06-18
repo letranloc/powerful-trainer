@@ -1,0 +1,9 @@
+﻿.fix-search {
+    height:100%;
+
+    @media(max-width: 460px) {
+    & {
+        width: 40%;
+    }
+}
+}

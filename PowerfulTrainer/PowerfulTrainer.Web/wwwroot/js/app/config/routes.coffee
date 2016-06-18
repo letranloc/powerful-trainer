@@ -92,15 +92,6 @@
         resolve:
             $title: -> "Contacts"
 
-    .state "cpanel.contact.add",
-        url: "/add"
-        templateUrl: "contact/add.html"
-        controller: "ContactAddCtrl"
-        resolve:
-            $title: -> "Add contact"
-    
-    
-
 .run ($rootScope, $location) ->
     $rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) ->
         search = $location.search()

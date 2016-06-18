@@ -1609,9 +1609,6 @@ body {
 .fa-15x {
   font-size: 1.5em; }
 
-button.md-button.md-fab.md-mini {
-  width: 44px; }
-
 md-toast.md-info-toast-theme .md-toast-content {
   background-color: #01579B; }
 
@@ -11589,6 +11586,12 @@ span.dotted {
       margin-left: -10px; }
     #register-page md-datepicker .md-datepicker-input-container {
       margin-left: inherit; }
+
+.fix-search {
+  height: 100%; }
+  @media (max-width: 460px) {
+    .fix-search {
+      width: 40%; } }
 
 .materialize-red {
   background-color: #e51c23 !important; }
