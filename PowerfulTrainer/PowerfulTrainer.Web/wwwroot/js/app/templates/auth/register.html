@@ -13,7 +13,7 @@
         </md-card-header>
         <md-progress-linear ng-if="progressing" md-mode="indeterminate"></md-progress-linear>
         <md-card-content>
-            <form layout="column" layout-gt-sm="row" name="registerForm" ng-submit="register(reigsterForm)">
+            <form layout="column" layout-gt-sm="row" name="registerForm" ng-submit="register(registerForm)">
                 <div flex layout-padding layout="column">
                     <md-input-container layout-align="center center" layout="row">
                         <img ng-if="user.avatar" src="../images/avatar-default.png" data-ng-src="{{user.avatar}}"
@@ -28,12 +28,12 @@
                             <md-input-container class="md-block" style="margin:0">
                                 <label>Avatar</label>
                                 <input type="text" ng-model="userAvatar.filename" ng-disabled="true" />
-                                <small ng-show="userAvatar" class="red-text pointer"
-                                       ng-click="user.avatar=null;userAvatar=null"><u>Remove avatar</u></small>
                                 <div ng-messages="registerForm.userAvatar.$error" md-auto-hide="false">
                                     <div ng-message="maxsize">The size maximun is 1025KB</div>
                                     <div ng-message="accept">Not a valid image</div>
                                 </div>
+                                <small ng-show="userAvatar" class="red-text pointer"
+                                       ng-click="removeAvatar(registerForm)"><u>Remove avatar</u></small>
                             </md-input-container>
                         </div>
                         <input id="userAvatarPicker" aria-label="Image picker" name="userAvatar" ng-hide="true" ng-model="userAvatar" type="file"

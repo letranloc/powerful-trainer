@@ -1,17 +1,20 @@
 ﻿angular.module 'controllers.auth', []
 .controller 'AuthCtrl', ($scope, $state, mdToast, Auth) ->
     $scope.progressing = false;
-
     $scope.user = {}
 
     $scope.showUserAvatarPicker = (form) ->
-        form.userAvatar.$setValidity("maxsize", true)
-        form.userAvatar.$setValidity("accept", true)
         $('#userAvatarPicker').click()
         return
 
     $scope.setUserAvatar = (event, objects, files) ->
         $scope.user.avatar = "data:" + objects[0].filetype + ";base64," + objects[0].base64
+
+    $scope.removeAvatar = (form) ->
+        $scope.user.avatar = null
+        $scope.userAvatar = null
+        form.userAvatar.$setValidity("maxsize", true)
+        form.userAvatar.$setValidity("accept", true)
 
     $scope.isValidForm = (form) ->
         form.$valid

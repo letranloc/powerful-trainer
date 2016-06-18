@@ -2,14 +2,14 @@
 .run ($rootScope, $interval, AppCfg, Auth, Contact, Plan, mdToast) ->
     $rootScope.friendRequests = []
     $rootScope.planNotify = []
-    interval = undefined
+    _interval = undefined
     running = false
 
     $rootScope.$watch Auth.isAuthenticated, (value, old) ->
         if value is false
             $rootScope.friendRequests = []
             $rootScope.planNotify = []
-            $interval.cancel(interval)
+            $interval.cancel(_interval)
             running = false
         else startInterval()
             
@@ -45,7 +45,7 @@
             running = true
             getFriendRequests()
             # getPlanNotify()
-            $interval -> 
+            _interval = $interval -> 
                 getFriendRequests(AppCfg.requestInterval)
                 getPlanNotify(AppCfg.requestInterval)
             , AppCfg.requestInterval

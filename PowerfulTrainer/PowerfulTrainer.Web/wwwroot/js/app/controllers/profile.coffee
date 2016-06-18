@@ -6,8 +6,6 @@
     $scope.progressing = false
 
     $scope.showUserAvatarPicker = (form) ->
-        form.userAvatar.$setValidity("maxsize", true)
-        form.userAvatar.$setValidity("accept", true)
         $('#userAvatarPicker').click()
         return
 
@@ -20,6 +18,12 @@
 
     $scope.setUserAvatar = (event, objects, files) ->
         $scope.user.Avatar = "data:" + objects[0].filetype + ";base64," + objects[0].base64
+
+    $scope.removeAvatar = (form) ->
+        form.userAvatar.$setValidity("maxsize", true)
+        form.userAvatar.$setValidity("accept", true)
+        $scope.user.Avatar = null
+        $scope.userAvatar = null
 
     $scope.update = (form) ->
         $scope.progressing = !$scope.progressing

@@ -33,19 +33,17 @@
                     </md-input-container>
                 </div>
             </div>
-            <md-table-container>
-            </md-table-container>
-            <md-virtual-repeat-container style="height:250px">
+            <md-virtual-repeat-container style="height:400px" md-top-index="topIndex">
                 <div md-virtual-repeat="ex in exercises" md-on-demand class="repeated-item" flex>
                     <div layout="column">
-                        <div layout="row" layout-align="start center" class="pointer" ng-click="showPreview">
+                        <div layout="row" layout-align="start center" class="pointer">
                             <md-checkbox ng-checked="exists(ex, selected)" ng-click="toggle(ex, selected)" aria-label="{{ex.Name}}"></md-checkbox>
-                            <div ng-click="showPreview=!showPreview">
+                            <div layout="row" layout-align="start center" ng-click="showExPreview(ex)">
                                 <img src="" ng-src="{{ex.Thumbnail}}" class="md-avatar" />
                                 {{ex.Name}}
                             </div>
                         </div>
-                        <div layout="row" ng-if="showPreview">
+                        <div layout="column" layout-gt-sm="row" ng-if="ex.showPreview">
                             <video width="400" height="225" controls autoplay>
                                 <source src="" ng-src="{{getVideoSrc(ex.VideoId)}}" type="video/mp4">
                                 Your browser does not support the video tag.

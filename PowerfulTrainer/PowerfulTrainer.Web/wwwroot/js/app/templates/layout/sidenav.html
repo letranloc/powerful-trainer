@@ -48,7 +48,7 @@
         </md-list-item>
         <md-divider></md-divider>
         <md-list-item class="md-2-line md-small-line" ng-class="{active: ('cpanel.profile' | includedByState)}">
-            <img src="../images/avatar-default.png" ng-data-src="{{User.Avatar}}" class="md-avatar pointer" ui-sref="cpanel.profile"/>
+            <img src="../images/avatar-default.png" ng-data-src="{{User.Avatar}}" class="md-avatar md-circle pointer" ui-sref="cpanel.profile"/>
             <div class="md-list-item-text">
                 <h3 class="pointer" ui-sref="cpanel.profile">{{User.Name || User.Username}}</h3>
                 <small><u class="pointer" ng-click="logout()" ng-controller="AuthCtrl">Sign out</u></small>

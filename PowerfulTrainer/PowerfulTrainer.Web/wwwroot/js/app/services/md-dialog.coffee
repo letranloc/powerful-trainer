@@ -125,6 +125,7 @@
                 controller: ($rootScope, $scope, AppCfg, Exercise) ->
                     $scope.selected = []
                     $scope.getVideoSrc = $rootScope.getVideoSrc
+                    $scope.currentItemPre = null;
                     $scope.exercises = 
                         _items: []
                         _query:
@@ -136,9 +137,11 @@
                                 this._fetchMoreItems(idx)
                                 return null
                             else
-                                return this._items[idx]
+                                item = this._items[idx]
+                                item.idx = idx if item
+                                return item
                         getLength: -> 
-                            return Math.min(this._items.length + 5, this._query.total)
+                            return Math.min(this._items.length + 3, this._query.total)
                         refresh: ->
                             this._query.page = 1
                             _self = this
@@ -153,6 +156,16 @@
                                     _self._items = _self._items.concat(resp.data.Data.Result)
                                     _self._query.total = resp.data.Data.Count
                     $scope.exercises.refresh()
+                    $scope.showExPreview = (ex) ->
+                        if ex
+                            if ex.showPreview
+                                $scope.currentItemPre = null
+                            else
+                                if $scope.currentItemPre
+                                    $scope.currentItemPre.showPreview = false
+                                $scope.currentItemPre = ex
+                                $scope.topIndex = ex.idx + 2
+                            ex.showPreview = !ex.showPreview
                     $scope.$watch "[name, bodypart, level, focus]", ->
                         $scope.exercises.refresh()
                     $scope.togglePreview = ($event, showPreview) ->
