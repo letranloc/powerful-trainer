@@ -18,7 +18,7 @@
         templateUrl: "auth/register.html"
         controller: "AuthCtrl"
         resolve:
-            $title: -> "Login"
+            $title: -> "Register"
 
     .state "cpanel",
         abstract: true

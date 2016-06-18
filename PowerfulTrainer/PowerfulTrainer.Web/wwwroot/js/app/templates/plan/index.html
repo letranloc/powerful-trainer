@@ -1,6 +1,9 @@
 ﻿<div layout="column" layout-align="center none" flex>
     <md-toolbar md-scroll-shrink ng-if="true" md-whiteframe="2" flex>
         <div class="md-toolbar-tools">
+            <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
+                <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
+            </md-button>
             <h3>
                 <span>Workout Plans</span>
             </h3>
@@ -28,7 +31,7 @@
                         {{plan.UpdateDate | date: 'medium'}}
                     </p>
                 </div>
-                <div class="md-secondary" ng-show="showMenuBtn">
+                <div class="md-secondary" ng-show="showMenuBtn" style="min-width:105px">
                     <md-button class="md-fab md-raised md-mini md-primary" aria-label="Edit" ui-sref="cpanel.plan.edit({id: plan.Id})">
                         <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
                             Edit

@@ -184,7 +184,6 @@
     <Content Include="wwwroot\js\app\templates\directives\input-control\string.html" />
     <Content Include="wwwroot\js\app\templates\directives\input-control\text.html" />
     <Content Include="wwwroot\js\app\templates\plan\build.html" />
-    <Content Include="wwwroot\js\app\templates\plan\build1.html" />
     <Content Include="wwwroot\js\app\templates\plan\index.html" />
     <Content Include="wwwroot\js\app\templates\layout\dashboard.html" />
     <Content Include="wwwroot\js\app\templates\layout\footer.html" />
@@ -230,6 +229,7 @@
     <Content Include="wwwroot\js\app\controllers\report.coffee" />
     <Content Include="wwwroot\js\app\resources\exercise.coffee" />
     <Content Include="wwwroot\js\app\templates\dialog\edit-rest-between-sets.html" />
+    <Content Include="wwwroot\js\app\directives\focus-me.coffee" />
     <None Include="wwwroot\_references.js" />
   </ItemGroup>
   <ItemGroup>

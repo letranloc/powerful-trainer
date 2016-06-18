@@ -6,4 +6,5 @@ angular.module 'app.directives', [
     'directives.eventModel'
     'directives.appScroll'
     'directives.hideKeyboardOnTouchOutside'
+    'directives.focusMe'
 ]

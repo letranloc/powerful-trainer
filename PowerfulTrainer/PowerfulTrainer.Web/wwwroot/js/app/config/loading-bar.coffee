@@ -1,3 +1,5 @@
 ﻿angular.module 'config.loadingBar', []
 .config  ->
-    #Pace.options = {}
+    Pace.options =
+        ajax: false
+        eventLag: false

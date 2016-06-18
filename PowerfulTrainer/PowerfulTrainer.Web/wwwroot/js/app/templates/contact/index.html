@@ -1,8 +1,20 @@
 ﻿<div layout="column" layout-align="center none" flex>
     <md-toolbar md-scroll-shrink ng-if="true" md-whiteframe="2" flex>
         <div class="md-toolbar-tools">
-            <h3>Contacts ({{contacts.length || 0}})</h3>
-            <md-button class="md-icon-button" aria-label="Search" ng-click="toggleSearchBox()" ng-class="{'md-accent': toggleSearch}">
+            <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
+                <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
+            </md-button>
+            <div layout-align="start center" ng-show="toggleSearch" style="height:100%">
+                <div style="display:inline-flex">
+                    <md-input-container md-theme="default-yellow-dark" md-no-float>
+                        <input id="searchBox" type="text" ng-model="searchStr" ng-change="search(searchStr)"
+                               focus-me="toggleSearch" placeholder="Search..." />
+                    </md-input-container>
+                </div>
+            </div>
+            <h3 ng-hide="toggleSearch">Contacts ({{contacts.length || 0}})</h3>
+            <md-button class="md-icon-button" aria-label="Search" ng-click="toggleSearch=!toggleSearch" 
+                       ng-class="{'md-accent': toggleSearch}">
                 <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
                     Search
                 </md-tooltip>
@@ -36,22 +48,6 @@
         </div>
     </md-toolbar>
     <md-content flex>
-        <form name="searchForm" class="grey lighten-3" layout-fill ng-submit="search(searchForm)" ng-show="toggleSearch">
-            <div layout="row" layout-align="center center" style="margin-bottom:-32px">
-                <md-input-container class="md-block" flex flex-gt-xs="60">
-                    <label>Search...</label>
-                    <input ng-model="searchStr" ng-change="search(searchStr)" md-autofocus="autofocus" />
-                </md-input-container>
-            </div>
-            <div layout="row" layout-align="center center" ng-if="false">
-                <md-button type="submit" class="md-fab" aria-label="Search" ng-disabled="!searchForm.$valid">
-                    <md-tooltip md-direction="right" ng-hide="hideTooltipOnXS">
-                        Search
-                    </md-tooltip>
-                    <md-icon md-font-icon="fa fa-search fa-15x"></md-icon>
-                </md-button>
-            </div>
-        </form>
         <div layout="row" layout-align="center center" ng-show="contacts.length==0">
             <h3>Oops...You don't have any contacts.</h3>
         </div>

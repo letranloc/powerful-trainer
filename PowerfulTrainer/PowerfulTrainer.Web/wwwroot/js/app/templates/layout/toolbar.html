@@ -1,10 +1,10 @@
-﻿<md-toolbar class="blue darken-3" md-whiteframe="2">
+﻿<md-toolbar class="blue darken-3" md-whiteframe="2" ng-if="!useCustomToolbar">
     <div class="md-toolbar-tools">
-        <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()">
+        <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
             <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
         </md-button>
         <h2>
-            <b>{{$subtitle}}</b>
+            <b>{{$header}}</b>
         </h2>
     </div>
 </md-toolbar>

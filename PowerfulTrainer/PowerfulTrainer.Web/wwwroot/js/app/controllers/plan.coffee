@@ -55,7 +55,7 @@
     else
         $scope.plan =
             Name: "New Workout Plan"
-            PlanData: []
+            Data: []
         $timeout ->
             cookies.learnTutorial(cookies.TUTORIAL_CHANGE_PLAN_IMAGE_LEARNED)
         , 3000
@@ -74,7 +74,7 @@
         mdDialog.showExSelector($event).then (list) ->
             for ex in list
                 ex.Sets = 1
-                $scope.plan.PlanData.push(ex)
+                $scope.plan.Data.push(ex)
                 
 
     $scope.showExPreview = ($event, ex) ->
@@ -94,20 +94,10 @@
         mdDialog.showConfirm(evt, "Delete plan", "Are you sure?")
         .then ->
             for ex, i in $scope.selected
-                $scope.plan.PlanData.splice(i, 1)
-
-    $scope.addCondition = (evt, bundle) ->
-        mdDialog.showEventSelector(evt, "condition", $scope.eventModel.conditions)
-        .then (model) ->
-            bundle.Conditions.push(model) if model
-
-    $scope.addAction = (evt, event) ->
-        mdDialog.showEventSelector(evt, "action", $scope.eventModel.actions)
-        .then (model) ->
-            event.Actions.push(model) if model                 
+                $scope.plan.Data.splice(i, 1)
 
     $scope.validate = (plan) ->
-        return plan.PlanData.length > 0
+        return plan.Data.length > 0
 
     $scope.save = ->
         if $scope.validate($scope.plan)

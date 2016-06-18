@@ -1,4 +1,5 @@
-﻿<md-sidenav class="md-sidenav-left blue darken-3 white-text" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" flex layout="column">
+﻿<md-sidenav class="md-sidenav-left blue darken-3 white-text" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')"
+            flex layout="column" style="min-width:320px">
     <md-toolbar md-whiteframe="2" class="blue darken-4">
         <span flex></span>
         <div class="md-toolbar-tools">
@@ -6,6 +7,8 @@
             <h2>
                 <b>Powerful Trainer</b>
             </h2>
+            <span flex></span>
+            <md-icon md-font-icon="fa fa-angle-left" ng-show="hideTooltipOnXS" ng-click="toggleNavLeft()"></md-icon>
         </div>
     </md-toolbar>
     <md-menu-sidenav flex>
@@ -18,9 +21,9 @@
                 <md-icon md-font-icon="fa fa-caret-down"></md-icon>
             </md-menu-sidenav-title>
             <md-menu-sidenav-content>
-                <md-menu-sidenav-subitem ui-sref="cpanel.index" ui-sref-active="active">Dashboard</md-menu-sidenav-subitem>
-                <md-menu-sidenav-subitem ui-sref="cpanel.report.health" ui-sref-active="active">Health summary</md-menu-sidenav-subitem>
-                <md-menu-sidenav-subitem ui-sref="cpanel.report.workout" ui-sref-active="active">Workout summary</md-menu-sidenav-subitem>
+                <md-menu-sidenav-subitem ui-sref="cpanel.index" ui-sref-active="active" ng-click="toggleNavLeft()">Dashboard</md-menu-sidenav-subitem>
+                <md-menu-sidenav-subitem ui-sref="cpanel.report.health" ui-sref-active="active" ng-click="toggleNavLeft()">Health summary</md-menu-sidenav-subitem>
+                <md-menu-sidenav-subitem ui-sref="cpanel.report.workout" ui-sref-active="active" ng-click="toggleNavLeft()">Workout summary</md-menu-sidenav-subitem>
             </md-menu-sidenav-content>
         </md-menu-sidenav-item>
         <md-menu-sidenav-item ng-class="{active: ('cpanel.plan' | includedByState)}" ui-sref="cpanel.plan.index"  ng-click="toggleNavLeft()">

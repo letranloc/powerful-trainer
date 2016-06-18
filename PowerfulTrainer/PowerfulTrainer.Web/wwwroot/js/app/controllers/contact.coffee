@@ -6,15 +6,11 @@
         page: $location.search().page || 1
         total: 0
 
-    $scope.toggleSearch = false
     $scope.updateLocationSearch = false
 
     $scope.waitingResponses = []
     Contact.getWaitingResponses().then (resp) ->
         $scope.waitingResponses = resp.data.Data
-
-    $scope.toggleSearchBox = ->
-        $scope.toggleSearch = !$scope.toggleSearch
 
     $scope.getContacts = ->
         Contact.getAll($scope.query).then (resp) ->

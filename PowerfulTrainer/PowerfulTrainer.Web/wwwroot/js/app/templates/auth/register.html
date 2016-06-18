@@ -44,17 +44,16 @@
                         </div>
                     </md-input-container>
                     <div layout-gt-xs="row">
-                        <md-input-container class="md-block" style="margin-top: 0">
+                        <md-input-container class="md-block">
                             <label>Gender</label>
                             <md-icon md-font-icon="fa fa-venus-mars"></md-icon>
                             <md-select ng-model="user.gender">
                                 <md-option ng-repeat="gender in ['Male', 'Female', 'Other'] track by $index" value="{{$index}}">{{gender}}</md-option>
                             </md-select>
                         </md-input-container>
-                        <div flex></div>
                         <div layout="column">
-                            <md-datepicker ng-model="user.birthday" md-placeholder="Birthday"></md-datepicker>
-                            <div class="input-advanced hint" style="position: inherit;margin-left: 35px;">mm/dd/yyyy</div>
+                            <mdp-date-picker mdp-open-on-click name="birthday" mdp-placeholder="Birthday (mm/dd/yyyy)"
+                                             mdp-format="MM/DD/YYYY" ng-model="user.birthday"></mdp-date-picker>
                         </div>
                     </div>
                 </div>
