@@ -233,6 +233,7 @@
     <Content Include="wwwroot\scss\contact.scss" />
     <Content Include="wwwroot\js\app\controllers\profile.coffee" />
     <Content Include="wwwroot\scss\profile.scss" />
+    <Content Include="wwwroot\js\app\directives\fix-heigth.coffee" />
     <None Include="wwwroot\_references.js" />
   </ItemGroup>
   <ItemGroup>

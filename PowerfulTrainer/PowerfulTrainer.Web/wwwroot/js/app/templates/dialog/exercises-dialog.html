@@ -1,4 +1,4 @@
-﻿<md-dialog style="width:100%;height:100%">
+﻿<md-dialog fix-height style="width:100%;height:100%">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>Select exercise</h2>
@@ -15,25 +15,28 @@
                     <input type="text" ng-model="name" name="search" placeholder="Search..." ng-change="exercises.refresh()" />
                     <u class="blue-text pointer" ng-click="showAdvanced=!showAdvanced"><small>{{showAdvanced?'Hide':'Show'}} advanced</small></u>
                 </md-input-container>
-                <div flex-gt-sm="20" layout-gt-sm="row" style="margin-top:-23px;max-height:70px" ng-show="showAdvanced">
+                <div flex-gt-sm="20" layout-gt-sm="row" style="margin-top:-23px" ng-show="showAdvanced">
                     <md-input-container class="md-block">
                         <md-select placeholder="Level" ng-model="level" md-on-open="loadLevels()" style="min-width: 200px;">
+                            <md-option ng-value="null">None</md-option>
                             <md-option ng-value="lv" ng-repeat="lv in levels">{{lv}}</md-option>
                         </md-select>
                     </md-input-container>
                     <md-input-container class="md-block">
                         <md-select placeholder="Body parts" ng-model="bodypart" md-on-open="loadBodyParts()" style="min-width: 200px;">
+                            <md-option ng-value="null">None</md-option>
                             <md-option ng-value="bp" ng-repeat="bp in bodyParts">{{bp}}</md-option>
                         </md-select>
                     </md-input-container>
                     <md-input-container class="md-block">
                         <md-select placeholder="Focus" ng-model="focus" md-on-open="loadFocuss()" style="min-width: 200px;">
+                            <md-option ng-value="null">None</md-option>
                             <md-option ng-value="fs" ng-repeat="fs in focuss">{{fs}}</md-option>
                         </md-select>
                     </md-input-container>
                 </div>
             </div>
-            <md-virtual-repeat-container style="height:400px" md-top-index="topIndex">
+            <md-virtual-repeat-container add-height-to-this style="height:250px" md-top-index="topIndex">
                 <div md-virtual-repeat="ex in exercises" md-on-demand class="repeated-item" flex>
                     <div layout="column">
                         <div layout="row" layout-align="start center" class="pointer">
@@ -72,6 +75,7 @@
             </md-virtual-repeat-container>
         </div>
     </md-dialog-content>
+    <span add-height-from-this flex></span>
     <md-dialog-actions layout="row">
         <span flex></span>
         <md-button class="md-accent" aria-label="Cancel" ng-click="cancel()">

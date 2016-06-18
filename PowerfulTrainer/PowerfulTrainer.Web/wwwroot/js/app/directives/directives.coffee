@@ -7,4 +7,5 @@ angular.module 'app.directives', [
     'directives.appScroll'
     'directives.hideKeyboardOnTouchOutside'
     'directives.focusMe'
+    'directives.fixHeight'
 ]
