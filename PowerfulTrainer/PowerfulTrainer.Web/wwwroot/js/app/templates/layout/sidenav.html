@@ -8,7 +8,7 @@
                 <b>Powerful Trainer</b>
             </h2>
             <span flex></span>
-            <md-icon md-font-icon="fa fa-angle-left" ng-show="hideTooltipOnXS" ng-click="toggleNavLeft()"></md-icon>
+            <md-icon md-font-icon="fa fa-angle-left" class="pointer" ng-show="hideTooltipOnXS" ng-click="toggleNavLeft()"></md-icon>
         </div>
     </md-toolbar>
     <md-menu-sidenav flex>
@@ -47,11 +47,11 @@
             <p>Settings</p>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list-item class="md-2-line md-small-line">
-            <img src="../images/avatar-default.png" class="md-avatar" alt="John Jean" />
+        <md-list-item class="md-2-line md-small-line" ng-class="{active: ('cpanel.profile' | includedByState)}">
+            <img src="../images/avatar-default.png" ng-data-src="{{User.Avatar}}" class="md-avatar md-circle pointer" ui-sref="cpanel.profile"/>
             <div class="md-list-item-text">
-                <h3>{{User.Name || User.Username}}</h3>
-                <small><a href="!#" ng-click="logout()" ng-controller="AuthCtrl">Sign out</a></small>
+                <h3 class="pointer" ui-sref="cpanel.profile">{{User.Name || User.Username}}</h3>
+                <small><u class="pointer" ng-click="logout()" ng-controller="AuthCtrl">Sign out</u></small>
             </div>
         </md-list-item>
     </md-list>

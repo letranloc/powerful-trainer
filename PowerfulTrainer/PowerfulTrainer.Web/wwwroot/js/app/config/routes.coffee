@@ -92,14 +92,13 @@
         resolve:
             $title: -> "Contacts"
 
-    .state "cpanel.contact.add",
-        url: "/add"
-        templateUrl: "contact/add.html"
-        controller: "ContactAddCtrl"
+    # Profile
+    .state "cpanel.profile",
+        url: '/profile'
+        templateUrl: "profile/index.html"
+        controller: "ProfileIndexCtrl"
         resolve:
-            $title: -> "Add contact"
-    
-    
+            $title: -> "Update profile"
 
 .run ($rootScope, $location) ->
     $rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) ->

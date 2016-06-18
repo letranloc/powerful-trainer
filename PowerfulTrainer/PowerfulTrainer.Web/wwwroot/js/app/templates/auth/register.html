@@ -11,13 +11,14 @@
                 <span class="md-headline">Powerful Trainer</span>
             </md-card-header-text>
         </md-card-header>
-        <md-progress-linear ng-show="progressing" md-mode="indeterminate"></md-progress-linear>
+        <md-progress-linear ng-if="progressing" md-mode="indeterminate"></md-progress-linear>
         <md-card-content>
-            <form layout="column" layout-gt-sm="row" name="registerForm" ng-submit="register(reigsterForm)">
+            <form layout="column" layout-gt-sm="row" name="registerForm" ng-submit="register(registerForm)">
                 <div flex layout-padding layout="column">
                     <md-input-container layout-align="center center" layout="row">
-                        <img src="../images/avatar-default.png" data-ng-src="data:{{userAvatar.filetype}};base64,{{userAvatar.base64}}"
+                        <img ng-if="user.avatar" src="../images/avatar-default.png" data-ng-src="{{user.avatar}}"
                              class="md-avatar" width="160" height="160"/>
+                        <img ng-if="!user.avatar" src="../images/avatar-default.png" class="md-avatar" width="160" height="160" />
                     </md-input-container>
                     <md-input-container class="md-block">
                         <md-icon md-font-icon="fa fa-picture-o"></md-icon>
@@ -31,6 +32,8 @@
                                     <div ng-message="maxsize">The size maximun is 1025KB</div>
                                     <div ng-message="accept">Not a valid image</div>
                                 </div>
+                                <small ng-show="userAvatar" class="red-text pointer"
+                                       ng-click="removeAvatar(registerForm)"><u>Remove avatar</u></small>
                             </md-input-container>
                         </div>
                         <input id="userAvatarPicker" aria-label="Image picker" name="userAvatar" ng-hide="true" ng-model="userAvatar" type="file"
@@ -79,7 +82,7 @@
                             <div ng-message="match">The password confirmation do not match.</div>
                         </div>
                     </md-input-container>
-                    <md-input-container class="md-block">
+                    <md-input-container class="md-block" ng-if="false">
                         <md-checkbox ng-model="user.type">
                             Become a trainer.
                         </md-checkbox>

@@ -7,6 +7,7 @@
         total: 0
 
     $scope.updateLocationSearch = false
+    $scope.searchStr = $location.search().q || ""
 
     $scope.waitingResponses = []
     Contact.getWaitingResponses().then (resp) ->
@@ -22,12 +23,17 @@
             else $scope.updateLocationSearch = true
         , (resp) ->
             mdToast.showSimple resp.data.Message, "danger"
-    $scope.getContacts()
+    if $scope.searchStr.length
+        $scope.search($scope.searchStr)
+    else
+        $scope.getContacts()
 
     $scope.search = (searchStr) ->
+        $scope.searchStr = searchStr
+        $location.search('q', searchStr)
         if searchStr.length
             $scope.query.page = 1
-            Contact.search($scope.searchStr, $scope.query).then (resp) ->
+            Contact.search(searchStr, $scope.query).then (resp) ->
                 $scope.contacts = resp.data.Data.Result
                 $scope.query.total = resp.data.Data.Count
                 $scope.showResults = $scope.searchStr
@@ -94,7 +100,7 @@
         mdDialog.showConfirm($event, "Delete contact", "Are you sure?")
         .then ->
             Contact.delete(contact.Username).then (resp) ->
-                contact.IsFriend = false
+                $scope.contacts.remove(contact)
                 mdToast.showSimple resp.data.Message, "success"
             , (resp) ->
                 mdToast.showSimple resp.data.Message, "danger"
@@ -111,60 +117,4 @@
     $scope.showWaiting = ($event, waitingResponses) ->
         if waitingResponses.length
             mdDialog.showFriendRequests($event, waitingResponses, true).then ->
-                $scope.getContacts()
-            
-        
-.controller "ContactAddCtrl", ($scope, AppCfg, Contact, mdDialog, mdToast) ->
-    $scope.showResults = false
-
-    $scope.query =
-        limit: AppCfg.defaultLimit
-        limitOptions: AppCfg.defaultLimitOptions
-        page: 1
-        total: 0
-
-    $scope.search = (form) ->
-        if form.$valid
-            Contact.search($scope.searchStr, $scope.query).then (resp) ->
-                $scope.results = resp.data.Data.Result
-                $scope.query.total = resp.data.Data.Count
-                $scope.showResults = $scope.searchStr
-
-    $scope.queryResults = ->
-        Contact.search($scope.showResults, $scope.query).then (resp) ->
-                $scope.results = resp.data.Data.Result
-                $scope.query.total = resp.data.Data.Count
-        , (resp) ->
-            mdToast.showSimple resp.data.Message, "danger"
-
-    $scope.accept = (contact) ->
-        if contact.IsWaitingAccept && !contact.IsFriend
-            Contact.accept(contact.Username).then (resp) ->
-                contact.IsFriend = true
-                contact.IsWaitingAccept == false
-                mdToast.showSimple resp.data.Message, "success"
-            , (resp) ->
-                mdToast.showSimple resp.data.Message, "danger"
-
-    $scope.decline = (contact) ->
-        if contact.IsWaitingAccept && !contact.IsFriend
-            Contact.delete(contact.Username).then (resp) ->
-                contact.IsWaitingAccept == false
-                mdToast.showSimple resp.data.Message, "success"
-            , (resp) ->
-                mdToast.showSimple resp.data.Message, "danger"
-
-    $scope.add = ($event, contact) ->
-        if contact.IsWaitingResponse
-            mdToast.showSimple "You has already sent a request for this contact.", "danger"
-        else if contact.IsWaitingAccept
-            mdToast.showSimple "The contact has already sent you a request.", "dander"
-        else
-            mdDialog.showConfirm($event, "Add contact", "Are you sure?", "primary")
-            .then ->
-                Contact.request(contact.Username).then (resp) ->
-                    contact.IsWaitingResponse = true
-                    mdToast.showSimple resp.data.Message, "success"
-                , (resp) ->
-                    mdToast.showSimple resp.data.Message, "danger"
-        
+                $scope.getContacts()        

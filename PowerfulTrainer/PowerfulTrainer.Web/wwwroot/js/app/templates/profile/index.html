@@ -1,0 +1,102 @@
+﻿<md-toolbar class="blue darken-3" md-whiteframe="2">
+    <div class="md-toolbar-tools">
+        <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle"
+                   ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
+            <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
+        </md-button>
+        <h2>
+            <b>{{user.Name||user.Username}}</b>
+        </h2>
+    </div>
+</md-toolbar>
+<div layout="column" layout-align="center center" layout-fill>
+    <md-card>
+        <md-progress-linear ng-if="progressing" md-mode="indeterminate"></md-progress-linear>
+        <md-card-content>
+            <form layout="column" layout-gt-sm="row" name="profileForm" ng-submit="update(profileForm)">
+                <div flex layout-padding layout="column">
+                    <md-input-container layout-align="center center" layout="row">
+                        <img ng-if="user.Avatar" src="../images/avatar-default.png" data-ng-src="{{user.Avatar}}"
+                             class="md-avatar md-circle" width="160" height="160" />
+                        <img ng-if="!user.Avatar" src="../images/avatar-default.png" class="md-avatar md-circle" width="160" height="160" />
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <md-icon md-font-icon="fa fa-picture-o"></md-icon>
+                        <div layout="row" style="height:20px">
+                            <md-button class="md-primary md-mini md-raised" ng-click="showUserAvatarPicker(profileForm)"
+                                       style="margin-top:-4px" aria-label="Choose a avatar image">Choose</md-button>
+                            <md-input-container class="md-block" style="margin:0">
+                                <label>Avatar</label>
+                                <input type="text" ng-model="userAvatar.filename" ng-disabled="true" />
+                                <div ng-messages="profileForm.userAvatar.$error" md-auto-hide="false">
+                                    <div ng-message="maxsize">The size maximun is 1025KB</div>
+                                    <div ng-message="accept">Not a valid image</div>
+                                </div>
+                                <small ng-show="user.Avatar" class="red-text pointer"
+                                       ng-click="removeAvatar(profileForm)"><u>Remove avatar</u></small>
+                            </md-input-container>
+                        </div>
+                        <input id="userAvatarPicker" aria-label="Image picker" name="userAvatar" ng-hide="true" ng-model="userAvatar" type="file"
+                               maxsize="1024" accept="image/*" base-sixty-four-input on-after-validate="setUserAvatar" />
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <md-icon md-font-icon="fa fa-user-md"></md-icon>
+                        <input name="name" ng-model="user.Name" type="text" placeholder="Full name" maxlength="40" />
+                        <div ng-messages="profileForm.name.$error">
+                            <div ng-message="maxlength">The name is too long! (max: 40).</div>
+                        </div>
+                    </md-input-container>
+                    <div layout-gt-xs="row">
+                        <md-input-container class="md-block">
+                            <label>Gender</label>
+                            <md-icon md-font-icon="fa fa-venus-mars"></md-icon>
+                            <md-select ng-model="user.Gender">
+                                <md-option ng-repeat="gender in ['Male', 'Female', 'Other'] track by $index" value="{{$index}}">{{gender}}</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <div layout="column">
+                            <mdp-date-picker mdp-open-on-click name="birthday" mdp-placeholder="Birthday (mm/dd/yyyy)"
+                                             mdp-format="MM/DD/YYYY" ng-model="user.Birthday"></mdp-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div flex layout-padding layout="column">
+                    <small><b>Change password</b></small>
+                    <md-input-container class="md-block">
+                        <md-icon md-font-icon="fa fa-user"></md-icon>
+                        <input name="username" ng-model="user.Username" type="text" placeholder="Username" readonly disabled/>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <md-icon md-font-icon="fa fa-key"></md-icon>
+                        <input name="new_password" ng-model="user.new_password" type="password" placeholder="New Password" minlength="8" maxlength="50" />
+                        <small class="grey-text">Leave empty for not change.</small>
+                        <div ng-messages="profileForm.new_password.$error">
+                            <div ng-message-exp="['minlength', 'maxlength']">The new password must be between 8 and 50 characters.</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <md-icon md-font-icon="fa fa-key"></md-icon>
+                        <input name="new_password_confirmation" ng-model="user.new_password_confirmation" type="password" placeholder="Confirm new password" match="user.new_password" />
+                        <div ng-messages="profileForm.new_password_confirmation.$error">
+                            <div ng-message="match">The new password confirmation do not match.</div>
+                        </div>
+                    </md-input-container>
+                    <small><b>Enter current password <span class="red-text">*</span></b></small>
+                    <md-input-container class="md-block">
+                        <md-icon md-font-icon="fa fa-key"></md-icon>
+                        <input name="password" ng-model="user.password" type="password" placeholder="Current Password" required/>
+                        <div ng-messages="profileForm.password.$error">
+                            <div ng-message-exp="['required']">Please enter current your password.</div>
+                        </div>
+                    </md-input-container>
+                    <div layout="row" layout-align="center center">
+                        <md-button type="submit" class="md-fab md-primary" ng-disabled="!isValidForm(profileForm) || progressing"
+                                   title="Update" aria-label="Update" ng-click="update(profileForm)">
+                            <md-icon md-font-icon="fa fa-check fa-15x"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </form>
+        </md-card-content>
+    </md-card>
+</div>

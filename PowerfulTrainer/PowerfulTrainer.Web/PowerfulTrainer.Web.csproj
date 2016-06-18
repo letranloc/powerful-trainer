@@ -168,7 +168,6 @@
     <Content Include="wwwroot\js\app\shared\shared.coffee" />
     <Content Include="wwwroot\js\app\templates\auth\login.html" />
     <Content Include="wwwroot\js\app\templates\auth\register.html" />
-    <Content Include="wwwroot\js\app\templates\contact\add.html" />
     <Content Include="wwwroot\js\app\templates\contact\index.html" />
     <Content Include="wwwroot\js\app\templates\dashboard\index.html" />
     <Content Include="wwwroot\js\app\templates\dialog\confirm.html" />
@@ -190,6 +189,7 @@
     <Content Include="wwwroot\js\app\templates\layout\header.html" />
     <Content Include="wwwroot\js\app\templates\layout\sidenav.html" />
     <Content Include="wwwroot\js\app\templates\layout\toolbar.html" />
+    <Content Include="wwwroot\js\app\templates\profile\index.html" />
     <Content Include="wwwroot\js\app\templates\report\workout.html" />
     <Content Include="wwwroot\js\app\templates\report\health.html" />
     <Content Include="wwwroot\js\commons.coffee" />
@@ -230,6 +230,9 @@
     <Content Include="wwwroot\js\app\resources\exercise.coffee" />
     <Content Include="wwwroot\js\app\templates\dialog\edit-rest-between-sets.html" />
     <Content Include="wwwroot\js\app\directives\focus-me.coffee" />
+    <Content Include="wwwroot\scss\contact.scss" />
+    <Content Include="wwwroot\js\app\controllers\profile.coffee" />
+    <Content Include="wwwroot\scss\profile.scss" />
     <None Include="wwwroot\_references.js" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
             <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
                 <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
             </md-button>
-            <div layout-align="start center" ng-show="toggleSearch" style="height:100%">
+            <div layout-align="start center" ng-show="toggleSearch" class="fix-search">
                 <div style="display:inline-flex">
                     <md-input-container md-theme="default-yellow-dark" md-no-float>
                         <input id="searchBox" type="text" ng-model="searchStr" ng-change="search(searchStr)"
@@ -13,12 +13,11 @@
                 </div>
             </div>
             <h3 class="md-title" ng-hide="toggleSearch">Contacts ({{contacts.length || 0}})</h3>
-            <md-button class="md-icon-button" aria-label="Search" ng-click="toggleSearch=!toggleSearch" 
-                       ng-class="{'md-accent': toggleSearch}">
+            <md-button class="md-icon-button" aria-label="Search" ng-click="toggleSearch=!toggleSearch">
                 <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
                     Search
                 </md-tooltip>
-                <md-icon md-font-icon="fa fa-search fa-15x"></md-icon>
+                <md-icon md-font-icon="fa fa-search fa-15x" ng-class="{'amber-text': toggleSearch}"></md-icon>
             </md-button>
             <span flex></span>
             <md-chips style="display:inline-table">
@@ -48,7 +47,7 @@
         </div>
     </md-toolbar>
     <md-content flex>
-        <div layout="row" layout-align="center center" ng-show="contacts.length==0">
+        <div layout="row" layout-align="center center" ng-show="contacts.length==0&&!searchStr.length">
             <h3>Oops...You don't have any contacts.</h3>
         </div>
         <md-list ng-hide="searchStr.length">
