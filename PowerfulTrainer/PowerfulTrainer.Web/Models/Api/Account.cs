@@ -8,6 +8,12 @@ namespace PowerfulTrainer.Web.Models.Api
     public class RegisterReq:UpdateAccountReq
     {
         public string Username;
+        public string Name;
+        public short? Gender;
+        public short? Type;
+        public DateTime? Birthday;
+        public string Avatar;
+        public string Password;
     }
 
     public class UpdateAccountReq
@@ -18,6 +24,7 @@ namespace PowerfulTrainer.Web.Models.Api
         public DateTime? Birthday;
         public string Avatar;
         public string Password;
+        public string CurrentPassword;
     }
 
     public class LoginReq

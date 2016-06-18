@@ -39,6 +39,10 @@ namespace PowerfulTrainer.Web.Controllers.Api
         {
             try
             {
+                if(Req.CurrentPassword==null || AccountController.MD5(Req.CurrentPassword)!=CurrentAccount.Password)
+                {
+                    return ErrorResult(1, "Current password is incorrect");
+                }
                 if (Req.Name != null)
                 {
                     CurrentAccount.Name = Req.Name;
