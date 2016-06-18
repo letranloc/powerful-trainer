@@ -15,7 +15,7 @@
                     <input type="text" ng-model="name" name="search" placeholder="Search..." ng-change="exercises.refresh()" />
                     <u class="blue-text pointer" ng-click="showAdvanced=!showAdvanced"><small>{{showAdvanced?'Hide':'Show'}} advanced</small></u>
                 </md-input-container>
-                <div flex-gt-sm="20" layout-gt-sm="row" style="margin-top:-23px" ng-show="showAdvanced">
+                <div flex-gt-sm="20" layout-gt-sm="row" style="margin-top:-23px;max-height:70px" ng-show="showAdvanced">
                     <md-input-container class="md-block">
                         <md-select placeholder="Level" ng-model="level" md-on-open="loadLevels()" style="min-width: 200px;">
                             <md-option ng-value="lv" ng-repeat="lv in levels">{{lv}}</md-option>

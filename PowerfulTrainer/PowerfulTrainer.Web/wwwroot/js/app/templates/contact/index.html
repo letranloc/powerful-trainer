@@ -12,7 +12,7 @@
                     </md-input-container>
                 </div>
             </div>
-            <h3 ng-hide="toggleSearch">Contacts ({{contacts.length || 0}})</h3>
+            <h3 class="md-title" ng-hide="toggleSearch">Contacts ({{contacts.length || 0}})</h3>
             <md-button class="md-icon-button" aria-label="Search" ng-click="toggleSearch=!toggleSearch" 
                        ng-class="{'md-accent': toggleSearch}">
                 <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
