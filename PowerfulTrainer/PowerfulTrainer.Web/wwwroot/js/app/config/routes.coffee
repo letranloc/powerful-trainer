@@ -92,6 +92,14 @@
         resolve:
             $title: -> "Contacts"
 
+    # Profile
+    .state "cpanel.profile",
+        url: '/profile'
+        templateUrl: "profile/index.html"
+        controller: "ProfileIndexCtrl"
+        resolve:
+            $title: -> "Update profile"
+
 .run ($rootScope, $location) ->
     $rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) ->
         search = $location.search()

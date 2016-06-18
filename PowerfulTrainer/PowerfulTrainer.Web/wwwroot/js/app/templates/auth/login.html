@@ -14,7 +14,7 @@
                 <md-icon md-font-icon="fa fa-plus fa-15x" class="blue-grey-text"></md-icon>
             </md-button>
         </md-card-header>
-        <md-progress-linear ng-show="progressing" md-mode="indeterminate"></md-progress-linear>
+        <md-progress-linear ng-if="progressing" md-mode="indeterminate"></md-progress-linear>
         <md-card-content layout="col" layout-align="center center">
             <form name="loginForm" ng-submit="login(loginForm)">
                 <md-input-container class="md-block">

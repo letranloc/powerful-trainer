@@ -5,7 +5,6 @@
     $scope.user = {}
 
     $scope.showUserAvatarPicker = (form) ->
-        $scope.userAvatar = null
         form.userAvatar.$setValidity("maxsize", true)
         form.userAvatar.$setValidity("accept", true)
         $('#userAvatarPicker').click()

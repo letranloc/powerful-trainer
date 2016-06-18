@@ -1630,6 +1630,9 @@ md-toast.md-danger-toast-theme .md-toast-content {
 .layout-padding-right {
   padding-right: 8px; }
 
+.md-avatar {
+  border-radius: 100%; }
+
 .md-button.md-fab.md-fab-bottom-right {
   top: auto;
   right: 20px;
@@ -13224,8 +13227,9 @@ span.dotted {
   #dashboard md-sidenav md-list md-list-item a, #dashboard md-sidenav md-menu-sidenav md-list-item a {
     margin: inherit; }
   #dashboard md-sidenav md-list md-list-item.active, #dashboard md-sidenav md-menu-sidenav md-list-item.active {
-    background-color: #fafafa;
-    color: #1565C0; }
+    background-color: #fafafa; }
+    #dashboard md-sidenav md-list md-list-item.active, #dashboard md-sidenav md-list md-list-item.active h1, #dashboard md-sidenav md-list md-list-item.active md-icon, #dashboard md-sidenav md-list md-list-item.active .md-list-item-text h3, #dashboard md-sidenav md-list md-list-item.active .md-list-item-text a, #dashboard md-sidenav md-menu-sidenav md-list-item.active, #dashboard md-sidenav md-menu-sidenav md-list-item.active h1, #dashboard md-sidenav md-menu-sidenav md-list-item.active md-icon, #dashboard md-sidenav md-menu-sidenav md-list-item.active .md-list-item-text h3, #dashboard md-sidenav md-menu-sidenav md-list-item.active .md-list-item-text a {
+      color: #1565C0; }
   #dashboard md-sidenav md-list md-list-item.md-2-line.md-small-line, #dashboard md-sidenav md-menu-sidenav md-list-item.md-2-line.md-small-line {
     min-height: inherit; }
   #dashboard md-sidenav md-list md-list-item .md-list-item-text h3, #dashboard md-sidenav md-menu-sidenav md-list-item .md-list-item-text h3 {
@@ -13239,6 +13243,13 @@ span.dotted {
 .plan-list-item ._md-secondary-container {
   display: inline-table;
   margin-right: 15px; }
+
+#profile md-card-content {
+  min-width: 312px; }
+
+@media (min-width: 600px) {
+  #profile {
+    padding: 100px 0 100px 0; } }
 
 /* Have to set height explicity on ui-view 
 to prevent collapsing during animation*/

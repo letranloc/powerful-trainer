@@ -4,4 +4,5 @@
     "controllers.auth"
     "controllers.contact"
     "controllers.report"
+    "controllers.profile"
 ]
