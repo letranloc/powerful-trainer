@@ -1721,6 +1721,12 @@ span.dotted {
   border-bottom: 1px dashed #999;
   text-decoration: none; }
 
+.toolbar-fixed > md-toolbar {
+  position: fixed; }
+
+.toolbar-fixed > md-content {
+  padding-top: 64px; }
+
 @-webkit-keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     -webkit-transform: translateY(0);
