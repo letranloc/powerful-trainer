@@ -135,11 +135,7 @@
     <Content Include="Global.asax" />
     <Content Include="gulpfile.js" />
     <Content Include="Web.config" />
-    <Content Include="wwwroot\css\libs.css" />
-    <Content Include="wwwroot\css\styles.css" />
-    <Content Include="wwwroot\css\styles.min.css" />
     <Content Include="wwwroot\favicon.ico" />
-    <Content Include="wwwroot\fonts\fontawesome-webfont.svg" />
     <Content Include="wwwroot\images\bg-login.jpg" />
     <Content Include="wwwroot\images\logo.png" />
     <Content Include="Models\DataEntity.dbml">
@@ -150,15 +146,9 @@
     <None Include="Properties\PublishProfiles\Aloraha.pubxml" />
     <None Include="Properties\PublishProfiles\D.pubxml" />
     <None Include="Properties\PublishProfiles\PowerfulTrainer.pubxml" />
-    <Content Include="wwwroot\fonts\fontawesome-webfont.eot" />
-    <Content Include="wwwroot\fonts\fontawesome-webfont.ttf" />
-    <Content Include="wwwroot\fonts\fontawesome-webfont.woff" />
-    <Content Include="wwwroot\fonts\fontawesome-webfont.woff2" />
-    <Content Include="wwwroot\fonts\FontAwesome.otf" />
     <Content Include="wwwroot\images\avatar-default.png" />
     <Content Include="wwwroot\images\plan-avatar-default.png" />
     <Content Include="wwwroot\images\rest-exercise-gray.png" />
-    <Content Include="wwwroot\js\app.js" />
     <Content Include="wwwroot\js\app\app.coffee" />
     <Content Include="wwwroot\js\app\config\config.coffee" />
     <Content Include="wwwroot\js\app\config\global.coffee" />
@@ -194,8 +184,6 @@
     <Content Include="wwwroot\js\app\templates\report\workout.html" />
     <Content Include="wwwroot\js\app\templates\report\health.html" />
     <Content Include="wwwroot\js\commons.coffee" />
-    <Content Include="wwwroot\js\libs.js" />
-    <Content Include="wwwroot\js\site.min.js" />
     <Content Include="wwwroot\scss\dashboard.scss" />
     <Content Include="wwwroot\scss\_variables.scss" />
     <Content Include="wwwroot\js\app\config\theme.coffee" />
@@ -234,7 +222,6 @@
     <Content Include="wwwroot\js\app\controllers\profile.coffee" />
     <Content Include="wwwroot\scss\profile.scss" />
     <Content Include="wwwroot\js\app\directives\fix-heigth.coffee" />
-    <Content Include="wwwroot\js\app\templates\templates.coffee" />
     <None Include="wwwroot\_references.js" />
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +273,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Default\" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\js\app\header\" />
     <Folder Include="wwwroot\js\app\templates\header\" />
     <Folder Include="wwwroot\js\app\widgets\" />
