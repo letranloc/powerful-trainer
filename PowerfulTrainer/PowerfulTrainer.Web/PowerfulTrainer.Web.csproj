@@ -157,6 +157,7 @@
     <Content Include="wwwroot\fonts\FontAwesome.otf" />
     <Content Include="wwwroot\images\avatar-default.png" />
     <Content Include="wwwroot\images\plan-avatar-default.png" />
+    <Content Include="wwwroot\images\rest-exercise-gray.png" />
     <Content Include="wwwroot\js\app.js" />
     <Content Include="wwwroot\js\app\app.coffee" />
     <Content Include="wwwroot\js\app\config\config.coffee" />
@@ -219,7 +220,6 @@
     <Content Include="wwwroot\js\app\services\cookies.coffee" />
     <Content Include="wwwroot\js\app\directives\app-scroll.coffee" />
     <Content Include="wwwroot\js\app\directives\hide-keyboard-on-touch-outside.coffee" />
-    <Content Include="wwwroot\js\app\templates\templates.coffee" />
     <Content Include="wwwroot\js\app\controllers\contact.coffee" />
     <Content Include="wwwroot\js\app\resources\contact.coffee" />
     <Content Include="wwwroot\js\app\config\notify.coffee" />
@@ -234,6 +234,7 @@
     <Content Include="wwwroot\js\app\controllers\profile.coffee" />
     <Content Include="wwwroot\scss\profile.scss" />
     <Content Include="wwwroot\js\app\directives\fix-heigth.coffee" />
+    <Content Include="wwwroot\js\app\templates\templates.coffee" />
     <None Include="wwwroot\_references.js" />
   </ItemGroup>
   <ItemGroup>

@@ -124,6 +124,10 @@
                 templateUrl: 'dialog/exercises-dialog.html'
                 controller: ($rootScope, $scope, AppCfg, Exercise) ->
                     $scope.selected = []
+                    $scope.restItem = 
+                        Name: 'Rest'
+                        Thumbnail: '../images/rest-exercise-gray.png'
+                        IsRestItem: true
                     $scope.getVideoSrc = $rootScope.getVideoSrc
                     $scope.currentItemPre = null;
                     $scope.exercises = 
