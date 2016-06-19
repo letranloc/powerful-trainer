@@ -10,3 +10,12 @@
         margin-right: 15px;
     }
 }
+
+.edit-ex-btn {
+    border: 1px rgba(0, 0, 0, 0.26)  solid;
+    box-shadow: inherit;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.16);
+    }
+}

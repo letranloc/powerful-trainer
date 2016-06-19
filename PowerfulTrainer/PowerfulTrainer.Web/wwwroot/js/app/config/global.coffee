@@ -11,3 +11,4 @@
 
 .run ($rootScope, $mdMedia) ->
     $rootScope.hideTooltipOnXS = $mdMedia('xs')
+    $rootScope.enableScrollShrink = $mdMedia('xs') || $mdMedia('sm')

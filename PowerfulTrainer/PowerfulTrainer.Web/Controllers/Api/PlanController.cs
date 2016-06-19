@@ -31,7 +31,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 DB.SubmitChanges();
                 return SuccessResult(new
                 {
-                    ID = DB.WorkoutPlans.Max(u => u.Id)
+                    Id = DB.WorkoutPlans.Max(u => u.Id)
                 });
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 var Plan = DB.WorkoutPlans.Where(u => u.Id == id && u.Username == CurrentAccount.Username);
                 if (Plan.Count() == 0)
                 {
-                    return ErrorResult(1, "PlanID is not exists");
+                    return ErrorResult(1, "PlanId is not exists");
                 }
                 var CurrentPlan = Plan.First();
                 var OwnerName = "";
@@ -136,7 +136,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 var Plan = DB.WorkoutPlans.Where(u => u.Id == id && u.Username == CurrentAccount.Username);
                 if (Plan.Count() == 0)
                 {
-                    return ErrorResult(1, "PlanID is not exists");
+                    return ErrorResult(1, "PlanId is not exists");
                 }
                 DB.WorkoutPlans.DeleteOnSubmit(Plan.First());
                 DB.SubmitChanges();
@@ -157,7 +157,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 var Plan = DB.WorkoutPlans.Where(u => u.Id == id && u.Username == CurrentAccount.Username);
                 if (Plan.Count() == 0)
                 {
-                    return ErrorResult(1, "PlanID is not exists");
+                    return ErrorResult(1, "PlanId is not exists");
                 }
                 if (Req.Name != null)
                 {
@@ -194,7 +194,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 }
                 if (DB.WorkoutPlans.Count(u => u.Username == CurrentAccount.Username && u.Id == Req.Id) == 0)
                 {
-                    return ErrorResult(2, "PlandID is not exists");
+                    return ErrorResult(2, "PlandId is not exists");
                 }
                 var CountFriend1 = DB.Friends.Count(u => u.Username == CurrentAccount.Username && u.FriendUser == Req.Username && u.IsWaiting == 0);
                 var CountFriend2 = DB.Friends.Count(u => u.FriendUser == CurrentAccount.Username && u.Username == Req.Username && u.IsWaiting == 0);

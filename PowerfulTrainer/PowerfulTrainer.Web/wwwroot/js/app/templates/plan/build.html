@@ -1,112 +1,86 @@
-﻿<div class="toolbar-fixed" layout="column" layout-align="center none" flex>
-    <md-toolbar md-scroll-shrink ng-if="true" md-whiteframe="2" flex>
-        <div class="md-toolbar-tools">
-            <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
-                <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
-            </md-button>
-            <div layout-fill layout-align="start center">
-                <div style="display:inline-flex">
-                    <span style="height:52px">
-                        <image src="../images/plan-avatar-default.png" data-ng-src="{{plan.Image}}" class="md-avatar"
-                               width="40" height="40" ng-click="showPlanImagePicker()" style="margin:12px 5px 0 0" />
-                        <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                            Click to change
-                        </md-tooltip>
-                    </span>
-                    <input type="file" id="planImagePicker" ng-model="planImage" maxsize="1024"
-                           base-sixty-four-input ng-hide="true" accept="image/*" on-after-validate="setPlanImage" />
-                    <md-input-container md-no-float class="md-icon-right" md-theme="default-yellow-dark" style="padding-left:0">
-                        <input name="plan_name" ng-model="plan.Name" placeholder="Plan name" required minlegth="3" />
-                        <md-icon md-font-icon="fa fa-pencil"></md-icon>
-                    </md-input-container>
-                </div>
-            </div>
-            <span flex></span>
-            <md-button class="md-icon-button md-mini" aria-label="Add event" ng-click="addExercise($event)">
-                <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                    Add event
-                </md-tooltip>
-                <md-icon md-font-icon="fa fa-plus fa-15x"></md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
-    <md-content flex>
-        <md-toolbar class="md-table-toolbar alternate blue lighten-5 blue-text" ng-show="selected.length">
-            <div class="md-toolbar-tools">
-                <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
-                <span flex></span>
-                <md-button class="md-icon-button md-mini md-accent" aria-label="Remove exercises"
-                           ng-click="removeEx()">
+﻿<md-toolbar md-scroll-shrink="enableScrollShrink" ng-if="true" md-whiteframe="2" ng-hide="selected.length">
+    <div class="md-toolbar-tools">
+        <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
+            <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
+        </md-button>
+        <div layout-fill layout-align="start center">
+            <div style="display:inline-flex">
+                <span style="height:52px">
+                    <image src="../images/plan-avatar-default.png" data-ng-src="{{plan.Image}}" class="md-avatar"
+                           width="40" height="40" ng-click="showPlanImagePicker()" style="margin:12px 5px 0 0" />
                     <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                        Remove exercises
+                        Click to change
                     </md-tooltip>
-                    <md-icon md-font-icon="fa fa-trash fa-15x"></md-icon>
-                </md-button>
+                </span>
+                <input type="file" id="planImagePicker" ng-model="planImage" maxsize="1024"
+                       base-sixty-four-input ng-hide="true" accept="image/*" on-after-validate="setPlanImage" />
+                <md-input-container md-no-float class="md-icon-right" md-theme="default-yellow-dark" style="padding-left:0">
+                    <input name="plan_name" ng-model="plan.Name" placeholder="Plan name" required minlegth="3" />
+                    <md-icon md-font-icon="fa fa-pencil"></md-icon>
+                </md-input-container>
             </div>
-        </md-toolbar>
-        <md-table-container style="min-height:500px">
-            <table md-table md-row-select multiple ng-model="selected">
-                <thead md-head>
-                    <tr md-row layou="row">
-                        <th md-column style="min-width:300px"><span>EXERCISE</span></th>
-                        <th md-column><span>SETS</span></th>
-                        <th md-column><span>COMPLETION</span></th>
-                        <th md-column><span>REST BETWEEN SETS</span></th>
-                    </tr>
-                </thead>
-                <tbody md-body ui-sortable ng-model="plan.Data">
-                    <tr md-row md-select="ex" md-auto-select md-select-id="ExerciseId" ng-repeat="ex in plan.Data" ng-mouseenter="showEDelBtn=true" ng-mouseleave="showEDelBtn=false">
-                        <td md-cell ng-click="showExPreview($event, ex)">
-                            <img src="" ng-src="{{ex.Thumbnail}}" class="md-avatar">
-                            {{ex.Name}}
-                        </td>
-                        <td md-cell ng-click="editSets($event, ex)">
-                            <span class="dotted">{{ex.Sets||0}}</span>
-                        </td>
-                        <td md-cell ng-click="editCompletion($event, ex)">
-                            <span class="dotted">{{ex | CompletionFilter}}</span>
-                        </td>
-                        <td md-cell ng-click="editRestTime($event, ex)">
-                            <span class="dotted">{{ex | RestTimeFilter}}</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </md-table-container>
-        <md-card ng-if="false" class="event-model" ng-mouseenter="showEDelBtn=true" ng-mouseleave="showEDelBtn=false" md-whiteframe="2"
-                 ng-repeat="ex in plan.Data">
-            <md-card-header>
-                <md-card-header-text layout="row">
-                    <div ng-click="hideCardContent=!hideCardContent">
-                        <md-button class="md-icon-button" ng-show="hideCardContent" aria-label="Expend">
-                            <md-icon md-font-icon="fa fa-angle-down fa-2x"></md-icon>
-                        </md-button>
-                        <md-button class="md-icon-button" ng-hide="hideCardContent" aria-label="Collapse">
-                            <md-icon md-font-icon="fa fa-angle-up fa-2x"></md-icon>
-                        </md-button>
-                    </div>
-                    <div flex layout="column">
-                        <span class="md-title">{{ex.Name}}</span>
-                    </div>
-                    <md-button class="md-icon-button md-mini md-accent" aria-label="Remove exercise" ng-show="showEDelBtn"
-                               ng-click="plan.Data.remove(ex)">
-                        <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                            Remove exercise
-                        </md-tooltip>
-                        <md-icon md-font-icon="fa fa-trash fa-15x"></md-icon>
-                    </md-button>
-                </md-card-header-text>
-            </md-card-header>
-            <md-divider></md-divider>
-            <md-card-content ng-hide="hideCardContent">
-                
-            </md-card-content>
-        </md-card>
-    </md-content>
-    <md-button class="md-fab md-primary md-fab-bottom-right" aria-label="Save" ng-disabled="plan.Data.length==0 || isSaving" ng-click="save()">
-        <md-tooltip md-theme="default" md-direction="bottom" ng-hide="hideTooltipOnXS">
-            Save
-        </md-tooltip>
-        <md-icon md-font-icon="fa fa-floppy-o fa-2x"></md-icon>
-    </md-button>
-</div>
+        </div>
+        <span flex></span>
+        <md-button class="md-icon-button md-mini" aria-label="Add event" ng-click="addExercise($event)">
+            <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
+                Add event
+            </md-tooltip>
+            <md-icon md-font-icon="fa fa-plus fa-15x"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-toolbar class="md-table-toolbar alternate blue darken-3 white-text" ng-show="selected.length"
+            set-class-when-at-top="fix-to-top">
+    <div class="md-toolbar-tools">
+        <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+        <span flex></span>
+        <md-button class="md-icon-button md-mini md-accent" aria-label="Remove exercises"
+                   ng-click="removeEx($event)">
+            <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
+                Remove exercises
+            </md-tooltip>
+            <md-icon md-font-icon="fa fa-trash fa-15x"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content flex>
+    <md-table-container style="min-height:300px">
+        <table md-table md-row-select multiple ng-model="selected">
+            <thead md-head>
+                <tr md-row layou="row">
+                    <th md-column style="min-width:300px"><span>EXERCISE</span></th>
+                    <th md-column><span>SETS</span></th>
+                    <th md-column><span>COMPLETION</span></th>
+                    <th md-column><span>REST BETWEEN SETS</span></th>
+                    <th md-column></th>
+                </tr>
+            </thead>
+            <tbody md-body ui-sortable ng-model="plan.Data">
+                <tr md-row md-select="ex" md-select-id="ExerciseId" ng-repeat="ex in plan.Data" ng-mouseenter="showEDelBtn=true" ng-mouseleave="showEDelBtn=false">
+                    <td md-cell ng-click="showExPreview($event, ex)">
+                        <img src="" ng-src="{{ex.Thumbnail}}" class="md-avatar">
+                        {{ex.Name}}
+                    </td>
+                    <td md-cell ng-click="editSets($event, ex)">
+                        <span ng-if="!ex.IsRestItem" class="dotted">{{ex.Sets||0}}</span>
+                    </td>
+                    <td md-cell ng-click="editCompletion($event, ex)">
+                        <span class="dotted" ng-class="{error:!ex.Repetitions&&!ex.Duration}">{{ex | CompletionFilter}}</span>
+                    </td>
+                    <td md-cell ng-click="editRestTime($event, ex)">
+                        <span ng-if="ex.Sets>1" class="dotted">{{ex | RestTimeFilter}}</span>
+                    </td>
+                    <td md-cell class="move">
+                        <md-icon md-font-icon="fa fa-arrows-v"></md-icon>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</md-content>
+<md-button class="md-fab md-primary md-fab-bottom-right" aria-label="Save" ng-disabled="plan.Data.length==0 || isSaving" ng-click="save()">
+    <md-tooltip md-theme="default" md-direction="bottom" ng-hide="hideTooltipOnXS">
+        Save
+    </md-tooltip>
+    <md-icon md-font-icon="fa fa-floppy-o fa-2x"></md-icon>
+</md-button>

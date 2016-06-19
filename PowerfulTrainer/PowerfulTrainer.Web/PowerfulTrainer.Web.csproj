@@ -178,6 +178,7 @@
     <Content Include="wwwroot\js\app\templates\directives\input-control\number.html" />
     <Content Include="wwwroot\js\app\templates\directives\input-control\string.html" />
     <Content Include="wwwroot\js\app\templates\directives\input-control\text.html" />
+    <Content Include="wwwroot\js\app\templates\layout\container.html" />
     <Content Include="wwwroot\js\app\templates\plan\build.html" />
     <Content Include="wwwroot\js\app\templates\plan\index.html" />
     <Content Include="wwwroot\js\app\templates\layout\dashboard.html" />
@@ -234,6 +235,8 @@
     <Content Include="wwwroot\fonts\fontawesome-webfont.woff" />
     <Content Include="wwwroot\fonts\fontawesome-webfont.woff2" />
     <Content Include="wwwroot\fonts\FontAwesome.otf" />
+    <Content Include="wwwroot\js\app\directives\set-class-when-at-top.coffee" />
+    <Content Include="wwwroot\js\app\directives\include-replace.coffee" />
     <None Include="wwwroot\_references.js" />
   </ItemGroup>
   <ItemGroup>
