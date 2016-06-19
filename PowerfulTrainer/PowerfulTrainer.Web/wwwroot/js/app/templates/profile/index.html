@@ -15,7 +15,7 @@
             <md-progress-linear ng-if="progressing" md-mode="indeterminate"></md-progress-linear>
             <md-card-content>
                 <form layout="column" layout-gt-sm="row" name="profileForm" ng-submit="update(profileForm)">
-                    <div flex layout-padding layout="column">
+                    <div flex layout="column">
                         <md-input-container layout-align="center center" layout="row">
                             <img ng-if="user.Avatar" src="../images/avatar-default.png" data-ng-src="{{user.Avatar}}"
                                  class="md-avatar md-circle" width="160" height="160" />
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <div flex layout-padding layout="column">
+                    <div flex layout="column">
                         <small><b>Change password</b></small>
                         <md-input-container class="md-block">
                             <md-icon md-font-icon="fa fa-user"></md-icon>
