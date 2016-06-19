@@ -43,13 +43,14 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 {
                     return ErrorResult(1, "Current password is incorrect");
                 }
+                CurrentAccount = DB.Accounts.First(u => u.Username == CurrentAccount.Username);
                 if (Req.Name != null)
                 {
                     CurrentAccount.Name = Req.Name;
                 }
                 if (Req.Password != null)
                 {
-                    CurrentAccount.Password = Req.Password;
+                    CurrentAccount.Password = AccountController.MD5(Req.Password);
                 }
                 if (Req.Type != null)
                 {
