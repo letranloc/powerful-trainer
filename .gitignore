@@ -246,7 +246,6 @@ ModelManifest.xml
 
 **/wwwroot/css
 **/wwwroot/fonts
-**/wwwroot/lib
 **/wwwroot/js/*.js
 **/wwwroot/js/app/templates/templates.coffee
 /PowerfulTrainerCard/.idea
