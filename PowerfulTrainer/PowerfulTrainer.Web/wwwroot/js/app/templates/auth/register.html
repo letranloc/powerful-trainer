@@ -17,8 +17,8 @@
                 <div flex layout-padding layout="column">
                     <md-input-container layout-align="center center" layout="row">
                         <img ng-if="user.avatar" src="../images/avatar-default.png" data-ng-src="{{user.avatar}}"
-                             class="md-avatar" width="160" height="160"/>
-                        <img ng-if="!user.avatar" src="../images/avatar-default.png" class="md-avatar" width="160" height="160" />
+                             class="md-avatar md-circle" width="160" height="160"/>
+                        <img ng-if="!user.avatar" src="../images/avatar-default.png" class="md-avatar md-circle" width="160" height="160" />
                     </md-input-container>
                     <md-input-container class="md-block">
                         <md-icon md-font-icon="fa fa-picture-o"></md-icon>
@@ -55,8 +55,8 @@
                             </md-select>
                         </md-input-container>
                         <div layout="column">
-                            <mdp-date-picker mdp-open-on-click name="birthday" mdp-placeholder="Birthday (mm/dd/yyyy)"
-                                             mdp-format="MM/DD/YYYY" ng-model="user.birthday"></mdp-date-picker>
+                            <mdp-date-picker mdp-open-on-click name="birthday" mdp-placeholder="Birthday (yyyy/mm/dd)"
+                                             mdp-format="YYYY/MM/DD" ng-model="user.birthday"></mdp-date-picker>
                         </div>
                     </div>
                 </div>

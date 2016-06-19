@@ -141,7 +141,7 @@
                                 item.idx = idx if item
                                 return item
                         getLength: -> 
-                            return Math.min(this._items.length + 1, this._query.total)
+                            return Math.min(this._items.length + 5, this._query.total)
                         refresh: ->
                             this._query.page = 1
                             _self = this

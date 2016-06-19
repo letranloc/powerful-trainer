@@ -4,6 +4,7 @@
     'ngStorage'
     'ui.router'
     'ui.router.title'
+    'cfp.loadingBar'
     'ngAnimate'
     'ngMessages'
     'ngMaterial'
