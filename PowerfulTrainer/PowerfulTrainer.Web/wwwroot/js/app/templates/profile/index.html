@@ -69,7 +69,7 @@
                         </md-input-container>
                         <md-input-container class="md-block">
                             <md-icon md-font-icon="fa fa-key"></md-icon>
-                            <input name="new_password" ng-model="user.new_password" type="password" placeholder="New Password" minlength="8" maxlength="50" />
+                            <input name="new_password" ng-model="user.password" type="password" placeholder="New Password" minlength="8" maxlength="50" />
                             <small class="grey-text">Leave empty for not change.</small>
                             <div ng-messages="profileForm.new_password.$error">
                                 <div ng-message-exp="['minlength', 'maxlength']">The new password must be between 8 and 50 characters.</div>
@@ -77,7 +77,7 @@
                         </md-input-container>
                         <md-input-container class="md-block">
                             <md-icon md-font-icon="fa fa-key"></md-icon>
-                            <input name="new_password_confirmation" ng-model="user.new_password_confirmation" type="password" placeholder="Confirm new password" match="user.new_password" />
+                            <input name="new_password_confirmation" ng-model="user.password_confirmation" type="password" placeholder="Confirm new password" match="user.password" />
                             <div ng-messages="profileForm.new_password_confirmation.$error">
                                 <div ng-message="match">The new password confirmation do not match.</div>
                             </div>
@@ -85,7 +85,7 @@
                         <small><b>Enter current password <span class="red-text">*</span></b></small>
                         <md-input-container class="md-block">
                             <md-icon md-font-icon="fa fa-key"></md-icon>
-                            <input name="password" ng-model="user.password" type="password" placeholder="Current Password" required />
+                            <input name="password" ng-model="user.CurrentPassword" type="password" placeholder="Current Password" required />
                             <div ng-messages="profileForm.password.$error">
                                 <div ng-message-exp="['required']">Please enter current your password.</div>
                             </div>

@@ -1723,10 +1723,26 @@ span.dotted {
 
 .toolbar-fixed > md-toolbar {
   position: fixed;
+  top: 0;
   max-width: 1046px; }
 
 .toolbar-fixed > md-content {
   padding-top: 64px; }
+
+#loading-bar .bar {
+  background-color: #fff; }
+  #loading-bar .bar .peg {
+    -moz-box-shadow: #fff 1px 0 6px 1px;
+    -ms-box-shadow: #fff 1px 0 6px 1px;
+    -webkit-box-shadow: #fff 1px 0 6px 1px;
+    box-shadow: #fff 1px 0 6px 1px; }
+
+#loading-bar-spinner {
+  right: 10px;
+  left: inherit; }
+  #loading-bar-spinner .spinner-icon {
+    border-top-color: #fff;
+    border-left-color: #fff; }
 
 @-webkit-keyframes bounce {
   0%, 20%, 50%, 80%, 100% {

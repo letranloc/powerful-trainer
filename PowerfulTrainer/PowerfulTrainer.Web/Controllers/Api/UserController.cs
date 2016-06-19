@@ -68,7 +68,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     CurrentAccount.Avatar = Req.Avatar;
                 }
                 DB.SubmitChanges();
-                return SuccessResult(null);
+                return Validate();
             }
             catch(Exception ex)
             {

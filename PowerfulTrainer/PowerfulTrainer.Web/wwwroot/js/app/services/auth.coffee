@@ -21,6 +21,11 @@
                 headers:
                     Authorization: cookie.AccessToken
 
+        update: (user) ->
+            $http.put AppCfg.apiUrl + "/account", user,
+                headers:
+                   Authorization : _user.AccessToken
+
         isAuthenticated: ->
             if _user
                  _user

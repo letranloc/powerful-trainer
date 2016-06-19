@@ -1,12 +1,10 @@
 ﻿angular.module 'config.loadingBar', []
-.config  ->
-    Pace.options =
-        ajax: 
-            ignoreURLs: ['browserLink']
-        eventLag: false
-.run ($rootScope) ->
+.config  (cfpLoadingBarProvider) ->
+    cfpLoadingBarProvider.includeSpinner = true
+    cfpLoadingBarProvider.includeBar = true
+.run ($rootScope, cfpLoadingBar) ->
     $rootScope.$on '$stateChangeStart', ->
-        Pace.start()
+        cfpLoadingBar.start()
 
-    $rootScope.$$on '$stateNotFound,$stateChangeError,$stateChangeSuccess', ->
-        Pace.stop()
+    $rootScope.$$on '$viewContentLoaded', ->
+        cfpLoadingBar.complete()
