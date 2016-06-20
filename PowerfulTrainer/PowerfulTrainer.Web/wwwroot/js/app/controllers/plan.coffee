@@ -100,8 +100,9 @@
     $scope.validate = (plan) ->
         valid = plan.Data.length > 0
         for ex in plan.Data
+            console.log ex
             break unless valid
-            unless ex.Repetitions && ex.Duration
+            if !ex.Repetitions && !ex.Duration
                 valid = false
         return valid
 
