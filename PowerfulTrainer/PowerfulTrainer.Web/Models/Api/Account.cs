@@ -5,7 +5,7 @@ using System.Web;
 
 namespace PowerfulTrainer.Web.Models.Api
 {
-    public class RegisterReq:UpdateAccountReq
+    public class RegisterReq
     {
         public string Username;
         public string Name;
@@ -25,6 +25,13 @@ namespace PowerfulTrainer.Web.Models.Api
         public string Avatar;
         public string Password;
         public string CurrentPassword;
+    }
+
+    public class UpdateMSAccountReq
+    {
+        public string MSAccessToken;
+        public string MSRefreshToken;
+        public DateTime? MSExpireDate;
     }
 
     public class LoginReq

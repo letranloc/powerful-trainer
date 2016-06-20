@@ -24,7 +24,10 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     Avatar = CurrentAccount.Avatar,
                     AccessToken = CurrentAccount.AccessToken,
                     ExpireDate = CurrentAccount.ExpireDate,
-                    Username = CurrentAccount.Username
+                    Username = CurrentAccount.Username,
+                    MSAccessToken = CurrentAccount.MSAccessToken,
+                    MSRefreshToken = CurrentAccount.MSRefreshToken,
+                    MSExpireDate = CurrentAccount.MSExpireDate,
                 });
             }
             catch (Exception ex)
@@ -34,12 +37,39 @@ namespace PowerfulTrainer.Web.Controllers.Api
         }
 
         [HttpPut]
-        [Route("api/account/")]
-        public object Update(UpdateAccountReq Req)
+        [Route("api/msaccount")]
+        public object UpdateMS([FromBody]UpdateMSAccountReq Req )
         {
             try
             {
-                if(Req.CurrentPassword==null || AccountController.MD5(Req.CurrentPassword)!=CurrentAccount.Password)
+                CurrentAccount = DB.Accounts.First(u => u.Username == CurrentAccount.Username);
+                if (Req.MSAccessToken != null)
+                {
+                    CurrentAccount.MSAccessToken = Req.MSAccessToken;
+                }
+                if (Req.MSRefreshToken != null)
+                {
+                    CurrentAccount.MSRefreshToken = Req.MSRefreshToken;
+                }
+                if (Req.MSExpireDate != null)
+                {
+                    CurrentAccount.MSExpireDate = Req.MSExpireDate;
+                }
+                return SuccessResult(null);
+            }
+            catch(Exception ex)
+            {
+                return FailResult(ex);
+            }
+        }
+
+        [HttpPut]
+        [Route("api/account/")]
+        public object Update([FromBody]UpdateAccountReq Req)
+        {
+            try
+            {
+                if (Req.CurrentPassword==null || AccountController.MD5(Req.CurrentPassword)!=CurrentAccount.Password)
                 {
                     return ErrorResult(1, "Current password is incorrect");
                 }
