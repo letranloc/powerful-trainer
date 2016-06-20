@@ -36,12 +36,20 @@
                     </md-input-container>
                 </div>
             </div>
-            <md-virtual-repeat-container add-height-to-this style="height:250px" md-top-index="topIndex">
+            <div layout="row" layout-align="start center" class="pointer"
+                 style="border-bottom: 1px solid #e4e6e8;">
+                <md-checkbox ng-checked="exists(restItem, selected)" ng-click="toggle(restItem, selected)" aria-label="{{restItem.Name}}"></md-checkbox>
+                <div layout="row" layout-align="start center" ng-click="toggle(restItem, selected)" flex>
+                    <img src="" ng-src="{{restItem.Thumbnail}}" class="md-avatar" width="48" height="48" />
+                    {{restItem.Name}}
+                </div>
+            </div>
+            <md-virtual-repeat-container add-height-to-this style="height:100px" md-top-index="topIndex">
                 <div md-virtual-repeat="ex in exercises" md-on-demand class="repeated-item" flex>
                     <div layout="column">
                         <div layout="row" layout-align="start center" class="pointer">
                             <md-checkbox ng-checked="exists(ex, selected)" ng-click="toggle(ex, selected)" aria-label="{{ex.Name}}"></md-checkbox>
-                            <div layout="row" layout-align="start center" ng-click="showExPreview(ex)">
+                            <div layout="row" layout-align="start center" flex ng-click="showExPreview(ex)">
                                 <img src="" ng-src="{{ex.Thumbnail}}" class="md-avatar" />
                                 {{ex.Name}}
                             </div>

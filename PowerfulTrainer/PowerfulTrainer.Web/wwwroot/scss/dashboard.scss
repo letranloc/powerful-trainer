@@ -94,4 +94,11 @@
             }
         }
     }
+
+    ui-view {
+        > md-content {
+            padding-bottom: 64px;
+            margin-bottom: 32px !important;
+        }
+    }
 }

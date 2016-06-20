@@ -36,7 +36,7 @@
     .state "cpanel.report",
         abstract: true
         url: "/report"
-        template: "<ui-view />"
+        templateUrl: "layout/container.html"
         
     .state "cpanel.report.health",
         url: "/health"
@@ -56,7 +56,7 @@
     .state "cpanel.plan",
         abstract: true
         url: "/plans"
-        template: "<ui-view />"
+        templateUrl: "layout/container.html"
 
     .state "cpanel.plan.index",
         url: ""
@@ -83,7 +83,7 @@
     .state "cpanel.contact",
         abstract: true
         url: "/contacts"
-        template: "<ui-view />"
+        templateUrl: "layout/container.html"
 
     .state "cpanel.contact.index",
         url: ""

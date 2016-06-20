@@ -78,10 +78,12 @@
                 
 
     $scope.showExPreview = ($event, ex) ->
-        mdDialog.showExPreview($event, ex)
+        unless ex.IsRestItem
+            mdDialog.showExPreview($event, ex)
 
     $scope.editSets = ($event, ex) ->
-        mdDialog.showSetEdit($event, ex)
+        unless ex.IsRestItem
+            mdDialog.showSetEdit($event, ex)
             
     $scope.editCompletion = ($event, ex) ->
         mdDialog.showCompletionEdit($event, ex)
@@ -90,14 +92,19 @@
         if ex.Sets > 1
             mdDialog.showRestTimeEdit($event, ex)
 
-    $scope.removeEx = ->
-        mdDialog.showConfirm(evt, "Delete plan", "Are you sure?")
-        .then ->
-            for ex, i in $scope.selected
-                $scope.plan.Data.splice(i, 1)
+    $scope.removeEx = (evt) ->
+        for ex in $scope.selected
+            $scope.plan.Data.remove(ex)
+        $scope.selected = []
 
     $scope.validate = (plan) ->
-        return plan.Data.length > 0
+        valid = plan.Data.length > 0
+        for ex in plan.Data
+            console.log ex
+            break unless valid
+            if !ex.Repetitions && !ex.Duration
+                valid = false
+        return valid
 
     $scope.save = ->
         if $scope.validate($scope.plan)
@@ -118,7 +125,7 @@
                     mdToast.showSimple resp.data.Message, "danger"
                     $scope.isSaving = false
         else
-            mdToast.showSimple "Each plan must have at least one exercise", "danger"
+            mdToast.showSimple "Invalid plan. Please check exercises and try again.", "danger"
 
 .filter "CompletionFilter", ->
     return (input) ->
@@ -132,8 +139,8 @@
             str = ""
             if min > 0
                 if sec > 0 then str = min + " min " + sec + " sec"
-                else str = min + " minutes"
-            else str = sec + " seconds"
+                else str = min + " minute"
+            else str = sec + " second" + (if sec > 1 then 's')
             return str
         else return "Select"
 
@@ -148,7 +155,7 @@
                 str = ""
                 if min > 0
                     if sec > 0 then str = min + " min " + sec + " sec"
-                    else str = min + " minutes"
-                else str = sec + " seconds"
+                    else str = min + " minute"
+                else str = sec + " second" + (if sec > 1 then 's')
                 return str
         else return ""

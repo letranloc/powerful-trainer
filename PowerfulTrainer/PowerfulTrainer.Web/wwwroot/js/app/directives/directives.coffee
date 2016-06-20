@@ -8,4 +8,6 @@ angular.module 'app.directives', [
     'directives.hideKeyboardOnTouchOutside'
     'directives.focusMe'
     'directives.fixHeight'
+    'directives.setClassWhenAtTop'
+    'directives.includeReplace'
 ]

@@ -154,13 +154,9 @@
     <None Include="Properties\PublishProfiles\Aloraha.pubxml" />
     <None Include="Properties\PublishProfiles\D.pubxml" />
     <None Include="Properties\PublishProfiles\PowerfulTrainer.pubxml" />
-    <Content Include="wwwroot\fonts\fontawesome-webfont.eot" />
-    <Content Include="wwwroot\fonts\fontawesome-webfont.ttf" />
-    <Content Include="wwwroot\fonts\fontawesome-webfont.woff" />
-    <Content Include="wwwroot\fonts\fontawesome-webfont.woff2" />
-    <Content Include="wwwroot\fonts\FontAwesome.otf" />
     <Content Include="wwwroot\images\avatar-default.png" />
     <Content Include="wwwroot\images\plan-avatar-default.png" />
+    <Content Include="wwwroot\images\rest-exercise-gray.png" />
     <Content Include="wwwroot\js\app.js" />
     <Content Include="wwwroot\js\app\app.coffee" />
     <Content Include="wwwroot\js\app\config\config.coffee" />
@@ -186,6 +182,7 @@
     <Content Include="wwwroot\js\app\templates\directives\input-control\number.html" />
     <Content Include="wwwroot\js\app\templates\directives\input-control\string.html" />
     <Content Include="wwwroot\js\app\templates\directives\input-control\text.html" />
+    <Content Include="wwwroot\js\app\templates\layout\container.html" />
     <Content Include="wwwroot\js\app\templates\plan\build.html" />
     <Content Include="wwwroot\js\app\templates\plan\index.html" />
     <Content Include="wwwroot\js\app\templates\layout\dashboard.html" />
@@ -223,7 +220,6 @@
     <Content Include="wwwroot\js\app\services\cookies.coffee" />
     <Content Include="wwwroot\js\app\directives\app-scroll.coffee" />
     <Content Include="wwwroot\js\app\directives\hide-keyboard-on-touch-outside.coffee" />
-    <Content Include="wwwroot\js\app\templates\templates.coffee" />
     <Content Include="wwwroot\js\app\controllers\contact.coffee" />
     <Content Include="wwwroot\js\app\resources\contact.coffee" />
     <Content Include="wwwroot\js\app\config\notify.coffee" />
@@ -238,6 +234,13 @@
     <Content Include="wwwroot\js\app\controllers\profile.coffee" />
     <Content Include="wwwroot\scss\profile.scss" />
     <Content Include="wwwroot\js\app\directives\fix-heigth.coffee" />
+    <Content Include="wwwroot\fonts\fontawesome-webfont.eot" />
+    <Content Include="wwwroot\fonts\fontawesome-webfont.ttf" />
+    <Content Include="wwwroot\fonts\fontawesome-webfont.woff" />
+    <Content Include="wwwroot\fonts\fontawesome-webfont.woff2" />
+    <Content Include="wwwroot\fonts\FontAwesome.otf" />
+    <Content Include="wwwroot\js\app\directives\set-class-when-at-top.coffee" />
+    <Content Include="wwwroot\js\app\directives\include-replace.coffee" />
     <None Include="wwwroot\_references.js" />
   </ItemGroup>
   <ItemGroup>

@@ -27,7 +27,7 @@
                     Authorization: Auth.isAuthenticated().AccessToken
 
         update: (plan) ->
-            $http.put AppCfg.apiUrl + "/plans/#{plan.ID}", plan,
+            $http.put AppCfg.apiUrl + "/plans/#{plan.Id}", plan,
                 headers:
                     Authorization: Auth.isAuthenticated().AccessToken
 
@@ -37,7 +37,7 @@
                     Authorization: Auth.isAuthenticated().AccessToken
 
         share: (id, username) ->
-            $http.post AppCfg.apiUrl + "/plans/share", {PlanID: id, Username: username},
+            $http.post AppCfg.apiUrl + "/plans/share", {PlanId: id, Username: username},
                 headers:
                     Authorization: Auth.isAuthenticated().AccessToken
 

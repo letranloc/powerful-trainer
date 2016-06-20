@@ -1,120 +1,118 @@
-﻿<div class="toolbar-fixed" layout="column" layout-align="center none" flex>
-    <md-toolbar md-scroll-shrink ng-if="true" md-whiteframe="2" flex>
-        <div class="md-toolbar-tools">
-            <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
-                <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
-            </md-button>
-            <div layout-align="start center" ng-show="toggleSearch" class="fix-search">
-                <div style="display:inline-flex">
-                    <md-input-container md-theme="default-yellow-dark" md-no-float>
-                        <input id="searchBox" type="text" ng-model="searchStr" ng-change="search(searchStr)"
-                               focus-me="toggleSearch" placeholder="Search..." />
-                    </md-input-container>
-                </div>
+﻿<md-toolbar md-scroll-shrink="enableScrollShrink" ng-if="true" md-whiteframe="2">
+    <div class="md-toolbar-tools">
+        <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
+            <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
+        </md-button>
+        <div layout-align="start center" ng-show="toggleSearch" class="fix-search">
+            <div style="display:inline-flex">
+                <md-input-container md-theme="default-yellow-dark" md-no-float>
+                    <input id="searchBox" type="text" ng-model="searchStr" ng-change="search(searchStr)"
+                           focus-me="toggleSearch" placeholder="Search..." />
+                </md-input-container>
             </div>
-            <h3 class="md-title" ng-hide="toggleSearch">Contacts ({{contacts.length || 0}})</h3>
-            <md-button class="md-icon-button" aria-label="Search" ng-click="toggleSearch=!toggleSearch">
-                <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                    Search
-                </md-tooltip>
-                <md-icon md-font-icon="fa fa-search fa-15x" ng-class="{'amber-text': toggleSearch}"></md-icon>
-            </md-button>
-            <span flex></span>
-            <md-chips style="display:inline-table">
-                <md-chip ng-click="showWaiting($event, waitingResponses)" class="pointer grey lighten-2" ng-class="{'lighten-5': waitingResponses.length}">
-                    <i class="fa fa-signing"></i>
-                    {{waitingResponses.length}}
-                    <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS&&waitingResponses.length">
-                        <span ng-hide="waitingResponses.length">You don't have any waiting response</span>
-                        <span ng-show="waitingResponses.length">You have {{waitingResponses.length}} waiting response{{waitingResponses.length==1?'':'s'}}</span>
-                    </md-tooltip>
-                </md-chip>
-                <md-chip ng-click="showRequests($event, requests)" class="pointer grey  lighten-2" ng-class="{'lighten-5': requests.length}">
-                    <i class="fa fa-user-plus"></i>
-                    {{requests.length}}
-                    <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS&&requests.length">
-                        <span ng-hide="requests.length">You don't have any request</span>
-                        <span ng-show="requests.length">You have {{requests.length}} new request{{requests.length==1?'':'s'}}</span>
-                    </md-tooltip>
-                </md-chip>
-            </md-chips>
-            <md-button ng-if="false" class="md-fab md-mini" aria-label="Add" ui-sref="cpanel.contact.add">
-                <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                    Add contact
-                </md-tooltip>
-                <md-icon md-font-icon="fa fa-plus fa-15x"></md-icon>
-            </md-button>
         </div>
-    </md-toolbar>
-    <md-content flex>
-        <div layout="row" layout-align="center center" ng-show="contacts.length==0&&!searchStr.length">
-            <h3>Oops...You don't have any contacts.</h3>
-        </div>
-        <md-list ng-hide="searchStr.length">
-            <md-list-item md-ink-ripple class="md-2-line" ng-repeat="contact in contacts" ng-click="false"
-                          ng-mouseenter="showMenuBtn=true" ng-mouseleave="showMenuBtn=false">
-                <img src="../images/avatar-default.png" data-ng-src="{{contact.Avatar}}" class="md-avatar">
-                <div class="md-list-item-text">
-                    <h3><b>{{contact.Name || contact.Username}}</b></h3>
-                    <p>
-                        {{contact.Username}}
-                        <span ng-show="contact.Type"> (Trainer)</span>
-                    </p>
-                </div>
-                <div class="md-secondary" ng-show="showMenuBtn">
-                    <md-button class="md-fab md-raised md-mini md-accent" aria-label="Unfriend" ng-click="delete($event, contact)">
-                        <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                            Unfriend
-                        </md-tooltip>
-                        <md-icon md-font-icon="fa fa-trash fa-15x"></md-icon>
-                    </md-button>
-                </div>
-                <md-divider ng-if="!$last"></md-divider>
-            </md-list-item>
-        </md-list>
-        <md-list ng-show="searchStr.length">
-            <md-subheader class="md-no-sticky">Search for "{{showResults}}": {{query.total}} result{{query.total<=1?'':'s'}}</md-subheader>
-            <md-list-item md-ink-ripple class="md-2-line" ng-repeat="contact in contacts">
-                <img src="../images/avatar-default.png" data-ng-src="{{contact.Avatar}}" class="md-avatar">
-                <div class="md-list-item-text">
-                    <h3>
-                        <b>{{contact.Name || contact.Username}}</b>
-                        <small ng-show="contact.IsWaitingResponse">
-                            you have sent add friend request
-                        </small>
-                        <small ng-show="contact.IsWaitingAccept">
-                            ask you to be friend
-                        </small>
-                    </h3>
-                    <p>
-                        {{contact.Username}}
-                        <span ng-show="contact.Type"> (Trainer)</span>
-                    </p>
-                </div>
-                <div class="md-secondary" layout="row">
-                    <md-chips>
-                        <md-chip class="pointer" ng-show="contact.IsWaitingResponse" ng-click="cancel($event, contact)">
-                            Cancel request
-                        </md-chip>
-                        <md-chip class="pointer" ng-show="contact.IsWaitingAccept" ng-click="accept(contact)">
-                            Accept
-                        </md-chip>
-                        <md-chip class="pointer" ng-show="contact.IsWaitingAccept" ng-click="decline(contact)">
-                            Decline
-                        </md-chip>
-                        <md-chip class="pointer" ng-show="contact.IsFriend" ng-click="delete($event, contact)">
-                            Unfriend
-                        </md-chip>
-                        <md-chip class="pointer teal white-text" ng-show="!contact.IsWaitingResponse&&!contact.IsWaitingAccept&&!contact.IsFriend"
-                                 ng-click="add($event, contact)">
-                            Add friend
-                        </md-chip>
-                    </md-chips>
-                </div>
-                <md-divider ng-if="!$last"></md-divider>
-            </md-list-item>
-        </md-list>
-        <md-table-pagination ng-hide="query.total<=query.limit" md-limit="query.limit" md-limit-options="query.limitOptions" md-page="query.page" md-label="{page: 'Page:', rowsPerPage: 'Per page:', of: 'of'}"
-                             md-total="{{query.total}}" md-on-paginate="queryResults" md-page-select></md-table-pagination>
-    </md-content>
-</div>
+        <h3 class="md-title" ng-hide="toggleSearch">Contacts ({{contacts.length || 0}})</h3>
+        <md-button class="md-icon-button" aria-label="Search" ng-click="toggleSearch=!toggleSearch">
+            <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
+                Search
+            </md-tooltip>
+            <md-icon md-font-icon="fa fa-search fa-15x" ng-class="{'amber-text': toggleSearch}"></md-icon>
+        </md-button>
+        <span flex></span>
+        <md-chips style="display:inline-table">
+            <md-chip ng-click="showWaiting($event, waitingResponses)" class="pointer grey lighten-2" ng-class="{'lighten-5': waitingResponses.length}">
+                <i class="fa fa-signing"></i>
+                {{waitingResponses.length}}
+                <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS&&waitingResponses.length">
+                    <span ng-hide="waitingResponses.length">You don't have any waiting response</span>
+                    <span ng-show="waitingResponses.length">You have {{waitingResponses.length}} waiting response{{waitingResponses.length==1?'':'s'}}</span>
+                </md-tooltip>
+            </md-chip>
+            <md-chip ng-click="showRequests($event, requests)" class="pointer grey  lighten-2" ng-class="{'lighten-5': requests.length}">
+                <i class="fa fa-user-plus"></i>
+                {{requests.length}}
+                <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS&&requests.length">
+                    <span ng-hide="requests.length">You don't have any request</span>
+                    <span ng-show="requests.length">You have {{requests.length}} new request{{requests.length==1?'':'s'}}</span>
+                </md-tooltip>
+            </md-chip>
+        </md-chips>
+        <md-button ng-if="false" class="md-fab md-mini" aria-label="Add" ui-sref="cpanel.contact.add">
+            <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
+                Add contact
+            </md-tooltip>
+            <md-icon md-font-icon="fa fa-plus fa-15x"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content flex>
+    <div layout="row" layout-align="center center" ng-show="contacts.length==0&&!searchStr.length">
+        <h3>Oops...You don't have any contacts.</h3>
+    </div>
+    <md-list ng-hide="searchStr.length">
+        <md-list-item md-ink-ripple class="md-2-line" ng-repeat="contact in contacts" ng-click="false"
+                      ng-mouseenter="showMenuBtn=true" ng-mouseleave="showMenuBtn=false">
+            <img src="../images/avatar-default.png" data-ng-src="{{contact.Avatar}}" class="md-avatar">
+            <div class="md-list-item-text">
+                <h3><b>{{contact.Name || contact.Username}}</b></h3>
+                <p>
+                    {{contact.Username}}
+                    <span ng-show="contact.Type"> (Trainer)</span>
+                </p>
+            </div>
+            <div class="md-secondary" ng-show="showMenuBtn">
+                <md-button class="md-fab md-raised md-mini md-accent" aria-label="Unfriend" ng-click="delete($event, contact)">
+                    <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
+                        Unfriend
+                    </md-tooltip>
+                    <md-icon md-font-icon="fa fa-trash fa-15x"></md-icon>
+                </md-button>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+    </md-list>
+    <md-list ng-show="searchStr.length">
+        <md-subheader class="md-no-sticky">Search for "{{showResults}}": {{query.total}} result{{query.total<=1?'':'s'}}</md-subheader>
+        <md-list-item md-ink-ripple class="md-2-line" ng-repeat="contact in contacts">
+            <img src="../images/avatar-default.png" data-ng-src="{{contact.Avatar}}" class="md-avatar">
+            <div class="md-list-item-text">
+                <h3>
+                    <b>{{contact.Name || contact.Username}}</b>
+                    <small ng-show="contact.IsWaitingResponse">
+                        you have sent add friend request
+                    </small>
+                    <small ng-show="contact.IsWaitingAccept">
+                        ask you to be friend
+                    </small>
+                </h3>
+                <p>
+                    {{contact.Username}}
+                    <span ng-show="contact.Type"> (Trainer)</span>
+                </p>
+            </div>
+            <div class="md-secondary" layout="row">
+                <md-chips>
+                    <md-chip class="pointer" ng-show="contact.IsWaitingResponse" ng-click="cancel($event, contact)">
+                        Cancel request
+                    </md-chip>
+                    <md-chip class="pointer" ng-show="contact.IsWaitingAccept" ng-click="accept(contact)">
+                        Accept
+                    </md-chip>
+                    <md-chip class="pointer" ng-show="contact.IsWaitingAccept" ng-click="decline(contact)">
+                        Decline
+                    </md-chip>
+                    <md-chip class="pointer" ng-show="contact.IsFriend" ng-click="delete($event, contact)">
+                        Unfriend
+                    </md-chip>
+                    <md-chip class="pointer teal white-text" ng-show="!contact.IsWaitingResponse&&!contact.IsWaitingAccept&&!contact.IsFriend"
+                             ng-click="add($event, contact)">
+                        Add friend
+                    </md-chip>
+                </md-chips>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+    </md-list>
+    <md-table-pagination ng-hide="query.total<=query.limit" md-limit="query.limit" md-limit-options="query.limitOptions" md-page="query.page" md-label="{page: 'Page:', rowsPerPage: 'Per page:', of: 'of'}"
+                         md-total="{{query.total}}" md-on-paginate="queryResults" md-page-select></md-table-pagination>
+</md-content>

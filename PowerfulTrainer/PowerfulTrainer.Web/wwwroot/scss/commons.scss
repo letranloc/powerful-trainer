@@ -12,6 +12,10 @@ body {
     font-size: 1.5em;
 }
 
+.center {
+    text-align: center;
+}
+
 md-toast {
 
     &.md-info-toast-theme {
@@ -85,6 +89,10 @@ md-chips .md-chips {
 
 .pointer {
     cursor: pointer !important;
+}
+
+.move {
+    cursor: move !important;
 }
 
 .input-advanced.hint {
@@ -174,12 +182,21 @@ mdp-date-picker, mdp-time-picker {
 span.dotted {
     border-bottom: 1px dashed #999;
     text-decoration: none;
+    padding: 5px 20px;
+
+    &.error {
+        border-bottom-color: #F44336;
+    }
+}
+
+.fix-to-top {
+  position: fixed;
+  top: 0;
 }
 
 .toolbar-fixed {
     > md-toolbar {
-        position: fixed;
-        top: 0;
+        @extend .fix-to-top;
         max-width: 1046px;
     }
 

@@ -1,89 +1,87 @@
-﻿<div class="toolbar-fixed" layout="column" layout-align="center none" flex>
-    <md-toolbar md-scroll-shrink ng-if="true" md-whiteframe="2" flex>
-        <div class="md-toolbar-tools">
-            <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
-                <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
-            </md-button>
-            <h3>
-                <span>Workout Plans</span>
-            </h3>
-            <span flex></span>
-            <md-button ng-if="false" class="md-fab md-mini" aria-label="Add" ui-sref="cpanel.plan.create">
-                <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                    Add workout plan
-                </md-tooltip>
-                <md-icon md-font-icon="fa fa-plus fa-15x"></md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
-    <md-content flex>
-        <div layout="row" layout-align="center center" ng-show="plans.length==0">
-            <h3>Oops...You don't have any workout plans.</h3>
-        </div>
-        <md-list>
-            <md-list-item md-ink-ripple class="md-3-line plan-list-item" ng-repeat="plan in plans" ng-click="false"
-                          ng-mouseenter="showMenuBtn=true" ng-mouseleave="showMenuBtn=false">
-                <img src="../images/plan-avatar-default.png" data-ng-src="{{plan.Image}}" class="md-avatar">
-                <div class="md-list-item-text">
-                    <h3><b>{{plan.Name}}</b></h3>
-                    <h4>{{plan.OwnerName}}</h4>
-                    <p>
-                        {{plan.UpdateDate | date: 'medium'}}
-                    </p>
-                </div>
-                <div class="md-secondary" ng-show="showMenuBtn" style="min-width:105px">
-                    <md-button class="md-fab md-raised md-mini md-primary" aria-label="Edit" ui-sref="cpanel.plan.edit({id: plan.Id})">
+﻿<md-toolbar md-scroll-shrink="enableScrollShrink" ng-if="true" md-whiteframe="2">
+    <div class="md-toolbar-tools">
+        <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
+            <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
+        </md-button>
+        <h3>
+            <span>Workout Plans</span>
+        </h3>
+        <span flex></span>
+        <md-button ng-if="false" class="md-fab md-mini" aria-label="Add" ui-sref="cpanel.plan.create">
+            <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
+                Add workout plan
+            </md-tooltip>
+            <md-icon md-font-icon="fa fa-plus fa-15x"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-content flex>
+    <div layout="row" layout-align="center center" ng-show="plans.length==0">
+        <h3>Oops...You don't have any workout plans.</h3>
+    </div>
+    <md-list>
+        <md-list-item md-ink-ripple class="md-3-line plan-list-item" ng-repeat="plan in plans" ng-click="false"
+                      ng-mouseenter="showMenuBtn=true" ng-mouseleave="showMenuBtn=false">
+            <img src="../images/plan-avatar-default.png" data-ng-src="{{plan.Image}}" class="md-avatar">
+            <div class="md-list-item-text">
+                <h3><b>{{plan.Name}}</b></h3>
+                <h4>{{plan.OwnerName}}</h4>
+                <p>
+                    {{plan.UpdateDate | date: 'medium'}}
+                </p>
+            </div>
+            <div class="md-secondary" ng-show="showMenuBtn" style="min-width:105px">
+                <md-button class="md-fab md-raised md-mini md-primary" aria-label="Edit" ui-sref="cpanel.plan.edit({id: plan.Id})">
+                    <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
+                        Edit
+                    </md-tooltip>
+                    <md-icon md-font-icon="fa fa-pencil fa-15x"></md-icon>
+                </md-button>
+                <md-menu>
+                    <md-button class="md-fab md-raised md-mini md-accent" aria-label="More" ng-click="$mdOpenMenu($event)">
                         <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                            Edit
+                            More
                         </md-tooltip>
-                        <md-icon md-font-icon="fa fa-pencil fa-15x"></md-icon>
+                        <md-icon md-font-icon="fa fa-chevron-down fa-15x"></md-icon>
                     </md-button>
-                    <md-menu>
-                        <md-button class="md-fab md-raised md-mini md-accent" aria-label="More" ng-click="$mdOpenMenu($event)">
-                            <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                                More
-                            </md-tooltip>
-                            <md-icon md-font-icon="fa fa-chevron-down fa-15x"></md-icon>
-                        </md-button>
-                        <md-menu-content width="4">
-                            <md-menu-item ng-show="inApp">
-                                <md-button ng-click="startWorkout(plan)" aria-label="Edit">
-                                    <md-icon md-font-icon="fa fa-play fa-15x"></md-icon>
-                                    Start
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button ui-sref="cpanel.plan.edit({id: plan.Id})" aria-label="Edit">
-                                    <md-icon md-font-icon="fa fa-pencil fa-15x"></md-icon>
-                                    Edit
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button ng-click="share($event, plan)" aria-label="Share">
-                                    <md-icon md-font-icon="fa fa-share fa-15x"></md-icon>
-                                    Share
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-divider></md-menu-divider>
-                            <md-menu-item>
-                                <md-button class="red-text" ng-click="delete($event, plan)" aria-label="Delete">
-                                    <md-icon md-font-icon="fa fa-trash fa-15x"></md-icon>
-                                    Delete
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
-                </div>
-                <md-divider ng-if="!$last"></md-divider>
-            </md-list-item>
-        </md-list>
-        <md-table-pagination ng-hide="query.total<=query.limit" md-limit="query.limit" md-limit-options="query.limitOptions" md-page="query.page" md-label="{page: 'Page:', rowsPerPage: 'Per page:', of: 'of'}"
-                             md-total="{{query.total}}" md-on-paginate="getPlans" md-page-select></md-table-pagination>
-    </md-content>
-    <md-button class="md-fab md-fab-bottom-right" aria-label="Add" ui-sref="cpanel.plan.create">
-        <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-            Add workout plan
-        </md-tooltip>
-        <md-icon md-font-icon="fa fa-plus fa-2x"></md-icon>
-    </md-button>
-</div>
+                    <md-menu-content width="4">
+                        <md-menu-item ng-show="inApp">
+                            <md-button ng-click="startWorkout(plan)" aria-label="Edit">
+                                <md-icon md-font-icon="fa fa-play fa-15x"></md-icon>
+                                Start
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ui-sref="cpanel.plan.edit({id: plan.Id})" aria-label="Edit">
+                                <md-icon md-font-icon="fa fa-pencil fa-15x"></md-icon>
+                                Edit
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="share($event, plan)" aria-label="Share">
+                                <md-icon md-font-icon="fa fa-share fa-15x"></md-icon>
+                                Share
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button class="red-text" ng-click="delete($event, plan)" aria-label="Delete">
+                                <md-icon md-font-icon="fa fa-trash fa-15x"></md-icon>
+                                Delete
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+    </md-list>
+    <md-table-pagination ng-hide="query.total<=query.limit" md-limit="query.limit" md-limit-options="query.limitOptions" md-page="query.page" md-label="{page: 'Page:', rowsPerPage: 'Per page:', of: 'of'}"
+                         md-total="{{query.total}}" md-on-paginate="getPlans" md-page-select></md-table-pagination>
+</md-content>
+<md-button class="md-fab md-fab-bottom-right" aria-label="Add" ui-sref="cpanel.plan.create">
+    <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
+        Add workout plan
+    </md-tooltip>
+    <md-icon md-font-icon="fa fa-plus fa-2x"></md-icon>
+</md-button>
