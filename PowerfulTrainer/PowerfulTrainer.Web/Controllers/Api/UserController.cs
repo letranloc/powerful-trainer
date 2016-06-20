@@ -46,7 +46,10 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 if (Req.MSAccessToken != null)
                 {
                     if (Req.MSAccessToken == "")
+                    {
+                        CurrentAccount.MSRefreshToken = null;
                         CurrentAccount.MSAccessToken = null;
+                    }
                     else CurrentAccount.MSAccessToken = Req.MSAccessToken;
                 }
                 if (Req.MSRefreshToken != null)
