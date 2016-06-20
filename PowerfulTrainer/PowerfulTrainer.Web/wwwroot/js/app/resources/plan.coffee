@@ -2,14 +2,10 @@
 .factory "Plan", ($http, AppCfg, Auth)->
     return {
         add: (plan) ->
-            $http.post AppCfg.apiUrl + "/plans", plan, 
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.post AppCfg.apiUrl + "/plans", plan
 
         get: (id) ->
-            $http.get AppCfg.apiUrl + "/plans/#{id}", 
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.get AppCfg.apiUrl + "/plans/#{id}"
 
         getAll: (query)->
             $http
@@ -18,32 +14,20 @@
                 params:
                     size: query.limit
                     page: query.page
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
 
         delete: (id) ->
-            $http.delete AppCfg.apiUrl + "/plans/#{id}",
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.delete AppCfg.apiUrl + "/plans/#{id}"
 
         update: (plan) ->
-            $http.put AppCfg.apiUrl + "/plans/#{plan.Id}", plan,
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.put AppCfg.apiUrl + "/plans/#{plan.Id}", plan
 
         getShare: (id) ->
-            $http.get AppCfg.apiUrl + "/plans/#{id}/share",
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.get AppCfg.apiUrl + "/plans/#{id}/share"
 
         share: (id, username) ->
-            $http.post AppCfg.apiUrl + "/plans/share", {PlanId: id, Username: username},
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.post AppCfg.apiUrl + "/plans/share", {PlanId: id, Username: username}
 
         getNotify: (interval) ->
             interval = if interval then '/' + interval else ""
-            $http.get AppCfg.apiUrl + "/plans/sharenotify#{interval}",
-                headers:
-                        Authorization: Auth.isAuthenticated().AccessToken
+            $http.get AppCfg.apiUrl + "/plans/sharenotify#{interval}"
     }

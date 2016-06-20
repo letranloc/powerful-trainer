@@ -20,6 +20,13 @@
         resolve:
             $title: -> "Register"
 
+    .state 'callback',
+        url: "/auth/:provider/callback"
+        controller: "AuthCallbackCtrl"
+        template: '<small>Redirecting, please waiting...</small>'
+        resolve:
+            $title: -> "Redirecting"
+
     .state "cpanel",
         abstract: true
         url: ""

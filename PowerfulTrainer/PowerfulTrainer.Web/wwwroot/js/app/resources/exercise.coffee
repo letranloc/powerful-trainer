@@ -12,27 +12,13 @@
                     focus: focus
                     page: query.page
                     size: query.limit
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
 
         getLevel: ->
-            $http
-                url: AppCfg.apiUrl + '/exercise/level'
-                method: 'GET'
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.get AppCfg.apiUrl + '/exercise/level'
 
         getFocus: ->
-            $http
-                url: AppCfg.apiUrl + '/exercise/focus'
-                method: 'GET'
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.get AppCfg.apiUrl + '/exercise/focus'
 
         getBodyPart: ->
-            $http
-                url: AppCfg.apiUrl + '/exercise/bodypart'
-                method: 'GET'
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.get AppCfg.apiUrl + '/exercise/bodypart'
     }

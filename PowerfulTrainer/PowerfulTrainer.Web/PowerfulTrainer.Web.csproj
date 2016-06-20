@@ -241,6 +241,7 @@
     <Content Include="wwwroot\fonts\FontAwesome.otf" />
     <Content Include="wwwroot\js\app\directives\set-class-when-at-top.coffee" />
     <Content Include="wwwroot\js\app\directives\include-replace.coffee" />
+    <Content Include="wwwroot\js\app\resources\mshealth.coffee" />
     <None Include="wwwroot\_references.js" />
   </ItemGroup>
   <ItemGroup>

@@ -1,9 +1,11 @@
-﻿using PowerfulTrainer.Web.Models.Api;
+﻿using Newtonsoft.Json.Linq;
+using PowerfulTrainer.Web.Models.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace PowerfulTrainer.Web.Controllers.Api
@@ -25,9 +27,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     AccessToken = CurrentAccount.AccessToken,
                     ExpireDate = CurrentAccount.ExpireDate,
                     Username = CurrentAccount.Username,
-                    MSAccessToken = CurrentAccount.MSAccessToken,
-                    MSRefreshToken = CurrentAccount.MSRefreshToken,
-                    MSExpireDate = CurrentAccount.MSExpireDate,
+                    MSAccessToken = CurrentAccount.MSAccessToken
                 });
             }
             catch (Exception ex)
@@ -45,7 +45,9 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 CurrentAccount = DB.Accounts.First(u => u.Username == CurrentAccount.Username);
                 if (Req.MSAccessToken != null)
                 {
-                    CurrentAccount.MSAccessToken = Req.MSAccessToken;
+                    if (Req.MSAccessToken == "")
+                        CurrentAccount.MSAccessToken = null;
+                    else CurrentAccount.MSAccessToken = Req.MSAccessToken;
                 }
                 if (Req.MSRefreshToken != null)
                 {
@@ -55,6 +57,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 {
                     CurrentAccount.MSExpireDate = Req.MSExpireDate;
                 }
+                DB.SubmitChanges();
                 return SuccessResult(null);
             }
             catch(Exception ex)
@@ -73,7 +76,9 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 {
                     return ErrorResult(1, "Current password is incorrect");
                 }
+
                 CurrentAccount = DB.Accounts.First(u => u.Username == CurrentAccount.Username);
+
                 if (Req.Name != null)
                 {
                     CurrentAccount.Name = Req.Name;
@@ -105,6 +110,47 @@ namespace PowerfulTrainer.Web.Controllers.Api
             {
                 return FailResult(ex);
             }
+        }
+
+        [Route("api/msaccount/validate")]
+        [HttpGet]
+        public object ValidateMSHealth(string code = null)
+        {
+            String tokenUrl = MSTokenUrl.Replace("{client_id}", ClientId)
+                .Replace("{client_secret}", ClientSecret)
+                .Replace("{scope}", Scope)
+                .Replace("{redirect_uri}", HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Host + ":" + HttpContext.Current.Request.Url.Port + "/auth/mshealth/callback");
+            object response = null;
+
+            if (String.IsNullOrWhiteSpace(code))
+            {
+                if (!String.IsNullOrWhiteSpace(CurrentAccount.MSRefreshToken))
+                {
+                    tokenUrl = tokenUrl.Replace("{grant_type}", "refresh_token") + "&refresh_token=" + CurrentAccount.MSRefreshToken;
+                    response = WRequest(tokenUrl, "GET", "");
+                }
+            } else
+            {
+                tokenUrl = tokenUrl.Replace("{grant_type}", "authorization_code") + " &code=" + code;
+                response = WRequest(tokenUrl, "GET", "");
+            }
+
+            if (response != null)
+            {
+                if (response is JObject)
+                {
+                    JObject json = (JObject)response;
+                    CurrentAccount = DB.Accounts.First(u => u.Username == CurrentAccount.Username);
+                    CurrentAccount.MSAccessToken = json.Value<string>("access_token");
+                    CurrentAccount.MSRefreshToken = json.Value<string>("refresh_token");
+                    CurrentAccount.MSExpireDate = DateTime.Now.AddSeconds(json.Value<int>("expires_in"));
+                    DB.SubmitChanges();
+                    return Validate();
+                }
+                else return response;
+            }
+
+            return ErrorResult(1, "Invalid request");
         }
     }
 }

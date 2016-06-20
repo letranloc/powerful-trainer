@@ -57,3 +57,16 @@
     $scope.logout = ->
         Auth.logout()
         mdToast.showSimple "Success", "success"
+
+.controller "AuthCallbackCtrl", ($scope, $location, $window, $state, $stateParams, $sessionStorage, Auth, mdToast) ->
+    code = $location.search().code
+    if code
+        Auth.requestTokenMSHealth(code).then (resp) ->
+            Auth.setUser(resp.data.Data)
+            mdToast.showSimple resp.data.Message, "success"
+        , (resp) ->
+            mdToast.showSimple resp.data.Message, "danger"
+    if $sessionStorage.callback
+        $state.go($sessionStorage.callback)
+    else
+        $state.go('cpanel.index')

@@ -8,8 +8,6 @@
                 params:
                     size: query.limit
                     page: query.page
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
     
         search: (str, query) ->
             $http
@@ -18,32 +16,20 @@
                 params:
                     size: query.limit
                     page: query.page
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
 
         request: (username) ->
-            $http.post AppCfg.apiUrl + "/friends/#{username}", null,
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.post AppCfg.apiUrl + "/friends/#{username}"
 
         getRequests: (interval) ->
             interval = if interval then '/' + interval else ""
-            $http.get AppCfg.apiUrl + "/friends/requests#{interval}",
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.get AppCfg.apiUrl + "/friends/requests#{interval}"
 
         accept: (username) ->
-            $http.post AppCfg.apiUrl + "/friends/accept/#{username}", null,
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.post AppCfg.apiUrl + "/friends/accept/#{username}"
 
         getWaitingResponses: ->
-            $http.get AppCfg.apiUrl + "/friends/waitingresponse",
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.get AppCfg.apiUrl + "/friends/waitingresponse"
 
         delete: (username) ->
-            $http.delete AppCfg.apiUrl + "/friends/#{username}",
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
+            $http.delete AppCfg.apiUrl + "/friends/#{username}"
     }

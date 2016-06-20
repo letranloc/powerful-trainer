@@ -1,5 +1,5 @@
 ﻿angular.module "config.auth", []
-.run ($rootScope, $state, Auth) ->
+.run ($rootScope, $state, $http, Auth) ->
     $rootScope.$on "$stateChangeSuccess", (e) ->
         checkAuthentication() 
 
@@ -9,6 +9,7 @@
     checkAuthentication = ->
         if !Auth.isAuthenticated() && !$state.is("login") && !$state.is("register")
             $state.go("login")
-        else if $state.is("login") || $state.is("register")
-            if Auth.isAuthenticated()
-                $state.go("cpanel.index")       
+        else  if Auth.isAuthenticated()
+            $http.defaults.headers.common.Authorization = Auth.isAuthenticated().AccessToken
+            if $state.is("login") || $state.is("register")
+                $state.go("cpanel.index")
