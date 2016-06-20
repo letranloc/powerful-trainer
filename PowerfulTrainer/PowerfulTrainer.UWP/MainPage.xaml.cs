@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Microsoft.Band;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
+using Windows.Devices.Bluetooth.Rfcomm;
+using Windows.Devices.Enumeration;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System.Display;
@@ -25,34 +29,58 @@ namespace PowerfulTrainer.UWP
             this.InitializeComponent();
             var g_DisplayRequest = new DisplayRequest();
             g_DisplayRequest.RequestActive();
-            RegisterBackground();
-            LoadApplication(new PowerfulTrainer.App());
+            CheckBandTask();
+            //LoadApplication(new PowerfulTrainer.App());
         }
 
-        private async void RegisterBackground()
-        {
-            var taskRegistered = false;
-            var exampleTaskName = "BackgroundTask";
+        static string taskName = "BandTask";
 
-            foreach (var task in BackgroundTaskRegistration.AllTasks)
+        public async void CheckBandTask()
+        {
+            var BGTask = BackgroundTaskRegistration.AllTasks.FirstOrDefault(u => u.Value.Name == taskName).Value;
+            if(BGTask!=null)
             {
-                if (task.Value.Name == exampleTaskName)
+                BGTask.Unregister(false);
+            }
+            await Task.Delay(10000);
+            await RegisterBandDataTask();
+        }
+
+        public static async Task<bool> RegisterBandDataTask()
+        {
+            try
+            {
+                var access = await BackgroundExecutionManager.RequestAccessAsync();
+
+                if ((access == BackgroundAccessStatus.AllowedMayUseActiveRealTimeConnectivity) || (access == BackgroundAccessStatus.AllowedWithAlwaysOnRealTimeConnectivity))
                 {
-                    taskRegistered = true;
-                    break;
+                    var taskBuilder = new BackgroundTaskBuilder { Name = taskName, TaskEntryPoint = "PowerfulTrainer.UWP.BG.BGTask" };
+                    var deviceUseTrigger = new DeviceUseTrigger();
+                    
+                    taskBuilder.SetTrigger(deviceUseTrigger);
+                    taskBuilder.Register();
+                    var bandInfo = (await BandClientManager.Instance.GetBandsAsync()).FirstOrDefault();
+                    var device = (await DeviceInformation.FindAllAsync(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.FromUuid(new Guid("A502CA9A-2BA5-413C-A4E0-13804E47B38F"))))).FirstOrDefault(x => x.Name == bandInfo.Name);
+                    var triggerResult = await deviceUseTrigger.RequestAsync(device.Id);
+                    switch (triggerResult)
+                    {
+                        case DeviceTriggerResult.DeniedByUser:
+                            throw new InvalidOperationException("Cannot start the background task. Access denied by user.");
+                        case DeviceTriggerResult.DeniedBySystem:
+                            throw new InvalidOperationException("Cannot start the background task. Access denied by system.");
+                        case DeviceTriggerResult.LowBattery:
+                            throw new InvalidOperationException("Cannot start the background task. Low battery.");
+                    }
+                    
+                    return true;
                 }
             }
-            if(!taskRegistered)
+            catch (Exception ex)
             {
-                var builder = new BackgroundTaskBuilder();
-
-                builder.Name = exampleTaskName;
-                builder.TaskEntryPoint = "PowerfulTrainer.UWP.Background.BackgroundTask";
-                builder.SetTrigger(new TimeTrigger(15,false));
-                builder.Register();
-               
+                // ToDo 
             }
-           
+
+            return false;
         }
     }
 }

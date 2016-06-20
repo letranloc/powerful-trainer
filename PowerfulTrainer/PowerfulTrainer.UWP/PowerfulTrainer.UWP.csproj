@@ -131,6 +131,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PowerfulTrainer.UWP.BG\PowerfulTrainer.UWP.BG.csproj">
+      <Project>{c68539f7-0225-4f97-81f9-4722b5c34899}</Project>
+      <Name>PowerfulTrainer.UWP.BG</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PowerfulTrainer\PowerfulTrainer.csproj">
       <Name>PowerfulTrainer</Name>
     </ProjectReference>
