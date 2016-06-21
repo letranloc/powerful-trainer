@@ -1,5 +1,5 @@
 ﻿angular.module 'config.loadingBar', []
-.config  (cfpLoadingBarProvider) ->
+.config (cfpLoadingBarProvider) ->
     cfpLoadingBarProvider.includeSpinner = true
     cfpLoadingBarProvider.includeBar = true
 .run ($rootScope, cfpLoadingBar) ->

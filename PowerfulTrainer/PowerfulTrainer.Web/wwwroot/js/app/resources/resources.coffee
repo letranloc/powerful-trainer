@@ -4,4 +4,5 @@
     "resources.eventModel"
     "resources.report"
     "resources.exercise"
+    "resources.mshealth"
 ]

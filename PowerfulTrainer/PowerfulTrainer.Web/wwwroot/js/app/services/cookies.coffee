@@ -11,7 +11,7 @@
         $cookies: -> $cookies
 
         setAccesstoken: (user) ->
-            $cookies.putObject cookies.ACCESS_TOKEN, AccessToken: user.AccessToken,
+            $cookies.putObject cookies.ACCESS_TOKEN, {AccessToken: user.AccessToken, MSAccessToken: user.MSAccessToken},
                         expires: user.ExpireDate
 
         getAccesstoken: -> $cookies.getObject(cookies.ACCESS_TOKEN)

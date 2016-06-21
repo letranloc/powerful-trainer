@@ -227,7 +227,7 @@
             $mdEditDialog.show
                 targetEvent: evt
                 templateUrl: 'dialog/edit-completion.html'
-                controller: ($scope, $element) ->
+                controller: ['$scope', '$element', ($scope, $element) ->
                     $scope.duration = 1
                     $scope.selectedIndex = 0
                     $scope.durationMin = 1
@@ -261,13 +261,14 @@
                             exercise.Duration = "" + ($scope.durationMin*60 + $scope.durationSec)
                         $element.remove()
                         return
+                ]
 
         showRestTimeEdit: (evt, exercise) ->
             evt.stopPropagation()
             $mdEditDialog.show
                 targetEvent: evt
                 templateUrl: 'dialog/edit-rest-between-sets.html'
-                controller: ($scope, $element) ->
+                controller: ['$scope', '$element', ($scope, $element) ->
                     if exercise.Sets < 2 then $scope.cancel()
                     $scope.restTimeChecker = 1
                     $scope.restTimeMin = 1
@@ -288,12 +289,14 @@
                             exercise.RestTime = "" + ($scope.restTimeMin*60 + $scope.restTimeSec)
                         $element.remove()
                         return
+                ]
         
         showExPreview: (evt, exercise) ->
             evt.stopPropagation()
             $mdEditDialog.show
                 targetEvent: evt
-                controller: ($scope) ->
+                controller: ['$scope', '$element', ($scope, $element) ->
                     $scope.exercise = exercise
+                ]
                 templateUrl: 'dialog/exercise-preview.html'
     }
