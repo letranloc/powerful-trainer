@@ -10,4 +10,5 @@ angular.module 'app.directives', [
     'directives.fixHeight'
     'directives.setClassWhenAtTop'
     'directives.includeReplace'
+    'directives.stateCard'
 ]
