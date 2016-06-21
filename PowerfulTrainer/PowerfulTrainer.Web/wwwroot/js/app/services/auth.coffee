@@ -1,5 +1,5 @@
 ﻿angular.module "services.auth", []
-.factory "Auth", ($http, cookies, AppCfg, mdToast) ->
+.factory "Auth", ($http, $window, $location, $state, $sessionStorage, cookies, AppCfg, mdToast) ->
     _user = null
     auth =
         login: (identity) ->
@@ -12,6 +12,23 @@
         register: (user) ->
             $http.post AppCfg.apiUrl + "/account/register", user
 
+        loginMSHealth: ->
+            $sessionStorage.callback = $state.current.name
+            $window.location.href =  AppCfg.apiUrl + "/msaccount/auth?redirectUrl=" + AppCfg.mshealth.redirectUri($location)
+
+        logoutMSHealth: ->
+            $sessionStorage.callback = $location.absUrl()
+            $window.location.href = AppCfg.mshealth.logoutUrl
+                                        .replace("{client_id}", AppCfg.mshealth.clientId)
+                                        .replace("{redirect_uri}", encodeURIComponent(AppCfg.mshealth.redirectUri($location)));
+
+        requestTokenMSHealth: (code) ->
+            $http
+                url: AppCfg.apiUrl + "/msaccount/validate"
+                method: 'GET'
+                params:
+                    code: code
+
         setUser: (u) ->
             _user = u;
             cookies.setAccesstoken(u)
@@ -22,9 +39,10 @@
                     Authorization: cookie.AccessToken
 
         update: (user) ->
-            $http.put AppCfg.apiUrl + "/account", user,
-                headers:
-                   Authorization : _user.AccessToken
+            $http.put AppCfg.apiUrl + "/account", user
+
+        updateMS: (user) ->
+            $http.put AppCfg.apiUrl + "/msaccount", user
 
         isAuthenticated: ->
             if _user

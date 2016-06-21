@@ -31,3 +31,6 @@ app.value "AppCfg",
     requestInterval: 5000
     defaultLimit: 20
     defaultLimitOptions: [20, 30, 50]
+    mshealth:
+        redirectUri: ($location) ->
+            return $location.protocol() + "://" + $location.host() + ":" + $location.port() + "/auth/mshealth/callback"

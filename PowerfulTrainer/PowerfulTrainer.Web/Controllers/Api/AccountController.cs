@@ -88,15 +88,26 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     AccessToken = account.First().AccessToken,
                     Avatar = account.First().Avatar,
                     ExpireDate = account.First().ExpireDate,
-                    MSAccessToken = account.First().MSAccessToken,
-                    MSRefreshToken = account.First().MSRefreshToken,
-                    MSExpireDate = account.First().MSExpireDate,
+                    MSAccessToken = account.First().MSAccessToken
                 });
             }
             catch (Exception ex)
             {
                 return FailResult(ex);
             }
+        }
+
+        [Route("api/msaccount/auth")]
+        [HttpGet]
+        public object AuthMSHealth(string redirectUrl)
+        {
+            String authorizeUrl = MSAuthorizeUrl.Replace("{client_id}", ClientId)
+                .Replace("{scope}", Scope)
+                .Replace("{redirect_uri}", redirectUrl);
+
+            var response = Request.CreateResponse(HttpStatusCode.Moved);
+            response.Headers.Location = new Uri(authorizeUrl);
+            return response;
         }
     }
 }

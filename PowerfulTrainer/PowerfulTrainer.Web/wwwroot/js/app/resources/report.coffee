@@ -9,6 +9,4 @@
                     func: params.func
                     fromTime: params.fromTime
                     toTime: params.toTime
-                headers:
-                    Authorization: Auth.isAuthenticated().AccessToken
     }
