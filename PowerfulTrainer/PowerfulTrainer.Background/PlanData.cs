@@ -20,5 +20,9 @@ namespace PowerfulTrainer.Models
         public string RestTime;
         public bool IsRestItem;
     }
-    public class PlanData : List<PlanItem> { }
+    public class PlanData
+    {
+        public int Id;
+        public List<PlanItem> Data = new List<PlanItem>();
+    }
 }

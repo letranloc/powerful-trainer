@@ -111,6 +111,12 @@
     <Compile Include="BGTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PowerfulTrainer.Background\PowerfulTrainer.Background.csproj">
+      <Project>{7ab02001-54fb-4177-9c45-e3d366d51644}</Project>
+      <Name>PowerfulTrainer.Background</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

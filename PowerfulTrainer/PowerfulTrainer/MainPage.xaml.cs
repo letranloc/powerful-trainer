@@ -3,6 +3,8 @@ using Microsoft.Band.Portable;
 using Microsoft.Band.Portable.Tiles;
 using Microsoft.Band.Portable.Tiles.Pages;
 using Microsoft.Band.Portable.Tiles.Pages.Data;
+using Newtonsoft.Json;
+using PowerfulTrainer.Models;
 using PowerfulTrainer.Shared;
 using System;
 using System.Collections.Generic;
@@ -38,7 +40,9 @@ namespace PowerfulTrainer
             {
                 try
                 {
-                    DependencyService.Get<IFileManagement>().SaveText("data", Value);
+                    var PlanData = JsonConvert.DeserializeObject<PlanData>(Value);
+                    PlanData = OptimizePlanData(PlanData);
+                    DependencyService.Get<IFileManagement>().SaveText("data", JsonConvert.SerializeObject(PlanData));
                     DisplayAlert("Sync success", "Please open tile in Band when start workout", "OK");
                 }
                 catch
@@ -47,11 +51,56 @@ namespace PowerfulTrainer
                 }
             }
         }
+
+        private PlanData OptimizePlanData(PlanData PlanData)
+        {
+            PlanData TmpData = new PlanData();
+            foreach (var Exercise in PlanData.Data)
+            {
+                for (int i = 0; i < Exercise.Sets; i++)
+                {
+                    string ExtraInfo = " (";
+                    if (!String.IsNullOrEmpty(Exercise.Duration))
+                    {
+                        TimeSpan timediff = new TimeSpan(0, 0, int.Parse(Exercise.Duration));
+                        ExtraInfo += timediff.Minutes.ToString("00") + ":" + timediff.Seconds.ToString("00") + ")";
+                    }
+                    else
+                    {
+                        if(Exercise.Repetitions == null || Exercise.Repetitions<1)
+                        {
+                            Exercise.Repetitions = 1;
+                        }
+                        ExtraInfo += Exercise.Repetitions + " rep)";
+                    }
+
+                    TmpData.Data.Add(new PlanItem()
+                    {
+                        Duration = Exercise.Duration,
+                        Repetitions = Exercise.Repetitions,
+                        Name = Exercise.Name + (Exercise.Sets > 1 ? (" Set " + (i + 1) + "/" + Exercise.Sets) : "") + ExtraInfo
+                    });
+                    if (!string.IsNullOrEmpty(Exercise.RestTime) && i < Exercise.Sets - 1)
+                    {
+                        TimeSpan timediff = new TimeSpan(0, 0, int.Parse(Exercise.RestTime));
+                        TmpData.Data.Add(new PlanItem()
+                        {
+                            Duration = Exercise.RestTime,
+                            Name = "Rest (" + timediff.Minutes.ToString("00") + ":" + timediff.Seconds.ToString("00") + ")",
+                            IsRestItem = true
+                        });
+                    }
+                }
+            }
+            return TmpData;
+        }
+
         Guid tileGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
         BandClient BandClient = null;
         private async void CreateBandTitle()
         {
-            var BandInfo = (await BandClientManager.Instance.GetPairedBandsAsync()).FirstOrDefault();            BandClient = await BandClientManager.Instance.ConnectAsync(BandInfo);
+            var BandInfo = (await BandClientManager.Instance.GetPairedBandsAsync()).FirstOrDefault();
+            BandClient = await BandClientManager.Instance.ConnectAsync(BandInfo);
 
             try
             {
@@ -77,42 +126,29 @@ namespace PowerfulTrainer
             {
                 ElementId = 1,
                 Rect = new PageRect(188, 70, 80, 50),
-                PressedColor = new BandColor(0xFF, 0x00, 0x00),
-            });            panel.Elements.Add(new TextBlock
+            });
+
+            panel.Elements.Add(new WrappedTextBlock
             {
                 ElementId = 2,
                 Rect = new PageRect(5, 2, 270, 50),
-                AutoWidth = true
-            });            panel.Elements.Add(new TextBlock
+                AutoHeight = true,
+            });
+
+            panel.Elements.Add(new TextBlock
             {
                 ElementId = 3,
-                Rect = new PageRect(150, 2, 270, 50),
+                Rect = new PageRect(2, 90, 270, 50),
                 AutoWidth = true
-            });            PageLayout layout = new PageLayout(panel);
+            });
+
+            PageLayout layout = new PageLayout(panel);
 
            
             tile.PageLayouts.Add(layout);
             try
             {
                 await BandClient.TileManager.AddTileAsync(tile);
-
-                //Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
-                //PageData pageContent = new PageData()
-                //{
-                //    PageId = pageGuid,
-                //    PageLayoutIndex = 0,
-                //};
-                //pageContent.Data.Add(new TextButtonData()
-                //{
-                //    ElementId = 1,
-                //    Text = "Next"
-                //});
-                //pageContent.Data.Add(new TextBlockData()
-                //{
-                //    ElementId = 2,
-                //    Text = "Exercise"
-                //});
-                //await BandClient.TileManager.SetTilePageDataAsync(tileGuid, pageContent);
                 await BandClient.DisconnectAsync();
             }
             catch { }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Band;
 using Microsoft.Band.Tiles.Pages;
+using Newtonsoft.Json;
 using NotificationsExtensions.Toasts;
+using PowerfulTrainer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ using Windows.ApplicationModel.Background;
 using Windows.Devices.Bluetooth.Rfcomm;
 using Windows.Devices.Enumeration;
 using Windows.Foundation;
+using Windows.Storage;
 using Windows.UI.Notifications;
 
 namespace PowerfulTrainer.UWP.BG
@@ -17,8 +20,9 @@ namespace PowerfulTrainer.UWP.BG
     public sealed class BGTask : IBackgroundTask
     {
         BackgroundTaskDeferral Deferral;
-        DateTime CurrentTime = new DateTime();
         IBandClient BandClient;
+
+        Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
             Deferral = taskInstance.GetDeferral();
@@ -48,47 +52,85 @@ namespace PowerfulTrainer.UWP.BG
             BandClient.SensorManager.Pedometer.ReadingChanged += Pedometer_ReadingChanged;
             await BandClient.SensorManager.Pedometer.StartReadingsAsync();
             await BandClient.TileManager.StartReadingsAsync();
-            
+
         }
 
         private void TileManager_TileClosed(object sender, Microsoft.Band.Tiles.BandTileEventArgs<Microsoft.Band.Tiles.IBandTileClosedEvent> e)
         {
-            if(e.TileEvent.TileId.Equals(tileGuid))
+            if (e.TileEvent.TileId.Equals(tileGuid))
             {
-
+                IsBegin = true;
+                Index = null;
             }
         }
         static DateTime BeginTime = new DateTime();
+        static DateTime BeginExerciseTime = new DateTime();
+        static PlanData PlanData;
+        static bool IsBegin = true;
+        static int? Index = null;
         private async void TileManager_TileOpened(object sender, Microsoft.Band.Tiles.BandTileEventArgs<Microsoft.Band.Tiles.IBandTileOpenedEvent> e)
         {
+            if (!IsBegin)
+            {
+                return;
+            }
+            IsBegin = false;
             if (e.TileEvent.TileId.Equals(tileGuid))
             {
                 BeginTime = DateTime.Now;
-                Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
-
                 var pageContentData = new List<PageElementData>();
-                pageContentData.Add(new TextButtonData(1, "Next"));
-                pageContentData.Add(new TextBlockData(2, "Exercise " ));
+                try
+                {
+                    StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                    StorageFile sampleFile = await storageFolder.GetFileAsync("data");
+                    string text = await FileIO.ReadTextAsync(sampleFile);
+                    PlanData = JsonConvert.DeserializeObject<PlanData>(text);
 
+                    pageContentData.Add(new TextButtonData(1, "Start"));
+                    pageContentData.Add(new WrappedTextBlockData(2, "Welcome to PowerfulTrainer"));
+                }
+                catch (Exception ex)
+                {
+                    pageContentData.Add(new TextButtonData(1, ""));
+                    pageContentData.Add(new WrappedTextBlockData(2, "Please sync workout plan from mobile "));
+                }
                 PageData pageContent = new PageData(pageGuid, 0, pageContentData);
-
-
                 var Result = await BandClient.TileManager.SetPagesAsync(tileGuid, pageContent);
             }
         }
 
-        private async void TileManager_TileButtonPressed(object sender, Microsoft.Band.Tiles.BandTileEventArgs<Microsoft.Band.Tiles.IBandTileButtonPressedEvent> e)
+        private void TileManager_TileButtonPressed(object sender, Microsoft.Band.Tiles.BandTileEventArgs<Microsoft.Band.Tiles.IBandTileButtonPressedEvent> e)
         {
-            Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
+            if (Index == null) { Index = -1; }
+            Index++;
+            BeginExerciseTime = DateTime.Now;
+            SetBandData();
+        }
+        static object LockObj = new object();
+        private void SetBandData()
+        {
+            lock (LockObj)
+            {
+                if (Index != null)
+                {
+                    var pageContentData = new List<PageElementData>();
+                    if (Index < PlanData.Data.Count)
+                    {
+                        pageContentData.Add(new TextButtonData(1, "Next"));
+                        pageContentData.Add(new WrappedTextBlockData(2, PlanData.Data[Index.Value].Name));
+                        var TimeDiff = DateTime.Now - BeginExerciseTime;
+                        pageContentData.Add(new TextBlockData(3, TimeDiff.Minutes.ToString("00") + ":" + TimeDiff.Seconds.ToString("00")));
+                    }
+                    else if (Index == PlanData.Data.Count)
+                    {
+                        pageContentData.Add(new TextButtonData(1, null));
+                        pageContentData.Add(new WrappedTextBlockData(2, "Well done. Have a nice day ^^"));
+                    }
 
-            var pageContentData = new List<PageElementData>();
-            pageContentData.Add(new TextButtonData(1, "Next"));
-            pageContentData.Add(new TextBlockData(2, "Exercise "+(new Random()).Next()));
-
-            PageData pageContent = new PageData(pageGuid, 0, pageContentData);
-
-
-            var Result = await BandClient.TileManager.SetPagesAsync(tileGuid, pageContent);
+                    PageData pageContent = new PageData(pageGuid, 0, pageContentData);
+                    var Result = BandClient.TileManager.SetPagesAsync(tileGuid, pageContent).Result;
+                }
+            }
         }
 
         private async void Pedometer_ReadingChanged(object sender, Microsoft.Band.Sensors.BandSensorReadingEventArgs<Microsoft.Band.Sensors.IBandPedometerReading> e)
@@ -106,17 +148,18 @@ namespace PowerfulTrainer.UWP.BG
             //ToastNotificationManager.CreateToastNotifier().Show(toast);
 
             {
-                Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
-
-                var pageContentData = new List<PageElementData>();
-                pageContentData.Add(new TextButtonData(1, "Next"));
-                pageContentData.Add(new TextBlockData(2, "Exercise "));
-                pageContentData.Add(new TextBlockData(3, (DateTime.Now - BeginTime).TotalSeconds.ToString()));
-                PageData pageContent = new PageData(pageGuid, 0, pageContentData);
 
 
-                var Result = await BandClient.TileManager.SetPagesAsync(tileGuid, pageContent);
+                //var pageContentData = new List<PageElementData>();
+                //pageContentData.Add(new TextButtonData(1, "Next"));
+                //pageContentData.Add(new TextBlockData(2, "Exercise "));
+                //pageContentData.Add(new TextBlockData(3, (DateTime.Now - BeginTime).TotalSeconds.ToString()));
+                //PageData pageContent = new PageData(pageGuid, 0, pageContentData);
+
+
+                //var Result = await BandClient.TileManager.SetPagesAsync(tileGuid, pageContent);
             }
+            SetBandData();
 
         }
     }
