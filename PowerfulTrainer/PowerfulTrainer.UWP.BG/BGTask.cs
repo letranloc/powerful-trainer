@@ -1,4 +1,5 @@
 ﻿using Microsoft.Band;
+using Microsoft.Band.Tiles.Pages;
 using NotificationsExtensions.Toasts;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace PowerfulTrainer.UWP.BG
         {
             return SetupBand().AsAsyncAction();
         }
-
+        Guid tileGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
         private async Task SetupBand()
         {
 
@@ -37,47 +38,86 @@ namespace PowerfulTrainer.UWP.BG
             {
                 BandClient = BandClientManager.Instance.ConnectAsync(BandInfo).Result;
             }
-            catch(Exception EX)
+            catch { }
+            BandClient.TileManager.TileButtonPressed += TileManager_TileButtonPressed;
+            BandClient.TileManager.TileOpened += TileManager_TileOpened;
+            BandClient.TileManager.TileClosed += TileManager_TileClosed;
+            BandClient.SensorManager.HeartRate.GetCurrentUserConsent();
+            BandClient.SensorManager.Pedometer.GetCurrentUserConsent();
+
+            BandClient.SensorManager.Pedometer.ReadingChanged += Pedometer_ReadingChanged;
+            await BandClient.SensorManager.Pedometer.StartReadingsAsync();
+            await BandClient.TileManager.StartReadingsAsync();
+            
+        }
+
+        private void TileManager_TileClosed(object sender, Microsoft.Band.Tiles.BandTileEventArgs<Microsoft.Band.Tiles.IBandTileClosedEvent> e)
+        {
+            if(e.TileEvent.TileId.Equals(tileGuid))
             {
 
             }
-            BandClient.SensorManager.HeartRate.GetCurrentUserConsent();
-            BandClient.SensorManager.Pedometer.GetCurrentUserConsent();
-            
-            BandClient.SensorManager.Pedometer.ReadingChanged += (sender, e) =>
-             {
-                 if ((DateTime.Now - CurrentTime).TotalSeconds > 1)
-                 {
-                     CurrentTime = DateTime.Now;
-                     ToastVisual Visual = new ToastVisual()
-                     {
-                         TitleText = new ToastText() { Text = "PowerfulTrainer" },
-                         BodyTextLine1 = new ToastText() { Text = e.SensorReading.StepsToday.ToString() }
-                     };
-                     ToastContent Content = new ToastContent()
-                     {
-                         Visual = Visual
-                     };
-                     var toast = new ToastNotification(Content.GetXml());
-                     ToastNotificationManager.CreateToastNotifier().Show(toast);
-                 }
-             };
-            await BandClient.SensorManager.Pedometer.StartReadingsAsync();
+        }
+        static DateTime BeginTime = new DateTime();
+        private async void TileManager_TileOpened(object sender, Microsoft.Band.Tiles.BandTileEventArgs<Microsoft.Band.Tiles.IBandTileOpenedEvent> e)
+        {
+            if (e.TileEvent.TileId.Equals(tileGuid))
+            {
+                BeginTime = DateTime.Now;
+                Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
+
+                var pageContentData = new List<PageElementData>();
+                pageContentData.Add(new TextButtonData(1, "Next"));
+                pageContentData.Add(new TextBlockData(2, "Exercise " ));
+
+                PageData pageContent = new PageData(pageGuid, 0, pageContentData);
+
+
+                var Result = await BandClient.TileManager.SetPagesAsync(tileGuid, pageContent);
+            }
         }
 
-        private void Pedometer_ReadingChanged(object sender, Microsoft.Band.Sensors.BandSensorReadingEventArgs<Microsoft.Band.Sensors.IBandPedometerReading> e)
+        private async void TileManager_TileButtonPressed(object sender, Microsoft.Band.Tiles.BandTileEventArgs<Microsoft.Band.Tiles.IBandTileButtonPressedEvent> e)
         {
-            ToastVisual Visual = new ToastVisual()
+            Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
+
+            var pageContentData = new List<PageElementData>();
+            pageContentData.Add(new TextButtonData(1, "Next"));
+            pageContentData.Add(new TextBlockData(2, "Exercise "+(new Random()).Next()));
+
+            PageData pageContent = new PageData(pageGuid, 0, pageContentData);
+
+
+            var Result = await BandClient.TileManager.SetPagesAsync(tileGuid, pageContent);
+        }
+
+        private async void Pedometer_ReadingChanged(object sender, Microsoft.Band.Sensors.BandSensorReadingEventArgs<Microsoft.Band.Sensors.IBandPedometerReading> e)
+        {
+            //ToastVisual Visual = new ToastVisual()
+            //{
+            //    TitleText = new ToastText() { Text = "PowerfulTrainer" },
+            //    BodyTextLine1 = new ToastText() { Text = e.SensorReading.StepsToday.ToString() }
+            //};
+            //ToastContent Content = new ToastContent()
+            //{
+            //    Visual = Visual
+            //};
+            //var toast = new ToastNotification(Content.GetXml());
+            //ToastNotificationManager.CreateToastNotifier().Show(toast);
+
             {
-                TitleText = new ToastText() { Text = "PowerfulTrainer" },
-                BodyTextLine1 = new ToastText() { Text = e.SensorReading.StepsToday.ToString() }
-            };
-            ToastContent Content = new ToastContent()
-            {
-                Visual = Visual
-            };
-            var toast = new ToastNotification(Content.GetXml());
-            ToastNotificationManager.CreateToastNotifier().Show(toast);
+                Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
+
+                var pageContentData = new List<PageElementData>();
+                pageContentData.Add(new TextButtonData(1, "Next"));
+                pageContentData.Add(new TextBlockData(2, "Exercise "));
+                pageContentData.Add(new TextBlockData(3, (DateTime.Now - BeginTime).TotalSeconds.ToString()));
+                PageData pageContent = new PageData(pageGuid, 0, pageContentData);
+
+
+                var Result = await BandClient.TileManager.SetPagesAsync(tileGuid, pageContent);
+            }
+
         }
     }
 }

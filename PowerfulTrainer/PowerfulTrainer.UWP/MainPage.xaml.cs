@@ -30,7 +30,7 @@ namespace PowerfulTrainer.UWP
             var g_DisplayRequest = new DisplayRequest();
             g_DisplayRequest.RequestActive();
             CheckBandTask();
-            //LoadApplication(new PowerfulTrainer.App());
+            LoadApplication(new PowerfulTrainer.App());
         }
 
         static string taskName = "BandTask";
@@ -42,7 +42,6 @@ namespace PowerfulTrainer.UWP
             {
                 BGTask.Unregister(false);
             }
-            await Task.Delay(10000);
             await RegisterBandDataTask();
         }
 

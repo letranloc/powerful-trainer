@@ -11,6 +11,22 @@ namespace PowerfulTrainer.Web.Controllers.Api
     public class UserController : CheckTokenController
     {     
         [HttpGet]
+        [Route("api/msaccount")]
+        public object CallMSToken()
+        {
+            try
+            {
+                HttpClient Client = new HttpClient();
+                var Response = Client.GetStringAsync("https://login.live.com/oauth20_token.srf?client_id=000000004819E73A&client_secret=AHidfgqquy8Ma56joH19YUu&code=M7a9d75e5-a53f-536d-ab5c-f86a58bfd686&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%3A62466%2Fauth%2Fmshealth%2Fcallback").Result;
+                return SuccessResult(Response);
+            }
+            catch(Exception ex)
+            {
+                return FailResult(ex);
+            }
+        }
+
+        [HttpGet]
         public object Validate()
         {
             try

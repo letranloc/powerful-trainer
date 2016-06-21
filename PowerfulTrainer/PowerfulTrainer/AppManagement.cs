@@ -22,8 +22,8 @@ namespace PowerfulTrainer
 
         public static async void Run()
         {
-            BandManagement.Update();
-            await ObserveEvent();
+            //BandManagement.Update();
+            //await ObserveEvent();
         }
 
 
