@@ -121,7 +121,9 @@ gulp.task("lib:js", function () {
     gutil.log(lib.ext('js').files);
     return gulp.src(lib.ext('js').files)
         .pipe(concat(paths.libjsDest))
+        //.pipe(ngAnnotate())
         //.pipe(uglify())
+        //.pipe(concat(paths.libjsDest))
         .pipe(gulp.dest("."));
 })
 
@@ -160,6 +162,7 @@ gulp.task('angularJs:js', ["angularJs:template"], function () {
     return gulp.src(angularjs)
         .pipe(coffee({ bare: true }).on('error', gutil.log))
         .pipe(ngAnnotate())
+        //.pipe(uglify())
         .pipe(concat(paths.angularDest))
         .pipe(gulp.dest('.'));
 })

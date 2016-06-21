@@ -22,7 +22,8 @@
     'app.config'
     'app.services'
     'app.resources'
-    'app.directives'
+    'app.directives'    
+    'app.filters'
     'app.controllers'
 ]
 
@@ -32,5 +33,6 @@ app.value "AppCfg",
     defaultLimit: 20
     defaultLimitOptions: [20, 30, 50]
     mshealth:
+        apiUrl: "https://api.microsofthealth.net/v1/me"
         redirectUri: ($location) ->
             return $location.protocol() + "://" + $location.host() + ":" + $location.port() + "/auth/mshealth/callback"

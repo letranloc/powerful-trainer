@@ -1,6 +1,21 @@
 ﻿angular.module "services.auth", []
-.factory "Auth", ($http, $window, $location, $state, $sessionStorage, cookies, AppCfg, mdToast) ->
+.factory "Auth", ($http, $window, $location, $timeout, $state, $sessionStorage, cookies, AppCfg, mdToast) ->
     _user = null
+    refreshMSAccessToken = (u) ->
+        if u.MSAccessToken
+            delay = moment(u.MSExpireDate).unix() - moment().unix()
+            if delay < 0
+                delay = 0
+            $timeout ->
+                auth.requestTokenMSHealth().then (resp) ->
+                    auth.setUser(resp.data.Data)
+                    refreshMSAccessToken(resp.data.Data)
+                , -> # retry atfer 1s
+                    $timeout ->
+                        refreshMSAccessToken(u)
+                    , 1000
+            , delay*1000
+
     auth =
         login: (identity) ->
             $http.post AppCfg.apiUrl + "/account/login", identity
@@ -15,12 +30,6 @@
         loginMSHealth: ->
             $sessionStorage.callback = $state.current.name
             $window.location.href =  AppCfg.apiUrl + "/msaccount/auth?redirectUrl=" + AppCfg.mshealth.redirectUri($location)
-
-        logoutMSHealth: ->
-            $sessionStorage.callback = $location.absUrl()
-            $window.location.href = AppCfg.mshealth.logoutUrl
-                                        .replace("{client_id}", AppCfg.mshealth.clientId)
-                                        .replace("{redirect_uri}", encodeURIComponent(AppCfg.mshealth.redirectUri($location)));
 
         requestTokenMSHealth: (code) ->
             $http
@@ -51,12 +60,13 @@
                 _user = cookies.getAccesstoken()
                 if _user
                     auth.validate(_user).then (resp) ->
-                        setTimeout ->
+                        $timeout ->
                             try
                                 invokeCSharpAction("Token:" + resp.data.Data.AccessToken)
                             catch
                         , 500
                         _user = resp.data.Data
+                        refreshMSAccessToken(_user)
                     , (resp) ->
                         auth.logout()
                         mdToast.showSimple "Session expired.", "info"

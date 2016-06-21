@@ -43,7 +43,8 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     AccessToken = CurrentAccount.AccessToken,
                     ExpireDate = CurrentAccount.ExpireDate,
                     Username = CurrentAccount.Username,
-                    MSAccessToken = CurrentAccount.MSAccessToken
+                    MSAccessToken = CurrentAccount.MSAccessToken,
+                    MSExpireDate = CurrentAccount.MSExpireDate
                 });
             }
             catch (Exception ex)

@@ -88,7 +88,8 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     AccessToken = account.First().AccessToken,
                     Avatar = account.First().Avatar,
                     ExpireDate = account.First().ExpireDate,
-                    MSAccessToken = account.First().MSAccessToken
+                    MSAccessToken = account.First().MSAccessToken,
+                    MSExpireDate = account.First().MSExpireDate
                 });
             }
             catch (Exception ex)
