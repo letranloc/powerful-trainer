@@ -23,6 +23,7 @@ namespace PowerfulTrainer.UWP.BG
         IBandClient BandClient;
 
         Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
+        Guid pageGuid2 = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13);
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
             Deferral = taskInstance.GetDeferral();
@@ -127,8 +128,17 @@ namespace PowerfulTrainer.UWP.BG
                         pageContentData.Add(new WrappedTextBlockData(2, "Well done. Have a nice day ^^"));
                     }
 
+                    var pageContentData2 = new List<PageElementData>();
+                    pageContentData2.Add(new TextBlockData(4, "Heat rate"));
+                    pageContentData2.Add(new TextBlockData(5, "Heat rate1"));
+                    pageContentData2.Add(new TextBlockData(6, "Calories"));
+                    pageContentData2.Add(new TextBlockData(7, "Calories1"));
+                    pageContentData2.Add(new TextBlockData(8, "Steps"));
+                    pageContentData2.Add(new TextBlockData(9, "Steps1"));
+
                     PageData pageContent = new PageData(pageGuid, 0, pageContentData);
-                    var Result = BandClient.TileManager.SetPagesAsync(tileGuid, pageContent).Result;
+                    PageData pageContent2 = new PageData(pageGuid2, 1, pageContentData2);
+                    var Result = BandClient.TileManager.SetPagesAsync(tileGuid, new PageData[] { pageContent, pageContent2 }).Result;
                 }
             }
         }

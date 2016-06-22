@@ -26,7 +26,10 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     Data = PlanData,
                     Image = Req.Image,
                     CreateDate = DateTime.Now,
-                    UpdateDate = DateTime.Now
+                    UpdateDate = DateTime.Now,
+                    TotalCals = Req.TotalCals,
+                    TotalSteps = Req.TotalSteps,
+                    AvgHeartRate = Req.AvgHeartRate
                 });
                 DB.SubmitChanges();
                 return SuccessResult(new
@@ -170,6 +173,18 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 if (Req.Image != null)
                 {
                     Plan.First().Image = Req.Image;
+                }
+                if(Req.TotalCals!=null)
+                {
+                    Plan.First().TotalCals = Req.TotalCals;
+                }
+                if (Req.TotalSteps != null)
+                {
+                    Plan.First().TotalSteps = Req.TotalSteps;
+                }
+                if (Req.AvgHeartRate != null)
+                {
+                    Plan.First().AvgHeartRate = Req.AvgHeartRate;
                 }
                 Plan.First().UpdateDate = DateTime.Now;
                 DB.SubmitChanges();

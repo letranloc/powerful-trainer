@@ -67,11 +67,14 @@ namespace PowerfulTrainer
                     }
                     else
                     {
-                        if(Exercise.Repetitions == null || Exercise.Repetitions<1)
+                        if(Exercise.Repetitions != null && Exercise.Repetitions>0)
                         {
-                            Exercise.Repetitions = 1;
+                            ExtraInfo += Exercise.Repetitions + " rep)";
                         }
-                        ExtraInfo += Exercise.Repetitions + " rep)";
+                        else
+                        {
+                            ExtraInfo += "max rep)";
+                        }
                     }
 
                     TmpData.Data.Add(new PlanItem()
@@ -80,15 +83,28 @@ namespace PowerfulTrainer
                         Repetitions = Exercise.Repetitions,
                         Name = Exercise.Name + (Exercise.Sets > 1 ? (" Set " + (i + 1) + "/" + Exercise.Sets) : "") + ExtraInfo
                     });
-                    if (!string.IsNullOrEmpty(Exercise.RestTime) && i < Exercise.Sets - 1)
+                    if (i < Exercise.Sets - 1)
                     {
-                        TimeSpan timediff = new TimeSpan(0, 0, int.Parse(Exercise.RestTime));
-                        TmpData.Data.Add(new PlanItem()
+                        if (!string.IsNullOrEmpty(Exercise.RestTime))
                         {
-                            Duration = Exercise.RestTime,
-                            Name = "Rest (" + timediff.Minutes.ToString("00") + ":" + timediff.Seconds.ToString("00") + ")",
-                            IsRestItem = true
-                        });
+                            int tmp;
+                            string RestName ="";
+                            if (int.TryParse(Exercise.RestTime, out tmp))
+                            {
+                                TimeSpan timediff = new TimeSpan(0, 0, tmp);
+                                RestName = "Rest (" + timediff.Minutes.ToString("00") + ":" + timediff.Seconds.ToString("00") + ")";
+                            }
+                            else
+                            {
+                                RestName = "Rest (" + Exercise.RestTime + ")";
+                            }
+                            TmpData.Data.Add(new PlanItem()
+                            {
+                                Duration = Exercise.RestTime,
+                                Name = RestName,
+                                IsRestItem = true
+                            });
+                        }
                     }
                 }
             }
@@ -142,10 +158,60 @@ namespace PowerfulTrainer
                 AutoWidth = true
             });
 
-            PageLayout layout = new PageLayout(panel);
 
-           
+            FilledPanel panel2 = new FilledPanel
+            {
+                Rect = new PageRect(0, 0, 270, 120),
+            };
+
+            panel.Elements.Add(new TextBlock
+            {
+                ElementId = 4,
+                Rect = new PageRect(2, 2, 270, 50),
+                AutoWidth = true
+            });
+
+            panel.Elements.Add(new TextBlock
+            {
+                ElementId = 5,
+                Rect = new PageRect(50, 2, 270, 50),
+                AutoWidth = true
+            });
+
+            panel.Elements.Add(new TextBlock
+            {
+                ElementId = 6,
+                Rect = new PageRect(2, 45, 270, 50),
+                AutoWidth = true
+            });
+
+            panel.Elements.Add(new TextBlock
+            {
+                ElementId = 7,
+                Rect = new PageRect(50, 45, 270, 50),
+                AutoWidth = true
+            });
+
+            panel.Elements.Add(new TextBlock
+            {
+                ElementId = 8,
+                Rect = new PageRect(2, 90, 270, 50),
+                AutoWidth = true
+            });
+
+            panel.Elements.Add(new TextBlock
+            {
+                ElementId = 9,
+                Rect = new PageRect(50, 90, 270, 50),
+                AutoWidth = true
+            });
+
+            PageLayout layout = new PageLayout(panel);
+            PageLayout layout2 = new PageLayout(panel2);
+
+
             tile.PageLayouts.Add(layout);
+            tile.PageLayouts.Add(layout2);
             try
             {
                 await BandClient.TileManager.AddTileAsync(tile);

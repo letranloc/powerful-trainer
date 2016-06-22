@@ -10,6 +10,9 @@ namespace PowerfulTrainer.Web.Models.Api
         public string Name;
         public Object Data;
         public string Image;
+        public float? AvgHeartRate;
+        public float? TotalCals;
+        public float? TotalSteps;
     }
 
     public class UpdatePlanReq:AddPlanReq
