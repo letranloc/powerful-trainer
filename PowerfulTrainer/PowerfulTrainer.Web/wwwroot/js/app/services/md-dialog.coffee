@@ -299,4 +299,36 @@
                     $scope.exercise = exercise
                 ]
                 templateUrl: 'dialog/exercise-preview.html'
+
+        showWorkoutReport: (evt, contact) ->
+            $mdDialog.show
+                templateUrl: 'dialog/workout-report.html'
+                parent: angular.element(document.body)
+                targetEvent: evt
+                clickOutsideToClose: true
+                fullscreen: ($mdMedia('sm') || $mdMedia('xs'))
+                controller: ($scope, $mdpDatePicker, Report) ->
+                    $scope.contact = contact
+                    $scope.selectedDate = new Date()
+                    $scope.reports = []
+    
+                    $scope.showDatePicker = (evt) ->
+                        $mdpDatePicker $scope.startTime,
+                            targetEvent: evt
+                            maxDate: moment()
+                        .then (selectedDate) ->
+                            $scope.selectedDate = selectedDate
+                            $scope.getReport()
+
+                    $scope.getReport = ->
+                        selectedDate = moment($scope.selectedDate)
+                        Report.get(contact.Username, selectedDate.startOf('day').toISOString(), selectedDate.endOf('day').toISOString())
+                        .then (resp) ->
+                            $scope.reports = resp.data.Data
+
+                    $scope.getReport()
+                    
+                    $scope.cancel = ->
+                        $mdDialog.cancel()
+            
     }

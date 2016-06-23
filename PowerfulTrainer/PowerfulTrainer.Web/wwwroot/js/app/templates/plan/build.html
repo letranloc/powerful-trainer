@@ -44,39 +44,71 @@
     </div>
 </md-toolbar>
 <md-content flex>
-    <md-table-container style="min-height:300px">
-        <table md-table md-row-select multiple ng-model="selected">
-            <thead md-head>
-                <tr md-row layou="row">
-                    <th md-column style="min-width:300px"><span>EXERCISE</span></th>
-                    <th md-column><span>SETS</span></th>
-                    <th md-column><span>COMPLETION</span></th>
-                    <th md-column><span>REST BETWEEN SETS</span></th>
-                    <th md-column></th>
-                </tr>
-            </thead>
-            <tbody md-body ui-sortable ng-model="plan.Data">
-                <tr md-row md-select="ex" md-select-id="ExerciseId" ng-repeat="ex in plan.Data" ng-mouseenter="showEDelBtn=true" ng-mouseleave="showEDelBtn=false">
-                    <td md-cell ng-click="showExPreview($event, ex)">
-                        <img src="" ng-src="{{ex.Thumbnail}}" class="md-avatar">
-                        {{ex.Name}}
-                    </td>
-                    <td md-cell ng-click="editSets($event, ex)">
-                        <span ng-if="!ex.IsRestItem" class="dotted">{{ex.Sets||0}}</span>
-                    </td>
-                    <td md-cell ng-click="editCompletion($event, ex)">
-                        <span class="dotted" ng-class="{error:!ex.Repetitions&&!ex.Duration}">{{ex | CompletionFilter}}</span>
-                    </td>
-                    <td md-cell ng-click="editRestTime($event, ex)">
-                        <span ng-if="ex.Sets>1" class="dotted">{{ex | RestTimeFilter}}</span>
-                    </td>
-                    <td md-cell class="move">
-                        <md-icon md-font-icon="fa fa-arrows-v"></md-icon>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </md-table-container>
+    <md-card>
+        <md-card-header style="padding: 5px">
+            <md-button ng-hide="hideGoal" ng-click="hideGoal=true" class="md-icon-button">
+                <md-icon md-font-icon="fa fa-angle-up fa-2x"></md-icon>
+            </md-button>
+            <md-button ng-show="hideGoal" ng-click="hideGoal=false" class="md-icon-button">
+                <md-icon md-font-icon="fa fa-angle-down fa-2x"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button">
+                <md-icon md-font-icon="fa fa-flag-checkered fa-2x"></md-icon>
+            </md-button>
+            <md-card-header-text>
+                <span class="md-title">Goal</span>
+                <span class="md-subhead">You can set your goal for this workout plan.</span>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content layout-padding ng-hide="hideGoal">
+            <div layout="column" layout-gt-sm="row">
+                <md-input-container class="md-block" flex>
+                    <input type="number" ng-model="plan.TotalCals" min="0" placeholder="Total cals (cals)" />
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                    <input type="number" ng-model="plan.TotalSteps" min="0" placeholder="Total steps (steps)" />
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                    <input type="number" ng-model="plan.AvgHeartRate" min="0" placeholder="Average heart rate (bpm)" />
+                </md-input-container>
+            </div>
+        </md-card-content>
+    </md-card>
+    <md-card>
+        <md-table-container style="min-height:300px">
+            <table md-table md-row-select multiple ng-model="selected">
+                <thead md-head class="grey lighten-5">
+                    <tr md-row layou="row">
+                        <th md-column style="min-width:300px"><span>EXERCISE</span></th>
+                        <th md-column><span>SETS</span></th>
+                        <th md-column><span>COMPLETION</span></th>
+                        <th md-column><span>REST BETWEEN SETS</span></th>
+                        <th md-column></th>
+                    </tr>
+                </thead>
+                <tbody md-body ui-sortable ng-model="plan.Data">
+                    <tr md-row md-select="ex" md-select-id="ExerciseId" ng-repeat="ex in plan.Data" ng-mouseenter="showEDelBtn=true" ng-mouseleave="showEDelBtn=false">
+                        <td md-cell ng-click="showExPreview($event, ex)">
+                            <img src="" ng-src="{{ex.Thumbnail}}" class="md-avatar">
+                            {{ex.Name}}
+                        </td>
+                        <td md-cell ng-click="editSets($event, ex)">
+                            <span ng-if="!ex.IsRestItem" class="dotted">{{ex.Sets||0}}</span>
+                        </td>
+                        <td md-cell ng-click="editCompletion($event, ex)" style="min-width:100px">
+                            <span class="dotted" ng-class="{error:!ex.Repetitions&&!ex.Duration}">{{ex | CompletionFilter}}</span>
+                        </td>
+                        <td md-cell ng-click="editRestTime($event, ex)" style="min-width:100px">
+                            <span ng-if="ex.Sets>1" class="dotted">{{ex | RestTimeFilter}}</span>
+                        </td>
+                        <td md-cell class="move">
+                            <md-icon md-font-icon="fa fa-arrows-v"></md-icon>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-card>
 </md-content>
 <md-button class="md-fab md-primary md-fab-bottom-right" aria-label="Save" ng-disabled="plan.Data.length==0 || isSaving" ng-click="save()">
     <md-tooltip md-theme="default" md-direction="bottom" ng-hide="hideTooltipOnXS">

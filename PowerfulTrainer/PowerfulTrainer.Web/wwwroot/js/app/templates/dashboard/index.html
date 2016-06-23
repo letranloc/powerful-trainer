@@ -17,7 +17,7 @@
     </div>
 </md-toolbar>
 <md-content flex>
-    <md-card ng-show="showConnectMSHealth">
+    <md-card ng-show="showConnectMSHealth()">
         <md-card-header>
             <md-card-header-text>
                 <span class="md-title">Please connect with <span class="blue-text">Microsoft Health</span> to view reports</span>
@@ -42,7 +42,7 @@
             </md-card-content>
         </md-card>
         <md-card flex ng-click="showReportChart('heartrates')" class="pointer">
-            <md-card-header class="red white-text">
+            <md-card-header>
                 <md-card-header-text>
                     <span class="md-title">Heart rate</span>
                 </md-card-header-text>
@@ -52,7 +52,7 @@
             </md-card-content>
         </md-card>
         <md-card flex ng-click="showReportChart('calories')" class="pointer">
-            <md-card-header class="amber white-text">
+            <md-card-header>
                 <md-card-header-text>
                     <span class="md-title">Calories</span>
                 </md-card-header-text>
@@ -62,13 +62,25 @@
             </md-card-content>
         </md-card>
     </div>
-    <md-card ng-show="sleepActivities" ng-click="showReportChart('sleeps')" class="pointer">
+    <md-card ng-click="showReportChart('sleeps')" class="pointer">
         <md-card-header>
             <md-card-header-text>
                 <span class="md-title">Sleep</span>
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
+            <div layout="column" ng-hide="sleepActivities.length">
+                <div layout="column" layout-padding layout-gt-sm="row">
+                    <div layout="row" flex>
+                        <state-card title="Time asleep"></state-card>
+                        <state-card title="Time efficiency"></state-card>
+                    </div>
+                    <div layout="row" flex>
+                        <state-card title="Peak heart rate"></state-card>
+                        <state-card title="Woke up"></state-card>
+                    </div>
+                </div>
+            </div>
             <div layout="column" ng-repeat="activity in sleepActivities">
                 <div layout="column" layout-padding layout-gt-sm="row">
                     <div layout="row" flex >

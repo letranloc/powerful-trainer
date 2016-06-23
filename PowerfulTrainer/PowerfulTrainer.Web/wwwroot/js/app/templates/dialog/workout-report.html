@@ -1,0 +1,53 @@
+﻿<md-dialog >
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Workout report of {{contact.Name||contact.Username}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" aria-label="Close dialog" ng-click="cancel()">
+                <md-icon md-font-icon="fa fa-times fa-15x"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content flex layout="column">
+        <div layout="row" layout-align="start center">
+            <md-button class="md-icon-button" aria-label="Change date" ng-click="showDatePicker($event)">
+                <md-tooltip direction="bottom" ng-hide="hideTooltipOnXS">
+                    Change date
+                </md-tooltip>
+                <md-icon md-font-icon="fa fa-calendar"></md-icon>
+            </md-button>
+            <h4>{{selectedDate | date: 'EEE, MMM d, yyyy'}}</h4>
+        </div>
+        <md-divider></md-divider>
+        <div ng-if="reports.length==0" layout-padding>
+            <span class="md-title">Oops...{{contact.Name||contact.Username}} don't have any workout report.</span>
+        </div>
+        <md-card ng-repeat="report in reports">
+            <md-card-header ng-class="{teal: report.IsGoal}">
+                <md-card-header-text>
+                    <span class="md-title">{{report.BeginTime | date: 'EEE, MMM d, yyyy hh:mm a'}}</span>
+                    <span class="md-subhead">{{report.PlanName}} by {{report.Username}}</span>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                <div layout="column" layout-gt-sm="row">
+                    <div layout="row">
+                        <state-card title="Duration" value="{{report.Duration}}"></state-card>
+                        <state-card title="Calories burned" value="{{report.TotalCals}}" unit="cals"></state-card>
+                    </div>
+                    <div layout="row">
+                        <state-card title="Total steps" value="{{report.TotalSteps}}" unit="steps"></state-card>
+                        <state-card title="Average HR" value="{{report.AvgHeartRate}}" unit="bpm"></state-card>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </md-dialog-content>
+    <span flex></span>
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-accent" aria-label="Close" ng-click="cancel()">
+            Close
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

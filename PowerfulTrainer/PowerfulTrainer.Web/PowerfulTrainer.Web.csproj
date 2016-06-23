@@ -177,6 +177,7 @@
     <Content Include="wwwroot\js\app\templates\dialog\exercises-dialog.html" />
     <Content Include="wwwroot\js\app\templates\dialog\friend-requests.html" />
     <Content Include="wwwroot\js\app\templates\dialog\share-plan.html" />
+    <Content Include="wwwroot\js\app\templates\dialog\workout-report.html" />
     <Content Include="wwwroot\js\app\templates\directives\event-model.html" />
     <Content Include="wwwroot\js\app\templates\directives\state-card.html" />
     <Content Include="wwwroot\js\app\templates\directives\input-control\band-sensor-type.html" />
@@ -324,7 +325,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52309</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -14,7 +14,7 @@
         <h3 class="md-title" ng-hide="toggleSearch">Contacts ({{contacts.length || 0}})</h3>
         <md-button class="md-icon-button" aria-label="Search" ng-click="toggleSearch=!toggleSearch">
             <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                Search
+                Search friends
             </md-tooltip>
             <md-icon md-font-icon="fa fa-search fa-15x" ng-class="{'amber-text': toggleSearch}"></md-icon>
         </md-button>
@@ -61,12 +61,26 @@
                 </p>
             </div>
             <div class="md-secondary" ng-show="showMenuBtn">
-                <md-button class="md-fab md-raised md-mini md-accent" aria-label="Unfriend" ng-click="delete($event, contact)">
-                    <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                        Unfriend
-                    </md-tooltip>
-                    <md-icon md-font-icon="fa fa-trash fa-15x"></md-icon>
-                </md-button>
+                <md-menu>
+                    <md-button class="md-fab md-raised md-mini md-accent" aria-label="More" ng-click="$mdOpenMenu($event)">
+                        <md-icon md-font-icon="fa fa-chevron-down fa-15x"></md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="showWorkoutReport($event, contact)" aria-label="Workout info">
+                                <md-icon md-font-icon="fa fa-tasks fa-15x"></md-icon>
+                                Workout info
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button class="red-text" ng-click="delete($event, contact)" aria-label="Unfiend">
+                                <md-icon md-font-icon="fa fa-trash fa-15x"></md-icon>
+                                Unfiend
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
             <md-divider ng-if="!$last"></md-divider>
         </md-list-item>

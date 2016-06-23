@@ -25,7 +25,7 @@
             chartType: type
         })
 
-    $scope.showConnectMSHealth = !Auth.isAuthenticated().MSAccessToken
+    $scope.showConnectMSHealth = -> !Auth.isAuthenticated().MSAccessToken
     if $scope.showConnectMSHealth
         $scope.connectToMSHealth = ->
             Auth.loginMSHealth()

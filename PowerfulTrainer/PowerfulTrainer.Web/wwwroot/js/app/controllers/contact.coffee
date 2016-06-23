@@ -1,5 +1,5 @@
 ﻿angular.module 'controllers.contact', []
-.controller 'ContactIndexCtrl', ($rootScope, $scope, $location, AppCfg, Contact, mdDialog, mdToast) ->
+.controller 'ContactIndexCtrl', ($rootScope, $scope, $location, $state, AppCfg, Contact, mdDialog, mdToast) ->
     $scope.query =
         limit: $location.search().limit || AppCfg.defaultLimit
         limitOptions: AppCfg.defaultLimitOptions
@@ -50,6 +50,9 @@
                 mdToast.showSimple resp.data.Message, "danger"
         else
             getContacts()
+
+    $scope.showWorkoutReport = (evt, contact) ->
+        mdDialog.showWorkoutReport(evt, contact)
 
     $scope.accept = (contact) ->
         if contact.IsWaitingAccept && !contact.IsFriend

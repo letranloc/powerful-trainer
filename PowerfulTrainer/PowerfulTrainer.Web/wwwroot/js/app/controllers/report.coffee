@@ -406,5 +406,25 @@
 
     updateChart()
     
-.controller "ReportWorkoutCtrl", ($scope) ->
-    $scope.title = ""
+.controller "ReportWorkoutCtrl", ($scope, $stateParams, $mdpDatePicker, Report) ->
+    
+    $scope.selectedDate = $stateParams.date || new Date()
+    $scope.reports = []
+    
+    $scope.showDatePicker = (evt) ->
+        $mdpDatePicker $scope.startTime,
+            targetEvent: evt
+            maxDate: moment()
+        .then (selectedDate) ->
+            $scope.selectedDate = selectedDate
+            $scope.getReport()
+
+    $scope.getReport = ->
+        selectedDate = moment($scope.selectedDate)
+        Report.getReport(selectedDate.startOf('day').toISOString(), selectedDate.endOf('day').toISOString())
+        .then (resp) ->
+            console.log resp.data
+            $scope.reports = resp.data.Data
+
+    $scope.getReport()
+            
