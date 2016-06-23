@@ -19,6 +19,7 @@
                     <h1 class="md-body-2" flex>Dashboard</h1>
                 </md-toogle-menu>
                 <md-icon md-font-icon="fa fa-caret-down"></md-icon>
+                <md-icon md-font-icon="fa fa-caret-up"></md-icon>
             </md-menu-sidenav-title>
             <md-menu-sidenav-content>
                 <md-menu-sidenav-subitem ui-sref="cpanel.index" ui-sref-active="active" ng-click="toggleNavLeft()">Dashboard</md-menu-sidenav-subitem>
@@ -42,11 +43,11 @@
 
     <md-list>
         <md-divider></md-divider>
-        <md-list-item ui-sref="!#"  ng-click="toggleNavLeft()">
+        <md-list-item ui-sref="!#"  ng-click="toggleNavLeft()" ng-if="false">
             <md-icon md-font-icon="fa fa-wrench white-text" style="margin-right:0"></md-icon>
             <p>Settings</p>
         </md-list-item>
-        <md-divider></md-divider>
+        <md-divider ng-if="false"></md-divider>
         <md-list-item class="md-2-line md-small-line" ng-class="{active: ('cpanel.profile' | includedByState)}">
             <img src="../images/avatar-default.png" data-ng-src="{{User.Avatar}}" class="md-avatar md-circle pointer"
                  ui-sref="cpanel.profile" ng-click="toggleNavLeft()"/>

@@ -7,11 +7,11 @@
             <span>Workout Plans</span>
         </h3>
         <span flex></span>
-        <md-button ng-if="false" class="md-fab md-mini" aria-label="Add" ui-sref="cpanel.plan.create">
+        <md-button ng-if="inApp" class="md-icon-button" aria-label="Find by PTCard" ng-click="openPTCard()">
             <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
-                Add workout plan
+                Find by PT card
             </md-tooltip>
-            <md-icon md-font-icon="fa fa-plus fa-15x"></md-icon>
+            <md-icon md-font-icon="fa fa-eye fa-15x"></md-icon>
         </md-button>
     </div>
 </md-toolbar>

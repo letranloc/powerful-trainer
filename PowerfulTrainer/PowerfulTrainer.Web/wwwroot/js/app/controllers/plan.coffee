@@ -20,6 +20,9 @@
             mdToast.showSimple resp.data.Message, "danger"
     $scope.getPlans(true)
 
+    $scope.openPTCard = ->
+        invokeCSharpAction('PTCard')
+
     $scope.startWorkout = (plan) ->
         Plan.get(plan.Id).then (resp) ->
             invokeCSharpAction('plan:' + JSON.stringify(resp.data.Data))
