@@ -79,7 +79,10 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     UpdateDate = CurrentPlan.UpdateDate,
                     Name = CurrentPlan.Name,
                     OwnerName = OwnerName,
-                    OwnerUsername = OwnerUsername
+                    OwnerUsername = OwnerUsername,
+                    AvgHeartRate = CurrentPlan.AvgHeartRate,
+                    TotalCals = CurrentPlan.TotalCals,
+                    TotalSteps = CurrentPlan.TotalSteps
                 });
             }
             catch (Exception ex)
