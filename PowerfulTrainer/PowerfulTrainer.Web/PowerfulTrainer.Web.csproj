@@ -196,6 +196,7 @@
     <Content Include="wwwroot\js\app\templates\report\health.html" />
     <Content Include="wwwroot\js\commons.coffee" />
     <Content Include="wwwroot\js\libs.js" />
+    <Content Include="wwwroot\js\site.min.js" />
     <Content Include="wwwroot\scss\dashboard.scss" />
     <Content Include="wwwroot\scss\_variables.scss" />
     <Content Include="wwwroot\js\app\config\theme.coffee" />

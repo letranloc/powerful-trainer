@@ -29,13 +29,6 @@
         <uap:Rule Match="http://aloraha.com/api/*" Type="include" WindowsRuntimeAccess="all" />
         <uap:Rule Match="http://*.aloraha.com" Type="include" WindowsRuntimeAccess="all" />
       </uap:ApplicationContentUriRules>
-      <Extensions>
-        <Extension Category="windows.backgroundTasks" EntryPoint="PowerfulTrainer.UWP.BG.BGTask">
-          <BackgroundTasks>
-            <Task Type="deviceUse" />
-          </BackgroundTasks>
-        </Extension>
-      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

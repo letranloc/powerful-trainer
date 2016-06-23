@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Http;
@@ -110,5 +111,25 @@ namespace PowerfulTrainer.Web.Controllers.Api
             response.Headers.Location = new Uri(authorizeUrl);
             return response;
         }
+
+        [Route("api/exercise/image/{Id}")]
+        [HttpGet]
+        public object GetFullImage(int Id)
+        {
+            try
+            {
+                var Image = DB.Exercises.First(u => u.Id == Id).Image;
+
+                HttpResponseMessage Result = new HttpResponseMessage(HttpStatusCode.OK);
+                Result.Content = new ByteArrayContent(Convert.FromBase64String(Image));
+                Result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+                return Result;
+            }
+            catch (Exception ex)
+            {
+                return FailResult(ex);
+            }
+        }
+
     }
 }

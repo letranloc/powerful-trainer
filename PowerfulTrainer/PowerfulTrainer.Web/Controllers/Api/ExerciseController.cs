@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -54,6 +55,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
             }
         }
 
+       
         [Route("api/exercise/level")]
         [HttpGet]
         public object GetLevel()

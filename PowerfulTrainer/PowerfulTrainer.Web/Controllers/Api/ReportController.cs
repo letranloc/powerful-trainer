@@ -12,7 +12,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
     public class ReportController : CheckTokenController
     {
         [HttpGet]
-        [Route("api/report/username")]
+        [Route("api/report/{Username}")]
         public object Get(string Username, DateTime? FromTime=null, DateTime? ToTime=null)
         {
             try
