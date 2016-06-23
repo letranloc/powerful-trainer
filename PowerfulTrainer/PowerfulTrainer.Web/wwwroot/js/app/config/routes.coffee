@@ -45,8 +45,9 @@
         url: "/report"
         templateUrl: "layout/container.html"
         
+    # Report
     .state "cpanel.report.health",
-        url: "/health"
+        url: "/health/:chartType"
         templateUrl: "report/health.html"
         controller: "ReportHealthCtrl"
         resolve:

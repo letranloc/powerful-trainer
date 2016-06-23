@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='lib:clean, lib:restore, lib, angularJs, min' Clean='clean' />
+﻿/// <bindingg BeforeBuild='lib:clean, lib:restore, lib, angularJs, min' Clean='clean' />
 "use strict";
 
 var gulp = require("gulp"),

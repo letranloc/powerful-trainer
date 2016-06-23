@@ -1,48 +1,50 @@
-﻿<div class="toolbar-fixed">
-    <md-toolbar class="blue darken-3" md-whiteframe="2" ng-if="!useCustomToolbar">
-        <div class="md-toolbar-tools">
-            <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
-                <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
-            </md-button>
-            <h2>
-                <b>Health report</b>
-            </h2>
-        </div>
-    </md-toolbar>
-    <md-content>
-        <div layout="column" layout-gt-xs="row" layout-align-gt-xs="center start">
-            <input-control model="sensor" name="sensor-type" type="BandSensorType"></input-control>
-            <md-input-container class="md-block" ng-show="sensor">
-                <label>Group</label>
-                <md-select ng-model="group" ng-change="options.toTime=options.fromTime">
-                    <md-option ng-repeat="type in ['hourly', 'daily']" value="{{type}}">
-                        {{type.capitalizeFirstLetter()}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container class="md-block" ng-show="group">
-                <label>Type</label>
-                <md-select ng-model="options.func">
-                    <md-option ng-repeat="t in ['sum', 'avg']" value="{{t}}" ng-selected="$first">
-                        {{t.capitalizeFirstLetter()}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <div ng-show="group=='daily'" layout-gt-xs="row">
-                <mdp-date-picker mdp-open-on-click required name="fromDate" mdp-placeholder="From date (dd/mm/yyyy)"
-                                 mdp-format="DD/MM/YYYY" ng-model="options.fromTime" ng-change="updateToTime()"></mdp-date-picker>
-                <mdp-date-picker mdp-open-on-click required name="toDate" mdp-placeholder="To date (dd/mm/yyyy)"
-                                 mdp-format="DD/MM/YYYY" ng-model="options.toTime" mdp-date-filter="filterToTime"></mdp-date-picker>
-            </div>
-            <div ng-show="group=='hourly'" layout-gt-xs="row">
-                <mdp-date-picker mdp-open-on-click required name="onDate" mdp-placeholder="Date (dd/mm/yyyy)"
-                                 mdp-format="DD/MM/YYYY" ng-model="options.fromTime" ng-change="options.toTime=options.fromTime"></mdp-date-picker>
-                <mdp-time-picker mdp-open-on-click required name="fromTime" mdp-placeholder="From time (HH:mm A)"
-                                 mdp-format="HH:mm A" ng-model="options.fromTime" ng-change="updateToTime()"></mdp-time-picker>
-                <mdp-time-picker mdp-open-on-click required name="toTime" mdp-placeholder="To time (HH:mm A)"
-                                 mdp-format="HH:mm A" ng-model="options.toTime" mdp-date-filter="filterToTime"></mdp-time-picker>
-            </div>
-        </div>
-        <highchart ng-show="showChart" config="chartConfig"></highchart>
-    </md-content>
-</div>
+﻿<md-toolbar md-whiteframe="2">
+    <div class="md-toolbar-tools">
+        <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
+            <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
+        </md-button>
+        <md-input-container md-no-float md-theme="default-dark" style="margin-top:12px;font-size:18px">
+            <md-select ng-model="chartType">
+                <md-option ng-repeat="t in chartTypes" value="{{t}}" ng-click="updateChartType(t)">{{t.capitalizeFirstLetter()}}</md-option>
+            </md-select>
+        </md-input-container>
+        <span flex></span>
+        <h2 ng-if="period=='daily'">{{startTime | date: 'MMM d'}} - {{endTime | date: 'MMM d, yyyy'}}</h2>
+        <h2 ng-if="period=='hourly'">{{startTime | date: 'EEE, MMM d, yyyy'}}</h2>
+        <md-button class="md-icon-button" aria-label="Change date" ng-click="showDatePicker($event)">
+            <md-tooltip direction="bottom" ng-hide="hideTooltipOnXS">
+                Change date
+            </md-tooltip>
+            <md-icon md-font-icon="fa fa-calendar"></md-icon>
+        </md-button>
+        <md-input-container md-no-float md-theme="default-dark" style="margin-top:12px;font-size:18px">
+            <md-select ng-model="period">
+                <md-option ng-repeat="p in ['hourly', 'daily'] track by $index" ng-click="updatePeriod(p)" value="{{p}}">{{p.capitalizeFirstLetter()}}</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+</md-toolbar>
+<md-content flex>
+    <div layout-padding>
+        <state-card ng-show="summaryState" value="{{summaryState.value}}" unit="{{summaryState.unit}}" values="summaryState.values" units="summaryState.units"></state-card>
+        <highchart config="chartConfig"></highchart>
+        <md-card>
+            <md-card-content>
+                <div layout="column" layout-gt-sm="row" flex ng-repeat="state in chartStates" ng-if="$index%4==0">
+                    <div layout="row" layout-padding flex>
+                        <state-card ng-if="chartStates[$index]" title="{{chartStates[$index].title}}" value="{{chartStates[$index].value}}" unit="{{chartStates[$index].unit}}"
+                                    values="chartStates[$index].values" units="chartStates[$index].units" info="{{chartStates[$index].info}}"></state-card>
+                        <state-card ng-if="chartStates[$index+1]" title="{{chartStates[$index+1].title}}" value="{{chartStates[$index+1].value}}" unit="{{chartStates[$index+1].unit}}"
+                                    values="chartStates[$index+1].values" units="chartStates[$index+1].units" info="{{chartStates[$index+1].info}}"></state-card>
+                    </div>
+                    <div layout="row" layout-padding flex>
+                        <state-card ng-if="chartStates[$index+2]" title="{{chartStates[$index+2].title}}" value="{{chartStates[$index+2].value}}" unit="{{chartStates[$index+2].unit}}"
+                                    values="chartStates[$index+2].values" units="chartStates[$index+2].units" info="{{chartStates[$index+2].info}}"></state-card>
+                        <state-card ng-if="chartStates[$index+3]" title="{{chartStates[$index+3].title}}" value="{{chartStates[$index+3].value}}" unit="{{chartStates[$index+3].unit}}"
+                                    values="chartStates[$index+3].values" units="chartStates[$index+3].units" info="{{chartStates[$index+3].info}}"></state-card>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+</md-content>

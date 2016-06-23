@@ -1,12 +1,12 @@
-﻿<div layout="column" flex>
+﻿<div layout="column" flex style="max-width:253.5px;">
     <span class="md-title">{{title}}</span>
     <div class="blue-text" style="font-size:34px;font-weight:lighter">
-        <div ng-if="values">
-            <span ng-repeat="v in values">
+        <div ng-show="values">
+            <span ng-repeat="v in values track by $index">
                 {{v}}<small style="font-size:17px;padding-left:2px;">{{units[$index]}}</small>
             </span>
         </div>
-        <span ng-if="value">
+        <span ng-show="value||!values">
             {{value?value:'--'}}<small ng-show="value" style="font-size:17px;padding-left:3px;">{{unit}}</small>
         </span>
     </div>
