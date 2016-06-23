@@ -36,7 +36,6 @@
             startTime: moment($scope.currentDate).startOf('day').toISOString()
             endTime: moment($scope.currentDate).startOf('day').add(1, 'h').toISOString()
         .then (resp) ->
-            console.log resp.data
             $scope.summary = resp.data.summaries[0]
         , (resp) ->
             console.log resp
@@ -47,18 +46,12 @@
             startTime: moment($scope.currentDate).startOf('day').toISOString()
             endTime: moment($scope.currentDate).endOf('day').toISOString()
         .then (resp) ->
-            console.log resp.data
             if resp.data.sleepActivities
                 $scope.sleepActivities = resp.data.sleepActivities
                 for a in $scope.sleepActivities
-                    a.sleepDuration = $scope.parseTimeToArray(a.sleepDuration)
+                    a.sleepDuration = parseTimeToArray(a.sleepDuration)
         , (resp) ->
             console.log resp
 
     $scope.updateSummaries()
-
-    $scope.parseTimeToArray = (input) ->
-        return input unless input
-        time = moment(input.replace('H', ':').replace('M', ':'), 'PTH:m:sS')
-        return [time.hours(), time.minutes()]
             

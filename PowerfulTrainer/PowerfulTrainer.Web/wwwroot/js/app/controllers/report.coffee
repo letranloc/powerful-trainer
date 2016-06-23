@@ -37,6 +37,7 @@
 
     $scope.updateChartType = (type) ->
         $scope.chartType = type
+        $scope.period = 'hourly' if type is 'sleeps'
         updateTempParams()
         $state.go('cpanel.report.health', {
             chartType: type
@@ -86,26 +87,43 @@
         $scope.summaryState = null
         $scope.chartStates = []
 
-        MSHealth.getSummaries
-            period: $scope.period
-            startTime: startTime.toISOString()
-            endTime: endTime.toISOString()
-        .then (resp) ->
-            series = []
+        switch $scope.chartType
+            when 'steps', 'calories', 'heartrates'
+                MSHealth.getSummaries
+                    period: $scope.period
+                    startTime: startTime.toISOString()
+                    endTime: endTime.toISOString()
+                .then (resp) ->
+                    series = []
+                    switch $scope.chartType
+                        when 'steps'
+                            chartData = parseStepData(resp.data)
+                        when 'calories'
+                            chartData = parseCaloriesData(resp.data)
+                        when 'heartrates'
+                            chartData = parseHeartrateData(resp.data)
 
-            switch $scope.chartType
-                when 'steps'
-                    chartData = parseStepData(resp.data)
-                when 'calories'
-                    chartData = parseCaloriesData(resp.data)
-                when 'heartrates'
-                    chartData = parseHeartrateData(resp.data)
+                    series = series.concat(chartData.series)
+                    $scope.summaryState = chartData.summary
+                    $scope.chartStates = $scope.chartStates.concat(chartData.states) 
 
-            series = series.concat(chartData.series)
-            $scope.summaryState = chartData.summary
-            $scope.chartStates = $scope.chartStates.concat(chartData.states) 
+                    updateChartConfig(series)
+            when 'sleeps'
+                MSHealth.getActivities
+                    activityTypes: 'Sleep'
+                    activityIncludes: 'Details'
+                    startTime: startTime.toISOString()
+                    endTime: endTime.toISOString()
+                .then (resp) ->
+                    console.log resp.data
+                    series = []
+                    chartData = parseSleepData(resp.data)
 
-            updateChartConfig(series)
+                    series = series.concat(chartData.series)
+                    $scope.summaryState = chartData.summary
+                    $scope.chartStates = $scope.chartStates.concat(chartData.states) 
+
+                    updateChartConfig(series)
 
     updateChartConfig = (series) ->
         $scope.chartConfig.series = series
@@ -130,6 +148,30 @@
                 $scope.chartConfig.xAxis.dateTimeLabelFormats = 
                     day: '%e. %b'
 
+        switch $scope.chartType
+            when 'sleeps'
+                $scope.chartConfig.options.chart =
+                    zoomType: undefined
+                    type: 'bar'
+                $scope.chartConfig.options.tooltip.enabled = false
+                $scope.chartConfig.yAxis = 
+                    type: 'datetime'
+                    minRange: 3600 * 1000
+                    tickInterval: 3600 * 1000
+                    dateTimeLabelFormats:
+                        hour: '%I%P'
+                    labels:
+                        enabled: false
+                        formatter: ->
+                            console.log this.value
+                            Highcharts.dateFormat('%I%P', this.value);
+                    title:
+                        text: ''
+                $scope.chartConfig.xAxis =
+                    title:
+                        text: ''
+                    labels:
+                        enabled: false
         $scope.$broadcast('highchartsng.reflow')
 
     $scope.chartConfig =
@@ -184,10 +226,12 @@
         states = states.concat([
             {title: 'Distance', unit: 'km'}
             {title: 'Floor climbed'}
+            {title: 'peakHR', unit: 'bpm'}
         ])
         series =
                 name: 'Steps'
                 type: 'column'
+                color: Highcharts.getOptions().colors[0]
                 data: []
 
         if data.itemCount
@@ -205,14 +249,21 @@
                     if isDaily()
                         idx = 5
                     states[idx].value = (states[idx].value||0) + summary.floorsClimbed
+                if summary.heartRateSummary.peakHeartRate
+                    idx = 3
+                    if isDaily()
+                        idx = 6
+                    if !states[idx].value || states[idx].value < summary.heartRateSummary.peakHeartRate
+                        states[idx].value = summary.heartRateSummary.peakHeartRate
+                        states[idx].info = moment(summary.endTime).format if isDaily() then 'dddd, MMMM DD, YYYY' else 'MMMM DD, hh:mma'
                 if isDaily()
                     if summary.stepsTaken
                         if !states[1].value || states[1].value < summary.stepsTaken
                             states[1].value = summary.stepsTaken
-                            states[1].info = moment(summary.endTime).format('dddd, MMMM DD, YYYY')
+                            states[1].info = moment(summary.endTime).format if isDaily() then 'dddd, MMMM DD, YYYY' else 'MMMM DD, hh:mma'
                         if summary.stepsTaken && (!states[2].value || states[2].value > summary.stepsTaken)
                             states[2].value = summary.stepsTaken
-                            states[2].info = moment(summary.endTime).format('dddd, MMMM DD, YYYY')
+                            states[2].info = moment(summary.endTime).format if isDaily() then 'dddd, MMMM DD, YYYY' else 'MMMM DD, hh:mma'
                     series.data.push [moment(summary.endTime).startOf('day').valueOf(), summary.stepsTaken]
                 else
                     series.data.push [moment(summary.endTime).valueOf(), summary.stepsTaken]
@@ -237,7 +288,6 @@
         ]
         series = []
         currentSeri = null
-        named = false
         if data.itemCount
             for summary in data.summaries
                 hr = summary.heartRateSummary
@@ -252,13 +302,13 @@
                     states[2].count = (states[2].count||0) + 1
                     unless currentSeri
                         currentSeri =
-                            name: if named then undefined else "HR"
                             type: 'arearange'
                             color: Highcharts.getOptions().colors[0]
-                            linkedTo: if named then ':previous' else undefined
+                            linkedTo: ':previous'
                             maker:
                                 symbol: 'circle'
                             data: []
+                        unless named then named = true
                     if isDaily()
                         currentSeri.data.push [moment(summary.endTime).startOf('day').valueOf(), hr.lowestHeartRate, hr.peakHeartRate]
                     else
@@ -270,18 +320,23 @@
             if states[2].value
                 states[2].value = Math.round(states[2].value / states[2].count)
             series.reverse()
+            if series.length
+                series[0].name = "HR"
+                series[0].linkedTo = undefined
         return {states:states, series:series, summary:states[0]}
 
     parseCaloriesData = (data) ->
         states = [
             {title: 'Calories', unit: 'cals'}
-            {title: 'Highest burn', unit: 'cals'}
-            {title: 'Lowest burn', unit: 'cals'}
-            {title: 'Average burn', unit: 'cals'}
+            {title: 'Highest burned', unit: 'cals'}
+            {title: 'Lowest burned', unit: 'cals'}
+            {title: 'Average burned', unit: 'cals'}
+            {title: 'peak HR', unit: 'bpm'}
         ]
         series =
             name: 'Cals'
             type: 'column'
+            color: Highcharts.getOptions().colors[0]
             data: []
     
         if data.itemCount
@@ -296,6 +351,10 @@
                     if cals && (!states[2].value || states[2].value > cals)
                         states[2].value = cals
                         states[2].info = moment(summary.endTime).format if isDaily() then 'dddd, MMMM DD, YYYY' else 'MMMM DD, hh:mma'
+                if summary.heartRateSummary.peakHeartRate
+                    if !states[4].value || states[4].value < summary.heartRateSummary.peakHeartRate
+                        states[4].value = summary.heartRateSummary.peakHeartRate
+                        states[4].info = moment(summary.endTime).format if isDaily() then 'dddd, MMMM DD, YYYY' else 'MMMM DD, hh:mma'
                 if isDaily()
                     series.data.push [moment(summary.endTime).startOf('day').valueOf(), cals]
                 else
@@ -307,7 +366,43 @@
         return {states: states, series: series, summary: states[0]}
 
     parseSleepData = (data) ->
-        return {} 
+        states = [
+            {title: 'Time asleep', units: ['h', 'm'], showTitle: true}
+            {title: 'Restful sleep', units: ['h', 'm']}
+            {title: 'Light sleep', units: ['h', 'm']}
+            {title: 'Time to fall asleep', units: ['m', 's']}
+            {title: 'Duraing', units: ['h', 'm']}
+            {title: 'Sleep efficency', unit: '%'}
+            {title: 'Resting HR', unit: 'bpm'}
+            {title: 'Calories burned', unit: 'cals'}
+            {title: 'Woke up', unit: 'times'}
+        ]
+        series = []
+        if data.itemCount
+            data = data.sleepActivities[data.itemCount-1]
+            states[0].values = parseTimeToArray(data.sleepDuration)
+            states[1].values = parseTimeToArray(data.totalRestfulSleepDuration)
+            states[2].values = parseTimeToArray(data.totalRestlessSleepDuration)
+            states[3].values = parseTimeToArray(data.fallAsleepDuration, 'm:s')
+            states[4].values = parseTimeToArray(data.duration)
+            states[5].value = data.sleepEfficiencyPercentage
+            states[6].value = data.restingHeartRate
+            states[7].value = data.caloriesBurnedSummary.totalCalories
+            states[8].value = data.numberOfWakeups
+            series.pointStart = moment(data.startTime).valueOf()
+            for seg in data.activitySegments
+                t = parseTimeToArray(seg.duration, 'H:m:s')
+                color = if seg.segmentType is 'Sleep' then Highcharts.getOptions().colors[0] else '#FFC107'
+                ts = (t[0]*60 + t[1]*60 + t[2]) * 1000
+                series.push
+                    type: 'bar'
+                    showInLegend: false
+                    stacking: 'normal'
+                    color: color
+                    data: [ts]
+            #series.reverse()
+            #series[0].pointStart = moment(data.activitySegments[0].startTime).valueOf()
+        return {states: states, series: series, summary: states[0]} 
 
     updateChart()
     
