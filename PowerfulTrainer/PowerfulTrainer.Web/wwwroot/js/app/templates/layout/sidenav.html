@@ -14,12 +14,13 @@
     <md-menu-sidenav flex>
         <md-menu-sidenav-item ng-class="{'toggle-active': ('cpanel.index' | includedByState)||('cpanel.report' | includedByState)}">
             <md-menu-sidenav-title>
-                <md-toogle-menu layout="row" flex>
+                <md-toogle-menu id="dashboard-toggle-menu" layout="row" flex ng-click="caretup=!caretup">
                     <md-icon md-font-icon="fa fa-dashboard"></md-icon>
                     <h1 class="md-body-2" flex>Dashboard</h1>
+                    <span flex></span>
+                    <md-icon ng-hide="caretup" md-font-icon="fa fa-caret-down"></md-icon>
+                    <md-icon ng-show="caretup" md-font-icon="fa fa-caret-up"></md-icon>
                 </md-toogle-menu>
-                <md-icon md-font-icon="fa fa-caret-down"></md-icon>
-                <md-icon md-font-icon="fa fa-caret-up"></md-icon>
             </md-menu-sidenav-title>
             <md-menu-sidenav-content>
                 <md-menu-sidenav-subitem ui-sref="cpanel.index" ui-sref-active="active" ng-click="toggleNavLeft()">Dashboard</md-menu-sidenav-subitem>

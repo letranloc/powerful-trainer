@@ -419,12 +419,19 @@
             $scope.selectedDate = selectedDate
             $scope.getReport()
 
+    getArrayTimeFromSeconds = (seconds) ->
+        min = Math.floor(seconds / 60);
+        sec = seconds % 60;
+        return [min, sec]
+
     $scope.getReport = ->
         selectedDate = moment($scope.selectedDate)
         Report.getReport(selectedDate.startOf('day').toISOString(), selectedDate.endOf('day').toISOString())
         .then (resp) ->
-            console.log resp.data
             $scope.reports = resp.data.Data
+            for report in $scope.reports
+                report.DurationArr = getArrayTimeFromSeconds(report.Duration)
+            $scope.reports[0].IsGoal = true
 
     $scope.getReport()
             
