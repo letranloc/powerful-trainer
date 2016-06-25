@@ -9,14 +9,16 @@
             </md-select>
         </md-input-container>
         <span flex></span>
-        <h2 ng-if="period=='daily'">{{startTime | date: 'MMM d'}} - {{endTime | date: 'MMM d, yyyy'}}</h2>
-        <h2 ng-if="period=='hourly'">{{startTime | date: 'EEE, MMM d, yyyy'}}</h2>
-        <md-button class="md-icon-button" aria-label="Change date" ng-click="showDatePicker($event)">
-            <md-tooltip direction="bottom" ng-hide="hideTooltipOnXS">
-                Change date
-            </md-tooltip>
-            <md-icon md-font-icon="fa fa-calendar"></md-icon>
-        </md-button>
+        <div layout="row" layout-align="end center" ng-hide="hideTooltipOnXS">
+            <h2 ng-if="period=='daily'">{{startTime | date: 'MMM d'}} - {{endTime | date: 'MMM d, yyyy'}}</h2>
+            <h2 ng-if="period=='hourly'">{{startTime | date: 'EEE, MMM d, yyyy'}}</h2>
+            <md-button class="md-icon-button" aria-label="Change date" ng-click="showDatePicker($event)">
+                <md-tooltip direction="bottom" ng-hide="hideTooltipOnXS">
+                    Change date
+                </md-tooltip>
+                <md-icon md-font-icon="fa fa-calendar"></md-icon>
+            </md-button>
+        </div>
         <md-input-container ng-hide="chartType=='sleeps'" md-no-float md-theme="default-dark" style="margin-top:12px;font-size:18px">
             <md-select ng-model="period">
                 <md-option ng-repeat="p in ['hourly', 'daily'] track by $index" ng-click="updatePeriod(p)" value="{{p}}">{{p.capitalizeFirstLetter()}}</md-option>
@@ -25,6 +27,16 @@
     </div>
 </md-toolbar>
 <md-content flex>
+    <div layout="row" ng-show="hideTooltipOnXS" layout-align="end center">
+        <h3 ng-if="period=='daily'">{{startTime | date: 'MMM d'}} - {{endTime | date: 'MMM d, yyyy'}}</h3>
+        <h3 ng-if="period=='hourly'">{{startTime | date: 'EEE, MMM d, yyyy'}}</h3>
+        <md-button class="md-icon-button" aria-label="Change date" ng-click="showDatePicker($event)">
+            <md-tooltip direction="bottom" ng-hide="hideTooltipOnXS">
+                Change date
+            </md-tooltip>
+            <md-icon md-font-icon="fa fa-calendar"></md-icon>
+        </md-button>
+    </div>
     <div layout-padding>
         <state-card ng-show="summaryState" title="{{summaryState.showTitle?summaryState.title:null}}" value="{{summaryState.value}}" unit="{{summaryState.unit}}" values="summaryState.values" units="summaryState.units"></state-card>
         <highchart config="chartConfig"></highchart>

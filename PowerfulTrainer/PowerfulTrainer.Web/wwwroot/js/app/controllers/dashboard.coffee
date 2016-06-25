@@ -1,19 +1,24 @@
 ﻿angular.module 'controllers.dashboard', []
-.controller 'DashboardCtrl', ($scope, $mdSidenav, $mdMedia, $timeout, $state, Auth) ->
+.controller 'DashboardCtrl', ($rootScope, $scope, $mdSidenav, $mdMedia, $timeout, $state, Auth) ->
     $scope.$watch Auth.isAuthenticated, ->
         $scope.User = Auth.isAuthenticated()
 
     isShouldOpenToggleMenu = $state.includes('cpanel.index') || $state.includes('cpanel.report')
 
     $scope.$on '$viewContentLoaded', ->
-        if isShouldOpenToggleMenu
-            isShouldOpenToggleMenu = false
-            $timeout ->
-                $('#dashboard-toggle-menu').click()
-            , 1000
+        if isShouldOpenToggleMenu && !$rootScope.enableScrollShrink
+            openToggleMenu()
+
+    openToggleMenu = ->
+        isShouldOpenToggleMenu = false
+        $timeout ->
+            $('#dashboard-toggle-menu').click()
+        , 1000
 
     $scope.toggleNavLeft = ->
         $mdSidenav("left").toggle()
+        if isShouldOpenToggleMenu && $rootScope.enableScrollShrink
+            openToggleMenu()
 
 .controller "DashboardIndexCtrl", ($scope, $sessionStorage, $mdpDatePicker, $state, Auth, MSHealth) ->
 
