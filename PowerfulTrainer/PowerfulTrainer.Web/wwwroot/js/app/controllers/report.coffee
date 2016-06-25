@@ -231,6 +231,7 @@
         series =
                 name: 'Steps'
                 type: 'column'
+                showInLegend: false
                 color: Highcharts.getOptions().colors[0]
                 data: []
 
@@ -305,6 +306,7 @@
                             type: 'arearange'
                             color: Highcharts.getOptions().colors[0]
                             linkedTo: ':previous'
+                            showInLegend: false
                             maker:
                                 symbol: 'circle'
                             data: []
@@ -336,6 +338,7 @@
         series =
             name: 'Cals'
             type: 'column'
+            showInLegend: false
             color: Highcharts.getOptions().colors[0]
             data: []
     
