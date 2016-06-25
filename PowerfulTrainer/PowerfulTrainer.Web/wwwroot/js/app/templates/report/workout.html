@@ -30,7 +30,7 @@
         <img ng-src="{{nodata.image}}" height="400" />
     </div>
     <md-card ng-repeat="report in reports">
-        <md-card-header ng-class="{'teal': report.IsGoal}">
+        <md-card-header ng-class="{'orange': report.IsGoal}">
             <md-card-header-text layout="row">
                 <div layout="column">
                     <span class="md-title" ng-class="{'white-text': report.IsGoal}">{{report.BeginTime | date: 'EEE, MMM d, yyyy hh:mm a'}}</span>
@@ -38,7 +38,7 @@
                 </div>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-show="report.IsGoal" aria-label="Goal">
-                    <md-icon md-font-icon="fa fa-trophy fa-2x" class="amber-text"></md-icon>
+                    <md-icon md-font-icon="fa fa-trophy fa-2x" ></md-icon>
                 </md-button>
             </md-card-header-text>
         </md-card-header>

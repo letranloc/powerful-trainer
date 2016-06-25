@@ -28,13 +28,19 @@ namespace PowerfulTrainer
                     writer.Dispose();
                 }
 
+
                 var response = await request.GetResponseAsync();
-                var respStream = response.GetResponseStream();
-
-
-                using (StreamReader sr = new StreamReader(respStream))
+                try
                 {
-                    return JsonConvert.DeserializeObject<T>(sr.ReadToEnd());
+                    var respStream = response.GetResponseStream();
+                    using (StreamReader sr = new StreamReader(respStream))
+                    {
+                        return JsonConvert.DeserializeObject<T>(sr.ReadToEnd());
+                    }
+                }
+                catch
+                {
+                    return default(T);
                 }
             }
             catch

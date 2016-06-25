@@ -29,24 +29,27 @@ namespace PowerfulTrainer
         public static BandPedometerReading Pedometer;
         public static BandDistanceReading Distance;
 
+        public static BandClient BandClient;
+
         public static double? BeginCalories;
         public static double? BeginDistance;
         public static double? BeginStep;
+        public static List<int> ListHeartRate = new List<int>();
 
         public static double? LastCalories;
         public static double? LastDistance;
         public static double? LastStep;
 
-        public static async void Update()
+        public static async Task Init()
         {
             var BandClientManager = Microsoft.Band.Portable.BandClientManager.Instance;
             var pairedBands = await BandClientManager.GetPairedBandsAsync();
             try
             {
-                BandClient bandClient = await BandClientManager.ConnectAsync(pairedBands.First());
+                BandClient = await BandClientManager.ConnectAsync(pairedBands.First());
                 {
-                    await RequestConsent(bandClient);
-                    await GetSensorValue(bandClient);
+                    await RequestConsent();
+                    GetSensorValue();
                 }
 
             }
@@ -55,63 +58,79 @@ namespace PowerfulTrainer
             }
         }
 
-        public static void Reset()
+        public static async Task Start()
         {
             BeginCalories = null;
             BeginStep = null;
             BeginDistance = null;
+            ListHeartRate.Clear();
+
+            await BandClient.SensorManager.HeartRate.StartReadingsAsync();
+            await BandClient.SensorManager.Pedometer.StartReadingsAsync();
+            await BandClient.SensorManager.Calories.StartReadingsAsync();
+            await BandClient.SensorManager.Accelerometer.StartReadingsAsync();
+            await BandClient.SensorManager.Distance.StartReadingsAsync();
+            await BandClient.TileManager.StartEventListenersAsync();
         }
 
-        private static async Task GetSensorValue(BandClient bandClient)
+        public static async void Stop()
         {
-            bandClient.SensorManager.HeartRate.ReadingChanged += (sender, args) =>
+            await BandClient.SensorManager.HeartRate.StopReadingsAsync();
+            await BandClient.SensorManager.Pedometer.StopReadingsAsync();
+            await BandClient.SensorManager.Calories.StopReadingsAsync();
+            await BandClient.SensorManager.Accelerometer.StopReadingsAsync();
+            await BandClient.SensorManager.Distance.StopReadingsAsync();
+            await BandClient.TileManager.StopEventListenersAsync();
+        }
+
+        private static void GetSensorValue()
+        {
+            BandClient.SensorManager.HeartRate.ReadingChanged += (sender, args) =>
             {
-                HeartRate = args.SensorReading;
+                if (args.SensorReading.Quality == HeartRateQuality.Locked)
+                {
+                    HeartRate = args.SensorReading;
+                    ListHeartRate.Add(HeartRate.HeartRate);
+                }
             };
-            bandClient.SensorManager.Accelerometer.ReadingChanged += (sender, args) =>
+            BandClient.SensorManager.Accelerometer.ReadingChanged += (sender, args) =>
             {
                 Accelerometer = args.SensorReading;
             };
-            bandClient.SensorManager.Calories.ReadingChanged += (sender, args) =>
+            BandClient.SensorManager.Calories.ReadingChanged += (sender, args) =>
             {
-                LastCalories = GetValue(BandSensorType.Calories);
+                //LastCalories = GetValue(BandSensorType.Calories);
                 Calories = args.SensorReading;
                 if (BeginCalories == null)
                 {
                     BeginCalories = Calories.Calories;
                 }
             };
-            bandClient.SensorManager.Pedometer.ReadingChanged += (sender, args) =>
+            BandClient.SensorManager.Pedometer.ReadingChanged += (sender, args) =>
             {
-                LastStep = GetValue(BandSensorType.Step);
+               // LastStep = GetValue(BandSensorType.Step);
                 Pedometer = args.SensorReading;
                 if (BeginStep == null)
                 {
                     BeginStep = Pedometer.TotalSteps;
                 }
             };
-            bandClient.SensorManager.Distance.ReadingChanged += (sender, args) =>
+            BandClient.SensorManager.Distance.ReadingChanged += (sender, args) =>
             {
-                LastDistance = GetValue(BandSensorType.Distance);
+               // LastDistance = GetValue(BandSensorType.Distance);
                 Distance = args.SensorReading;
                 if (BeginDistance == null)
                 {
                     BeginDistance = Distance.TotalDistance;
                 }
             };
-
-            await bandClient.SensorManager.HeartRate.StartReadingsAsync();
-            await bandClient.SensorManager.Pedometer.StartReadingsAsync();
-            await bandClient.SensorManager.Calories.StartReadingsAsync();
-            await bandClient.SensorManager.Accelerometer.StartReadingsAsync();
-            await bandClient.SensorManager.Distance.StartReadingsAsync();
         }
 
-        private static async Task RequestConsent(BandClient bandClient)
+        private static async Task RequestConsent()
         {
-            if (bandClient.SensorManager.HeartRate.UserConsented != UserConsent.Granted)
+            if (BandClient.SensorManager.HeartRate.UserConsented != UserConsent.Granted)
             {
-                await bandClient.SensorManager.HeartRate.RequestUserConsent();
+                await BandClient.SensorManager.HeartRate.RequestUserConsent();
             }
         }
 
@@ -169,7 +188,7 @@ namespace PowerfulTrainer
                 switch (sensorType)
                 {
                     case BandSensorType.HeartRate:
-                        return HeartRate.HeartRate;
+                        return ListHeartRate.Average();
                     case BandSensorType.AccelerometerX:
                         return Accelerometer.AccelerationX;
                     case BandSensorType.AccelerometerY:

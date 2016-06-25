@@ -20,7 +20,7 @@ namespace PowerfulTrainer
 
         protected override void OnStart()
         {
-            AppManagement.Run();
+           // AppManagement.Run();
         }
 
         protected override void OnSleep()

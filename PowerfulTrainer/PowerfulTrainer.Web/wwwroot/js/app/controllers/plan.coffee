@@ -24,7 +24,7 @@
     $scope.getPlans(true)
 
     $scope.openPTCard = ->
-        invokeCSharpAction('PTCard')
+        invokeCSharpAction('PTCard:')
 
     $scope.startWorkout = (plan) ->
         $rootScope.setLoadingState(true)
