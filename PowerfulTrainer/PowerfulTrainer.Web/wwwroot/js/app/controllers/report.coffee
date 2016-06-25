@@ -406,18 +406,32 @@
 
     updateChart()
     
-.controller "ReportWorkoutCtrl", ($scope, $stateParams, $mdpDatePicker, Report) ->
+.controller "ReportWorkoutCtrl", ($scope, $stateParams, $state, $mdpDatePicker, Report) ->
     
-    $scope.selectedDate = $stateParams.date || new Date()
+    
+    if $stateParams.date
+        $scope.selectedDate = moment($stateParams.date, 'YYYY-MM-DD')
+    else
+        $scope.selectedDate = moment()
     $scope.reports = []
     
+    if $scope.selectedDate.valueOf() <= moment().subtract(1, 'd').valueOf()
+        $scope.hideMessageWorkout = true
+    else $scope.hideMessageWorkout = false
+
     $scope.showDatePicker = (evt) ->
-        $mdpDatePicker $scope.startTime,
+        $mdpDatePicker $scope.selectedDate.toDate(),
             targetEvent: evt
             maxDate: moment()
         .then (selectedDate) ->
-            $scope.selectedDate = selectedDate
-            $scope.getReport()
+            $state.go 'cpanel.report.workout',
+                date: moment(selectedDate).format('YYYY-MM-DD')
+
+    $scope.startWorkoutOrChangeDate = (evt) ->
+        if $scope.hideMessageWorkout
+            $scope.showDatePicker(evt)
+        else
+            $state.go('cpanel.plan.index')
 
     getArrayTimeFromSeconds = (seconds) ->
         min = Math.floor(seconds / 60);
@@ -426,12 +440,11 @@
 
     $scope.getReport = ->
         selectedDate = moment($scope.selectedDate)
-        Report.getReport(selectedDate.startOf('day').toISOString(), selectedDate.endOf('day').toISOString())
+        Report.getReport($scope.selectedDate.startOf('day').toISOString(), $scope.selectedDate.endOf('day').toISOString())
         .then (resp) ->
             $scope.reports = resp.data.Data
             for report in $scope.reports
                 report.DurationArr = getArrayTimeFromSeconds(report.Duration)
-            $scope.reports[0].IsGoal = true
 
     $scope.getReport()
             

@@ -7,7 +7,7 @@
             <b>Workout report</b>
         </h2>
         <span flex></span>
-        <h2>{{selectedDate | date: 'EEE, MMM d, yyyy'}}</h2>
+        <h2>{{selectedDate.toISOString() | date: 'EEE, MMM d, yyyy'}}</h2>
         <md-button class="md-icon-button" aria-label="Change date" ng-click="showDatePicker($event)">
             <md-tooltip direction="bottom" ng-hide="hideTooltipOnXS">
                 Change date
@@ -20,12 +20,13 @@
     <md-card ng-show="reports.length==0">
         <md-card-header>
             <md-card-header-text>
-                <span class="md-title">Oops...Go to plans and start a workout. Don't forget to wear your Band to track your progress.</span>
+                <span class="md-title" ng-hide="hideMessageWorkout">Oops...Go to plans and start a workout. Don't forget to wear your Band to track your progress.</span>
+                <span class="md-title" ng-show="hideMessageWorkout">Oops...You don't have any workout on this day.</span>
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
-            <md-button class="md-raised md-primary" ui-sref="cpanel.plan.index">
-                Start workout
+            <md-button class="md-raised md-primary" ng-click="startWorkoutOrChangeDate($event)">
+                {{hideMessageWorkout?'Change date':'Start workout'}}
                 <md-icon md-font-icon="fa fa-arrow-right" class="white-text"></md-icon>
             </md-button>
         </md-card-content>
