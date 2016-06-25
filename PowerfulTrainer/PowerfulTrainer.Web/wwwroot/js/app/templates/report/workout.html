@@ -17,20 +17,18 @@
     </div>
 </md-toolbar>
 <md-content flex>
-    <md-card ng-show="reports.length==0">
-        <md-card-header>
-            <md-card-header-text>
-                <span class="md-title" ng-hide="hideMessageWorkout || !isOwnReport">Oops...Go to plans and start a workout. Don't forget to wear your Band to track your progress.</span>
-                <span class="md-title" ng-show="hideMessageWorkout||!isOwnReport">Oops...{{isOwnReport?'You': username}} don't have any workout on this day.</span>
-            </md-card-header-text>
-        </md-card-header>
-        <md-card-content>
-            <md-button class="md-raised md-primary" ng-click="startWorkoutOrChangeDate($event)">
-                {{hideMessageWorkout||!isOwnReport?'Change date':'Start workout'}}
-                <md-icon ng-hide="hideMessageWorkout||!isOwnReport" md-font-icon="fa fa-arrow-right" class="white-text"></md-icon>
-            </md-button>
-        </md-card-content>
-    </md-card>
+    <div ng-if="!reports.length && !isLoadingState" layout="column" layout-gt-sm="row" layout-padding layout-align="center center">
+        <div layout="column">
+            <h2 class="md-title" style="font-size:34px">{{nodata.title}}</h2>
+            <div layout="row">
+                <md-button aria-label="Change date" ng-click="showDatePicker($event)">
+                    Change date
+                    <md-icon md-font-icon="fa fa-arrow-circle-right"></md-icon>
+                </md-button>
+            </div>
+        </div>
+        <img ng-src="{{nodata.image}}" height="400" />
+    </div>
     <md-card ng-repeat="report in reports">
         <md-card-header ng-class="{'teal': report.IsGoal}">
             <md-card-header-text layout="row">

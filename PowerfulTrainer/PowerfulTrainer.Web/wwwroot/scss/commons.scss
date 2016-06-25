@@ -87,6 +87,10 @@ md-chips .md-chips {
     box-shadow: inherit;
 }
 
+md-toolbar {
+    min-height: 64px;
+}
+
 .pointer {
     cursor: pointer !important;
 }

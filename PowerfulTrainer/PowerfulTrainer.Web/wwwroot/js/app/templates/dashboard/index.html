@@ -7,7 +7,7 @@
             <b>Dashboard</b>
         </h2>
         <span flex></span>
-        <h2>{{currentDate | date: 'EEE, MMM d, yyyy'}}</h2>
+        <h2 style="text-align:right">{{currentDate | date: 'EEE, MMM d, yyyy'}}</h2>
         <md-button class="md-icon-button" aria-label="Change date" ng-click="showDatePicker($event)">
             <md-tooltip direction="bottom" ng-hide="hideTooltipOnXS">
                 Change date

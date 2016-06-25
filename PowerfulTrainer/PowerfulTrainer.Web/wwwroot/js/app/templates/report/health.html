@@ -4,7 +4,7 @@
             <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
         </md-button>
         <md-input-container md-no-float md-theme="default-dark" style="margin-top:12px;font-size:18px">
-            <md-select ng-model="chartType">
+            <md-select ng-model="chartType" width="4">
                 <md-option ng-repeat="t in chartTypes" value="{{t}}" ng-click="updateChartType(t)">{{t.capitalizeFirstLetter()}}</md-option>
             </md-select>
         </md-input-container>
@@ -37,23 +37,41 @@
             <md-icon md-font-icon="fa fa-calendar"></md-icon>
         </md-button>
     </div>
-    <div layout-padding>
-        <state-card ng-show="summaryState" title="{{summaryState.showTitle?summaryState.title:null}}" value="{{summaryState.value}}" unit="{{summaryState.unit}}" values="summaryState.values" units="summaryState.units"></state-card>
-        <highchart config="chartConfig"></highchart>
+    <div ng-if="!charts.length && !isLoadingState" layout="column" layout-gt-sm="row" layout-padding layout-align="center center">
+        <div layout="column">
+            <h2 class="md-title" style="font-size:34px">{{nodata[chartType].title}}</h2>
+            <div layout="row">
+                <md-button aria-label="Change date" ng-click="showDatePicker($event)">
+                    Change date
+                    <md-icon md-font-icon="fa fa-arrow-circle-right"></md-icon>
+                </md-button>
+            </div>
+        </div>
+        <img ng-src="{{nodata[chartType].image}}" height="400" />
+    </div>
+    <div layout-padding ng-repeat="chart in charts">
         <md-card>
             <md-card-content>
-                <div layout="column" layout-gt-sm="row" flex ng-repeat="state in chartStates" ng-if="$index%4==0">
+                <state-card ng-show="chart.summary" title="{{chart.summary.showTitle?summaryState.title:null}}"
+                            value="{{chart.summary.value}}" unit="{{chart.summary.unit}}" values="chart.summary.values"
+                            units="chart.summary.units"></state-card>
+                <highchart config="chart.configs"></highchart>
+            </md-card-content>
+        </md-card>
+        <md-card>
+            <md-card-content>
+                <div layout="column" layout-gt-sm="row" flex ng-repeat="state in chart.states" ng-if="$index%4==0">
                     <div layout="row" layout-padding flex>
-                        <state-card ng-if="chartStates[$index]" title="{{chartStates[$index].title}}" value="{{chartStates[$index].value}}" unit="{{chartStates[$index].unit}}"
-                                    values="chartStates[$index].values" units="chartStates[$index].units" info="{{chartStates[$index].info}}"></state-card>
-                        <state-card ng-if="chartStates[$index+1]" title="{{chartStates[$index+1].title}}" value="{{chartStates[$index+1].value}}" unit="{{chartStates[$index+1].unit}}"
-                                    values="chartStates[$index+1].values" units="chartStates[$index+1].units" info="{{chartStates[$index+1].info}}"></state-card>
+                        <state-card ng-if="chart.states[$index]" title="{{chart.states[$index].title}}" value="{{chart.states[$index].value}}" unit="{{chart.states[$index].unit}}"
+                                    values="chart.states[$index].values" units="chart.states[$index].units" info="{{chart.states[$index].info}}"></state-card>
+                        <state-card ng-if="chart.states[$index+1]" title="{{chart.states[$index+1].title}}" value="{{chart.states[$index+1].value}}" unit="{{chart.states[$index+1].unit}}"
+                                    values="chart.states[$index+1].values" units="chart.states[$index+1].units" info="{{chart.states[$index+1].info}}"></state-card>
                     </div>
                     <div layout="row" layout-padding flex>
-                        <state-card ng-if="chartStates[$index+2]" title="{{chartStates[$index+2].title}}" value="{{chartStates[$index+2].value}}" unit="{{chartStates[$index+2].unit}}"
-                                    values="chartStates[$index+2].values" units="chartStates[$index+2].units" info="{{chartStates[$index+2].info}}"></state-card>
-                        <state-card ng-if="chartStates[$index+3]" title="{{chartStates[$index+3].title}}" value="{{chartStates[$index+3].value}}" unit="{{chartStates[$index+3].unit}}"
-                                    values="chartStates[$index+3].values" units="chartStates[$index+3].units" info="{{chartStates[$index+3].info}}"></state-card>
+                        <state-card ng-if="chart.states[$index+2]" title="{{chart.states[$index+2].title}}" value="{{chart.states[$index+2].value}}" unit="{{chart.states[$index+2].unit}}"
+                                    values="chart.states[$index+2].values" units="chart.states[$index+2].units" info="{{chart.states[$index+2].info}}"></state-card>
+                        <state-card ng-if="chart.states[$index+3]" title="{{chart.states[$index+3].title}}" value="{{chart.states[$index+3].value}}" unit="{{chart.states[$index+3].unit}}"
+                                    values="chart.states[$index+3].values" units="chart.states[$index+3].units" info="{{chart.states[$index+3].info}}"></state-card>
                     </div>
                 </div>
             </md-card-content>

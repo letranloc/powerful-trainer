@@ -20,7 +20,7 @@
         if isShouldOpenToggleMenu && $rootScope.enableScrollShrink
             openToggleMenu()
 
-.controller "DashboardIndexCtrl", ($scope, $sessionStorage, $mdpDatePicker, $state, Auth, MSHealth) ->
+.controller "DashboardIndexCtrl", ($rootScope, $scope, $sessionStorage, $mdpDatePicker, $state, Auth, MSHealth) ->
 
     unless $sessionStorage.startTime
         $sessionStorage.startTime = new Date()
@@ -45,27 +45,33 @@
             Auth.loginMSHealth()
     
     $scope.updateSummaries = ->
+        $rootScope.setLoadingState(true)
+        utc = moment($scope.currentDate).utc()
         MSHealth.getSummaries
             period: 'daily'
-            startTime: moment($scope.currentDate).startOf('day').toISOString()
-            endTime: moment($scope.currentDate).startOf('day').add(1, 'h').toISOString()
+            startTime: utc.startOf('day').toISOString()
+            endTime: utc.endOf('day').toISOString()
         .then (resp) ->
             $scope.summary = resp.data.summaries[0]
+            $rootScope.setLoadingState(false)
         , (resp) ->
-            console.log resp
+            mdToast.showSimple resp.data.Message, 'danger'
+            $rootScope.setLoadingState(false)
     
         MSHealth.getActivities
             activityTypes: 'Sleep'
             activityIncludes: 'Details'
-            startTime: moment($scope.currentDate).startOf('day').toISOString()
-            endTime: moment($scope.currentDate).endOf('day').toISOString()
+            startTime: utc.startOf('day').toISOString()
+            endTime: utc.endOf('day').toISOString()
         .then (resp) ->
             if resp.data.sleepActivities
                 $scope.sleepActivities = resp.data.sleepActivities
                 for a in $scope.sleepActivities
                     a.sleepDuration = parseTimeToArray(a.sleepDuration)
+                $rootScope.setLoadingState(false)
         , (resp) ->
-            console.log resp
+            mdToast.showSimple resp.data.Message, 'danger'
+            $rootScope.setLoadingState(false)
 
     $scope.updateSummaries()
             

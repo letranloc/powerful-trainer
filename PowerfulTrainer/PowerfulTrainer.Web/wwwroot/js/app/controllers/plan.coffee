@@ -1,5 +1,5 @@
 ﻿angular.module "controllers.plan", []
-.controller "PlanIndexCtrl", ($scope, $state, $mdBottomSheet, $location, $mdMenu, AppCfg, mdDialog, mdToast, Plan, EventModel) ->
+.controller "PlanIndexCtrl", ($rootScope, $scope, $state, $mdBottomSheet, $location, $mdMenu, AppCfg, mdDialog, mdToast, Plan, EventModel) ->
     $scope.query =
         limit: $location.search().limit || AppCfg.defaultLimit
         limitOptions: AppCfg.defaultLimitOptions
@@ -9,6 +9,7 @@
     $scope.updateLocationSearch = false
 
     $scope.getPlans = ->
+        $rootScope.setLoadingState(true)
         Plan.getAll($scope.query).then (resp) ->
             $scope.plans = resp.data.Data.Result
             $scope.query.total = resp.data.Data.Count
@@ -16,18 +17,23 @@
                 $location.search('limit', $scope.query.limit)
                 $location.search('page', $scope.query.page)
             else $scope.updateLocationSearch = false
+            $rootScope.setLoadingState(false)
         , (resp) ->
             mdToast.showSimple resp.data.Message, "danger"
+            $rootScope.setLoadingState(false)
     $scope.getPlans(true)
 
     $scope.openPTCard = ->
         invokeCSharpAction('PTCard')
 
     $scope.startWorkout = (plan) ->
+        $rootScope.setLoadingState(true)
         Plan.get(plan.Id).then (resp) ->
             invokeCSharpAction('plan:' + JSON.stringify(resp.data.Data))
+            $rootScope.setLoadingState(false)
         , (resp) ->
             mdToast.showSimple resp.data.Message, "danger"
+            $rootScope.setLoadingState(false)
 
     $scope.share = (evt, plan) ->
         $mdMenu.hide()
@@ -39,13 +45,16 @@
                     mdToast.showSimple resp.data.Message, "danger"
 
     $scope.delete = (evt, plan) ->
+        $rootScope.setLoadingState(true)
         mdDialog.showConfirm(evt, "Delete plan", "Are you sure?")
         .then ->
             Plan.delete(plan.Id).then (resp) ->
                 $scope.plans.remove(plan)
                 mdToast.showSimple resp.data.Message, "success"
+                $rootScope.setLoadingState(false)
             , (resp) ->
                 mdToast.showSimple resp.data.Message, "danger"
+                $rootScope.setLoadingState(false)
 
 .controller "PlanCreateCtrl", ($scope, $stateParams, $state, $q, $timeout, cookies, mdDialog, mdToast, Plan, Exercise) ->
     if $stateParams.id
@@ -112,20 +121,25 @@
     $scope.save = ->
         if $scope.validate($scope.plan)
             $scope.isSaving = true
+            $rootScope.setLoadingState(true)
             if $scope.plan.Id
                 Plan.update($scope.plan).then (resp) ->
                     mdToast.showSimple resp.data.Message, "success"
                     $state.go("cpanel.plan.edit", {id: $scope.plan.Id})
                     $scope.isSaving = false
+                    $rootScope.setLoadingState(false)
                 , (resp) ->
                     mdToast.showSimple resp.data.Message, "danger"
                     $scope.isSaving = false
+                    $rootScope.setLoadingState(false)
             else
                 Plan.add($scope.plan).then (resp) ->
                     mdToast.showSimple resp.data.Message, "success"
+                    $rootScope.setLoadingState(false)
                     $state.go("cpanel.plan.edit", {id: resp.data.Data.Id})
                 , (resp) ->
                     mdToast.showSimple resp.data.Message, "danger"
                     $scope.isSaving = false
+                    $rootScope.setLoadingState(false)
         else
             mdToast.showSimple "Invalid plan. Please check exercises and try again.", "danger"
