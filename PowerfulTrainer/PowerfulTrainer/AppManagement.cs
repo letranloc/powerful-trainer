@@ -26,14 +26,11 @@ namespace PowerfulTrainer
             //await ObserveEvent();
         }
 
-
-        private static bool IsStopWorkout = true;
         private static async Task ObserveEvent()
         {
             while (true)
             {
                 await Task.Delay(1000);
-                if (!IsStopWorkout)
                 {
                     foreach (var trainingEvent in Events)
                     {
@@ -41,15 +38,6 @@ namespace PowerfulTrainer
                     }
                 }
             }
-        }
-        public static void DoWorkout()
-        {
-            IsStopWorkout = false;
-            BandManagement.Reset();
-        }
-        public static void StopWorkout()
-        {
-            IsStopWorkout = true;
         }
     }
 }

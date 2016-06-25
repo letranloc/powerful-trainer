@@ -11,8 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
 using Xamarin.Forms;
 namespace PowerfulTrainer
 {
@@ -24,15 +24,17 @@ namespace PowerfulTrainer
 
             InitializeComponent();
             Browser.OnJsNotify += Browser_OnJsNotify;
-            Timer.Interval = TimeSpan.FromSeconds(1);
-            Timer.Tick += Timer_Tick;
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await ConnectBand();
+            await BandManagement.Init();
+            BandClient = BandManagement.BandClient;
             await CreateBandTitle();
+            SetTileBeginData();
+            BandClient.TileManager.TileButtonPressed += TileManager_TileButtonPressed;
+            Device.StartTimer(TimeSpan.FromSeconds(1), Timer_Tick);
         }
 
         PlanData PlanData;
@@ -141,18 +143,12 @@ namespace PowerfulTrainer
         BandClient BandClient = null;
         private async Task CreateBandTitle()
         {
-            //await BandClient.TileManager.RemoveTileAsync(tileGuid);
             var Tiles = await BandClient.TileManager.GetTilesAsync();
-            if(Tiles.Count(u=>u.Id == tileGuid)>0)
+            if (Tiles.Count(u => u.Id == tileGuid) > 0)
             {
                 return;
             }
             var Theme = await BandClient.PersonalizationManager.GetThemeAsync();
-            try
-            {
-                
-            }
-            catch { }
 
             var IconStream = typeof(MainPage).GetTypeInfo().Assembly.GetManifestResourceStream("PowerfulTrainer.Images.BandIcon.png");
             var SmallIconStream = typeof(MainPage).GetTypeInfo().Assembly.GetManifestResourceStream("PowerfulTrainer.Images.BandSmallIcon.png");
@@ -162,7 +158,8 @@ namespace PowerfulTrainer
             {
                 Name = "Powerful Trainer",
                 Icon = Icon,
-                SmallIcon = SmallIcon
+                SmallIcon = SmallIcon,
+                IsScreenTimeoutDisabled = true
             };
             FilledPanel panel = new FilledPanel
             {
@@ -200,9 +197,35 @@ namespace PowerfulTrainer
             catch { }
         }
 
+        object LockObj = new object();
+        bool CanSetTileData = true;
+        private async void SetTileBeginData()
+        {
+            PageData pageContent = new PageData()
+            {
+                PageId = pageGuid,
+                PageLayoutIndex = 0,
+            };
+            var pageContentData = pageContent.Data;
+
+            pageContentData.Add(new WrappedTextBlockData()
+            {
+                ElementId = 2,
+                Text = "Have a nice day"
+            });
+            pageContentData.Add(new TextButtonData()
+            {
+                ElementId = 1,
+                Text = "^^!"
+            });
+
+            await BandClient.TileManager.SetTilePageDataAsync(tileGuid, pageContent);
+        }
+
         private async void SetTileData()
         {
-            //await BandClient.TileManager.RemoveTilePagesAsync(tileGuid);
+            Monitor.Enter(LockObj);
+            CanSetTileData = false;
             PageData pageContent = new PageData()
             {
                 PageId = pageGuid,
@@ -222,78 +245,24 @@ namespace PowerfulTrainer
                     ElementId = 2,
                     Text = PlanItem.Name + " " + PlanItem.SubInfo,
                 });
+                var BandTime = ExTimeSpan.Add(TimeSpan.FromSeconds(2));
                 pageContentData.Add(new TextBlockData()
                 {
                     ElementId = 3,
-                    Text = ExTimeSpan.Minutes.ToString("00") + ":" + ExTimeSpan.Seconds.ToString("00")
-                });
-            }
-            else if (ExIndex == PlanData.Data.Count)
-            {
-                pageContentData.Add(new WrappedTextBlockData()
-                {
-                    ElementId = 2,
-                    Text = "Well done. Have a nice day ^^"
+                    Text = BandTime.Minutes.ToString("00") + ":" + BandTime.Seconds.ToString("00")
                 });
             }
             await BandClient.TileManager.SetTilePageDataAsync(tileGuid, pageContent);
-        }
-
-        private async Task ConnectBand()
-        {
-            var BandInfo = (await BandClientManager.Instance.GetPairedBandsAsync()).FirstOrDefault();
-            BandClient = await BandClientManager.Instance.ConnectAsync(BandInfo);
-            await BandClient.SensorManager.HeartRate.RequestUserConsent();
-            BandClient.SensorManager.HeartRate.ReadingChanged += HeartRate_ReadingChanged;
-            BandClient.SensorManager.Pedometer.ReadingChanged += Pedometer_ReadingChanged;
-            BandClient.SensorManager.Calories.ReadingChanged += Calories_ReadingChanged;
-            BandClient.TileManager.TileButtonPressed += TileManager_TileButtonPressed;
+            CanSetTileData = true;
+            Monitor.Exit(LockObj);
         }
 
         private void TileManager_TileButtonPressed(object sender, BandTileButtonPressedEventArgs e)
         {
+            if(RunTimer)
             Device.BeginInvokeOnMainThread(() =>
             {
                 SetWorkout();
-            });
-        }
-
-        private double BeginCalories = 0;
-        private void Calories_ReadingChanged(object sender, Microsoft.Band.Portable.Sensors.BandSensorReadingEventArgs<Microsoft.Band.Portable.Sensors.BandCaloriesReading> e)
-        {
-            if (BeginCalories == 0)
-            {
-                BeginCalories = e.SensorReading.Calories;
-            }
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                CalValue.Text = (e.SensorReading.Calories - BeginCalories).ToString("0");
-                CalChart(CalBar, PlanData.TotalCals, e.SensorReading.Calories - BeginCalories);
-            });
-        }
-
-        private double BeginStep = 0;
-        private void Pedometer_ReadingChanged(object sender, Microsoft.Band.Portable.Sensors.BandSensorReadingEventArgs<Microsoft.Band.Portable.Sensors.BandPedometerReading> e)
-        {
-            if (BeginStep == 0)
-            {
-                BeginStep = e.SensorReading.TotalSteps;
-            }
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                StepValue.Text = (e.SensorReading.TotalSteps - BeginStep).ToString("0");
-                CalChart(StepBar, PlanData.TotalSteps, e.SensorReading.TotalSteps - BeginStep);
-            });
-        }
-
-        private List<int> ListHeartRate = new List<int>();
-        private void HeartRate_ReadingChanged(object sender, Microsoft.Band.Portable.Sensors.BandSensorReadingEventArgs<Microsoft.Band.Portable.Sensors.BandHeartRateReading> e)
-        {
-            ListHeartRate.Add(e.SensorReading.HeartRate);
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                HeartValue.Text = ListHeartRate.Average().ToString("0");
-                CalChart(HeartBar, PlanData.AvgHeartRate, ListHeartRate.Average());
             });
         }
 
@@ -303,43 +272,67 @@ namespace PowerfulTrainer
         }
 
         int ExIndex = -1;
-        DispatcherTimer Timer = new DispatcherTimer();
         TimeSpan TotalTimeSpan = new TimeSpan();
         TimeSpan ExTimeSpan = new TimeSpan();
+        DateTime BeginTime = new DateTime();
         private async void StartWorkout()
         {
             ExIndex = -1;
-            NextBtn.Text = "Next";
+            NextBtn.Text = "Next";     
             Workout.IsVisible = true;
             TotalTimeSpan = new TimeSpan();
-            Timer.Start();
+            BeginTime = DateTime.Now;
             SetWorkout();
-            await BandClient.SensorManager.HeartRate.StartReadingsAsync();
-            await BandClient.SensorManager.Pedometer.StartReadingsAsync();
-            await BandClient.SensorManager.Calories.StartReadingsAsync();
-            await BandClient.TileManager.StartEventListenersAsync();
+            await BandManagement.Start();
+            RunTimer = true;
         }
 
         private async void StopWorkout()
         {
-            await BandClient.SensorManager.HeartRate.StopReadingsAsync();
-            await BandClient.SensorManager.Pedometer.StopReadingsAsync();
-            await BandClient.SensorManager.Calories.StopReadingsAsync();
-            await BandClient.TileManager.StopEventListenersAsync();
-            BeginStep = 0;
-            BeginCalories = 0;
-            ListHeartRate.Clear();
+            RunTimer = false;
+            SetTileBeginData();
+            BandManagement.Stop();
+            await HttpClient.Post<string>("http://aloraha.com/api/report", new AddReportReq()
+            {
+                PlanID = PlanData.Id,
+                AvgHeartRate = (float)BandManagement.GetValue(BandSensorType.HeartRate),
+                TotalCals = (float)BandManagement.GetValue(BandSensorType.Calories),
+                TotalSteps = (float)BandManagement.GetValue(BandSensorType.Step),
+                BeginTime = BeginTime,
+                Duration = (int)TotalTimeSpan.TotalSeconds
+            });
             Workout.IsVisible = false;
+            Browser.Uri = "http://aloraha.com/report/workout";
         }
 
-        private void Timer_Tick(object sender, object e)
+        bool RunTimer = false;
+        private bool Timer_Tick()
         {
-            SetTileData();
-            TotalTimeSpan = TotalTimeSpan.Add(TimeSpan.FromSeconds(1));
-            TotalTime.Text = TotalTimeSpan.Hours.ToString("00") + ":" + TotalTimeSpan.Minutes.ToString("00") + ":" + TotalTimeSpan.Seconds.ToString("00");
+            if (RunTimer)
+            {
+                if (CanSetTileData)
+                {
+                    SetTileData();
+                }
+                TotalTimeSpan = TotalTimeSpan.Add(TimeSpan.FromSeconds(1));
+                TotalTime.Text = TotalTimeSpan.Hours.ToString("00") + ":" + TotalTimeSpan.Minutes.ToString("00") + ":" + TotalTimeSpan.Seconds.ToString("00");
 
-            ExTimeSpan = ExTimeSpan.Add(TimeSpan.FromSeconds(1));
-            ExTime.Text = ExTimeSpan.Hours.ToString("00") + ":" + ExTimeSpan.Minutes.ToString("00") + ":" + ExTimeSpan.Seconds.ToString("00");
+                ExTimeSpan = ExTimeSpan.Add(TimeSpan.FromSeconds(1));
+                ExTime.Text = ExTimeSpan.Minutes.ToString("00") + ":" + ExTimeSpan.Seconds.ToString("00");
+
+                CalValue.Text = (BandManagement.GetValue(BandSensorType.Calories)).ToString("0");
+                CalChart(CalBar, PlanData.TotalCals, BandManagement.GetValue(BandSensorType.Calories));
+
+                StepValue.Text = (BandManagement.GetValue(BandSensorType.Step)).ToString("0");
+                CalChart(StepBar, PlanData.TotalSteps, BandManagement.GetValue(BandSensorType.Step));
+
+                HeartValue.Text = (BandManagement.GetValue(BandSensorType.HeartRate)).ToString("0");
+                CalChart(HeartBar, PlanData.AvgHeartRate, BandManagement.GetValue(BandSensorType.HeartRate));
+
+                DistanceValue.Text = (BandManagement.GetValue(BandSensorType.Step)*0.5).ToString("0");
+                CalChart(DistanceBar, PlanData.TotalSteps * 0.5, BandManagement.GetValue(BandSensorType.Step)*0.5);
+            }
+            return true;
         }
 
         private void SetWorkout()
@@ -376,7 +369,6 @@ namespace PowerfulTrainer
             {
                 NextBtn.Text = "Done";
             }
-            //SetTileData();
         }
 
         private void CalChart(Grid Bar, double? MaxValue, double Value)
@@ -393,7 +385,7 @@ namespace PowerfulTrainer
                 {
                     VerticalOptions = LayoutOptions.End,
                     HorizontalOptions = LayoutOptions.Fill,
-                    BackgroundColor = Color.FromHex("#1565C0"),
+                    BackgroundColor = (Bar.Parent as Grid).BackgroundColor,
                     HeightRequest = Height
                 });
             }

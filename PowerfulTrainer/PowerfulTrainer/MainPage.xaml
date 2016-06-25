@@ -24,7 +24,7 @@
       </Grid>
 
       <Grid Grid.Row="1" VerticalOptions="Start" BackgroundColor="White" HeightRequest="270">
-        <local:VideoPlayer Source="http://vjs.zencdn.net/v/oceans.mp4" x:Name="ExVideo"/>
+        <local:VideoPlayer x:Name="ExVideo"/>
         <Image x:Name="ExImage" IsVisible="False" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="AspectFill"/>
       </Grid>
 
@@ -33,18 +33,23 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="30, 10, 30, 0"  Grid.Column="0">
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10, 15, 0"  Grid.Column="0">
           <Label Text="Cals" FontSize="20" HorizontalOptions="Center"></Label>
         </Grid>
 
-        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="30, 10, 30, 0"  Grid.Column="1">
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10, 15, 0"  Grid.Column="1">
           <Label Text="Steps" FontSize="20" HorizontalOptions="Center"></Label>
         </Grid>
 
-        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="30, 10, 30, 0"  Grid.Column="2">
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10, 15, 0"  Grid.Column="2">
           <Label Text="HeartRate" FontSize="20" HorizontalOptions="Center"></Label>
+        </Grid>
+
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10, 15, 0"  Grid.Column="3">
+          <Label Text="Distance" FontSize="20" HorizontalOptions="Center"></Label>
         </Grid>
         
       </Grid>
@@ -54,9 +59,10 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="30, 10"  Grid.Column="0">
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10"  Grid.Column="0">
           <Grid BackgroundColor="#1565C0" Padding="1" x:Name="Chart"  VerticalOptions="Fill" HorizontalOptions="Fill" >
             <Grid BackgroundColor="White"/>
             <Grid VerticalOptions="Fill" HorizontalOptions="Fill"  x:Name="CalBar"/>
@@ -66,17 +72,17 @@
           </Grid>
         </Grid>
 
-        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="30, 10"  Grid.Column="1">
-          <Grid BackgroundColor="#1565C0" Padding="1" VerticalOptions="Fill" HorizontalOptions="Fill" >
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10"  Grid.Column="1">
+          <Grid BackgroundColor="#4383cc" Padding="1" VerticalOptions="Fill" HorizontalOptions="Fill" >
             <Grid BackgroundColor="White"/>
             <Grid VerticalOptions="Fill" HorizontalOptions="Fill" x:Name="StepBar"/>
-            <Grid BackgroundColor="#1565C0" VerticalOptions="Center" HorizontalOptions="Fill" Margin="15">
+            <Grid BackgroundColor="#4383cc" VerticalOptions="Center" HorizontalOptions="Fill" Margin="15">
               <Label Text="0" x:Name="StepValue" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Margin="5"/>
             </Grid>
           </Grid>
         </Grid>
 
-        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="30, 10"  Grid.Column="2">
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10"  Grid.Column="2">
           <Grid BackgroundColor="#1565C0" Padding="1"  VerticalOptions="Fill" HorizontalOptions="Fill" >
             <Grid BackgroundColor="White"/>
             <Grid VerticalOptions="Fill" HorizontalOptions="Fill" x:Name="HeartBar"/>
@@ -85,6 +91,17 @@
             </Grid>
           </Grid>
         </Grid>
+
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10"  Grid.Column="3">
+          <Grid BackgroundColor="#4383cc" Padding="1"  VerticalOptions="Fill" HorizontalOptions="Fill" >
+            <Grid BackgroundColor="White"/>
+            <Grid VerticalOptions="Fill" HorizontalOptions="Fill" x:Name="DistanceBar"/>
+            <Grid BackgroundColor="#4383cc" VerticalOptions="Center" HorizontalOptions="Fill" Margin="15">
+              <Label Text="0" x:Name="DistanceValue" VerticalOptions="Center" HorizontalOptions="Center" TextColor="White" Margin="5"/>
+            </Grid>
+          </Grid>
+        </Grid>
+        
       </Grid>
 
       <Grid Grid.Row="4" VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="#1565C0">
@@ -92,8 +109,10 @@
           <Label TextColor="White" Margin="10, 0, 0, 0" Text="Total time:"/>
           <Label x:Name="TotalTime" TextColor="White" Margin="10, 0"/>
         </StackLayout>
-        <Button x:Name="NextBtn" HorizontalOptions="End" Clicked="NextBtn_Click" Text="Next" TextColor="White" VerticalOptions="Fill"/>
+        <Label Text="Next" TextColor="White" x:Name="NextBtn" VerticalOptions="Center"  HorizontalOptions="End" Margin="5"/>
+        <Button HorizontalOptions="End" Opacity="0" Clicked="NextBtn_Click" Text="Next" TextColor="White" VerticalOptions="Fill"/>
       </Grid>
     </Grid>
+      
   </Grid>
 </ContentPage>

@@ -21,7 +21,7 @@
     $scope.getPlans(true)
 
     $scope.openPTCard = ->
-        invokeCSharpAction('PTCard')
+        invokeCSharpAction('PTCard:')
 
     $scope.startWorkout = (plan) ->
         Plan.get(plan.Id).then (resp) ->
