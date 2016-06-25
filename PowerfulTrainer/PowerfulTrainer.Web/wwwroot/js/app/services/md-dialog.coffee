@@ -312,6 +312,11 @@
                     $scope.selectedDate = new Date()
                     $scope.reports = []
     
+                    getArrayTimeFromSeconds = (seconds) ->
+                        min = Math.floor(seconds / 60);
+                        sec = seconds % 60;
+                        return [min, sec]
+
                     $scope.showDatePicker = (evt) ->
                         $mdpDatePicker $scope.startTime,
                             targetEvent: evt
@@ -325,6 +330,9 @@
                         Report.get(contact.Username, selectedDate.startOf('day').toISOString(), selectedDate.endOf('day').toISOString())
                         .then (resp) ->
                             $scope.reports = resp.data.Data
+                            $scope.reports = $scope.reports.concat($scope.reports).concat($scope.reports).concat($scope.reports)
+                            for report in $scope.reports
+                                report.DurationArr = getArrayTimeFromSeconds(report.Duration)
 
                     $scope.getReport()
                     

@@ -22,22 +22,26 @@
         <div ng-if="reports.length==0" layout-padding>
             <span class="md-title">Oops...{{contact.Name||contact.Username}} don't have any workout report.</span>
         </div>
-        <md-card ng-repeat="report in reports">
-            <md-card-header ng-class="{teal: report.IsGoal}">
-                <md-card-header-text>
-                    <span class="md-title">{{report.BeginTime | date: 'EEE, MMM d, yyyy hh:mm a'}}</span>
-                    <span class="md-subhead">{{report.PlanName}} by {{report.Username}}</span>
-                </md-card-header-text>
-            </md-card-header>
+        <md-card ng-repeat="report in reports track by $index">
+            <md-card-header-text layout="row"  ng-class="{'teal': report.IsGoal}">
+                <div layout="column">
+                    <span class="md-title" ng-class="{'white-text': report.IsGoal}">{{report.BeginTime | date: 'EEE, MMM d, yyyy hh:mm a'}}</span>
+                    <span class="md-subhead" ng-class="{'white-text': report.IsGoal}">{{report.PlanName}} by {{report.Username}}</span>
+                </div>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-show="report.IsGoal" aria-label="Goal">
+                    <md-icon md-font-icon="fa fa-trophy fa-2x" class="amber-text"></md-icon>
+                </md-button>
+            </md-card-header-text>
             <md-card-content>
-                <div layout="column" layout-gt-sm="row">
-                    <div layout="row">
-                        <state-card title="Duration" value="{{report.Duration}}"></state-card>
+                <div layout="column" layout-gt-sm="row" flex>
+                    <div layout="row" flex>
+                        <state-card title="Duration" values="report.DurationArr" units="['m', 's']"></state-card>
                         <state-card title="Calories burned" value="{{report.TotalCals}}" unit="cals"></state-card>
                     </div>
-                    <div layout="row">
+                    <div layout="row" flex>
                         <state-card title="Total steps" value="{{report.TotalSteps}}" unit="steps"></state-card>
-                        <state-card title="Average HR" value="{{report.AvgHeartRate}}" unit="bpm"></state-card>
+                        <state-card title="Average HR" value="{{report.AvgHeartRate | number: 0}}" unit="bpm"></state-card>
                     </div>
                 </div>
             </md-card-content>

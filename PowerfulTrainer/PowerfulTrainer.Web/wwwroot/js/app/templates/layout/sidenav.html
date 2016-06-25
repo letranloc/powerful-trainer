@@ -25,7 +25,7 @@
             <md-menu-sidenav-content>
                 <md-menu-sidenav-subitem ui-sref="cpanel.index" ui-sref-active="active" ng-click="toggleNavLeft()">Dashboard</md-menu-sidenav-subitem>
                 <md-menu-sidenav-subitem ui-sref="cpanel.report.health" ui-sref-active="active" ng-click="toggleNavLeft()">Health summary</md-menu-sidenav-subitem>
-                <md-menu-sidenav-subitem ui-sref="cpanel.report.workout" ui-sref-active="active" ng-click="toggleNavLeft()">Workout summary</md-menu-sidenav-subitem>
+                <md-menu-sidenav-subitem ui-sref="cpanel.report.workout({username: ''})" ui-sref-active="active" ng-click="toggleNavLeft()">Workout summary</md-menu-sidenav-subitem>
             </md-menu-sidenav-content>
         </md-menu-sidenav-item>
         <md-menu-sidenav-item ng-class="{active: ('cpanel.plan' | includedByState)}" ui-sref="cpanel.plan.index"  ng-click="toggleNavLeft()">

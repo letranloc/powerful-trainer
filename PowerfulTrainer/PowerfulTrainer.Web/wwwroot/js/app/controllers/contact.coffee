@@ -52,7 +52,8 @@
             getContacts()
 
     $scope.showWorkoutReport = (evt, contact) ->
-        mdDialog.showWorkoutReport(evt, contact)
+        $state.go 'cpanel.report.workout',
+            username: contact.Username
 
     $scope.accept = (contact) ->
         if contact.IsWaitingAccept && !contact.IsFriend

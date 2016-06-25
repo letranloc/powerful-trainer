@@ -409,13 +409,19 @@
 
     updateChart()
     
-.controller "ReportWorkoutCtrl", ($scope, $stateParams, $state, $mdpDatePicker, Report) ->
+.controller "ReportWorkoutCtrl", ($scope, $stateParams, $state, $mdpDatePicker, Report, Auth) ->
     
     
     if $stateParams.date
         $scope.selectedDate = moment($stateParams.date, 'YYYY-MM-DD')
     else
         $scope.selectedDate = moment()
+
+    if $stateParams.username
+        $scope.username =  $stateParams.username
+    else
+        $scope.username =  Auth.isAuthenticated().Username
+        $scope.isOwnReport = true
     $scope.reports = []
     
     if $scope.selectedDate.valueOf() <= moment().subtract(1, 'd').valueOf()
@@ -425,13 +431,13 @@
     $scope.showDatePicker = (evt) ->
         $mdpDatePicker $scope.selectedDate.toDate(),
             targetEvent: evt
-            maxDate: moment()
+            maxDate: moment().add(1, 'd')
         .then (selectedDate) ->
             $state.go 'cpanel.report.workout',
                 date: moment(selectedDate).format('YYYY-MM-DD')
 
     $scope.startWorkoutOrChangeDate = (evt) ->
-        if $scope.hideMessageWorkout
+        if $scope.hideMessageWorkout || !$scope.isOwnReport
             $scope.showDatePicker(evt)
         else
             $state.go('cpanel.plan.index')
@@ -441,13 +447,20 @@
         sec = seconds % 60;
         return [min, sec]
 
-    $scope.getReport = ->
-        selectedDate = moment($scope.selectedDate)
-        Report.getReport($scope.selectedDate.startOf('day').toISOString(), $scope.selectedDate.endOf('day').toISOString())
-        .then (resp) ->
-            $scope.reports = resp.data.Data
-            for report in $scope.reports
+    updateReports = (reports) ->
+        $scope.reports = reports
+        for report in $scope.reports
                 report.DurationArr = getArrayTimeFromSeconds(report.Duration)
+
+    $scope.getReport = ->
+        if $scope.isOwnReport
+            Report.getReport($scope.selectedDate.startOf('day').toISOString(), $scope.selectedDate.endOf('day').toISOString())
+            .then (resp) ->
+                updateReports(resp.data.Data)
+        else
+            Report.get($scope.username, $scope.selectedDate.startOf('day').toISOString(), $scope.selectedDate.endOf('day').toISOString())
+            .then (resp) ->
+                updateReports(resp.data.Data)
 
     $scope.getReport()
             

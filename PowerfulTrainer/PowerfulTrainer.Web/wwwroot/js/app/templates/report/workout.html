@@ -20,14 +20,14 @@
     <md-card ng-show="reports.length==0">
         <md-card-header>
             <md-card-header-text>
-                <span class="md-title" ng-hide="hideMessageWorkout">Oops...Go to plans and start a workout. Don't forget to wear your Band to track your progress.</span>
-                <span class="md-title" ng-show="hideMessageWorkout">Oops...You don't have any workout on this day.</span>
+                <span class="md-title" ng-hide="hideMessageWorkout || !isOwnReport">Oops...Go to plans and start a workout. Don't forget to wear your Band to track your progress.</span>
+                <span class="md-title" ng-show="hideMessageWorkout||!isOwnReport">Oops...{{isOwnReport?'You': username}} don't have any workout on this day.</span>
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
             <md-button class="md-raised md-primary" ng-click="startWorkoutOrChangeDate($event)">
-                {{hideMessageWorkout?'Change date':'Start workout'}}
-                <md-icon md-font-icon="fa fa-arrow-right" class="white-text"></md-icon>
+                {{hideMessageWorkout||!isOwnReport?'Change date':'Start workout'}}
+                <md-icon ng-hide="hideMessageWorkout||!isOwnReport" md-font-icon="fa fa-arrow-right" class="white-text"></md-icon>
             </md-button>
         </md-card-content>
     </md-card>

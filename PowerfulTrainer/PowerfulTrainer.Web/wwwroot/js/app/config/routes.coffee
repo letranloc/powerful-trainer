@@ -54,7 +54,7 @@
             $title: -> "Health summary"
 
     .state "cpanel.report.workout",
-        url: "/workout/:date"
+        url: "/workout/:username/:date"
         templateUrl: "report/workout.html"
         controller: "ReportWorkoutCtrl"
         resolve:
