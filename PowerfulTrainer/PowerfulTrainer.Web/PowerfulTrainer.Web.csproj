@@ -146,6 +146,7 @@
     <Content Include="wwwroot\fonts\fontawesome-webfont.svg" />
     <Content Include="wwwroot\images\bg-login.jpg" />
     <Content Include="wwwroot\images\calories_day_1.png" />
+    <Content Include="wwwroot\images\end.png" />
     <Content Include="wwwroot\images\guided_day_1.png" />
     <Content Include="wwwroot\images\logo.png" />
     <Content Include="Models\DataEntity.dbml">
@@ -157,10 +158,14 @@
     <None Include="Properties\PublishProfiles\D.pubxml" />
     <None Include="Properties\PublishProfiles\PowerfulTrainer.pubxml" />
     <Content Include="wwwroot\images\avatar-default.png" />
+    <Content Include="wwwroot\images\pause.png" />
+    <Content Include="wwwroot\images\pin.png" />
     <Content Include="wwwroot\images\plan-avatar-default.png" />
     <Content Include="wwwroot\images\rest-exercise-gray.png" />
+    <Content Include="wwwroot\images\run_day_1.png" />
     <Content Include="wwwroot\images\sleeps_day_1.png" />
     <Content Include="wwwroot\images\sleeps_day_2.png" />
+    <Content Include="wwwroot\images\start.png" />
     <Content Include="wwwroot\images\steps_day_1.png" />
     <Content Include="wwwroot\js\app.js" />
     <Content Include="wwwroot\js\app\app.coffee" />

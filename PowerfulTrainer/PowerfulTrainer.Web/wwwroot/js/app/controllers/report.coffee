@@ -1,6 +1,6 @@
 ﻿angular.module "controllers.report", []
 .controller "ReportHealthCtrl", ($rootScope, $scope, $state, $timeout, $location, $stateParams, $mdpDatePicker, $sessionStorage, MSHealth, mdToast) ->
-    $scope.chartTypes = ['calories', 'steps', 'heartrates', 'sleeps']
+    $scope.chartTypes = ['calories', 'steps', 'heartrates', 'sleeps', 'run']
     $scope.nodata =
         calories:
             title: "Every step counts! Don't forget to wear your Band to track your progress."
@@ -14,6 +14,9 @@
         sleeps:
             title: "Just because the city never sleeps, doesn't mean you shouldn't."
             image: "../images/sleeps_day_1.png"
+        run:
+            title: "Fresh air + a good run = insta-mood-lift. Get on out there."
+            image: "../images/run_day_1.png"
 
     $scope.charts = []
 
@@ -50,7 +53,7 @@
 
     $scope.updateChartType = (type) ->
         $scope.chartType = type
-        $scope.period = 'hourly' if type is 'sleeps'
+        $scope.period = 'hourly' if type is 'sleeps' || type is 'run'
         updateTempParams()
         $state.go('cpanel.report.health', {
             chartType: type
@@ -136,10 +139,20 @@
             when 'run'
                 MSHealth.getActivities
                     activityTypes: 'Run'
-                    activityIncludes: 'Details,MinuteSummaries,MapPoints'
+                    activityIncludes: 'Details,MapPoints'
                     startTime: timeRange.startTime.toISOString()
                     endTime: timeRange.endTime.toISOString()
                 .then (resp) ->
+                    console.log resp.data
+                    if resp.data.itemCount
+                        for runActivity in resp.data.runActivities
+                            chartData = parseRunData(runActivity)
+                            chart = initChartData()
+                            chart.configs.series = chart.configs.series.concat(chartData.series)
+                            chart.summary = chartData.summary
+                            chart.map = chartData.map
+                            chart.states = chart.states.concat(chartData.states)
+                            addChart(chart)
                     $rootScope.setLoadingState(false)
                 , (resp) ->
                     $rootScope.setLoadingState(false)
@@ -213,6 +226,22 @@
                         text: ''
                     labels:
                         enabled: false
+            when 'run'
+                chart.configs.options.chart.type = 'line'
+                chart.configs.yAxis.title.text = 'min/km'
+                #chart.configs.yAxis.reversed = true
+                chart.configs.yAxis.labels = 
+                    formatter: ->
+                        return Math.round(this.value / 6) / 10
+                chart.configs.xAxis =
+                    title:
+                        text: 'km'
+                    labels:
+                        formatter: ->
+                            return Math.round(this.value / 10000) / 100
+                chart.configs.options.tooltip =
+                    formatter: ->
+                        return "km+" + Math.round(this.x / 1000) / 10 + ": " + Math.round(this.y / 6) / 10 + "min/km"
         $scope.charts.push(chart)
         $scope.$broadcast('highchartsng.reflow')
 
@@ -486,6 +515,41 @@
         series[0].startAt = ((startTime.hours()*60 + startTime.minutes())*60 + startTime.seconds())*1000 + startTime.milliseconds()
         series[series.length-1].data[0] += series[0].startAt
         return {states: states, series: series, summary: states[0]} 
+
+    parseRunData = (data) ->
+        states = [
+            {title: 'Duration', units: ['h', 'm', 's'], showTitle: true}
+            {title: 'Calories burned', unit: 'cals'}
+            {title: 'Average HR', unit: 'bpm'}
+            {title: 'Distance', unit: 'km'}
+        ]
+        series = 
+            name: 'run'
+            type: 'line'
+            showInLegend: false
+            color: Highcharts.getOptions().colors[0]
+            data: []
+        map =
+            path: []
+            paused: []
+            resumed: []
+
+        states[0].values = parseTimeToArray(data.duration, 'H:m:s')
+        states[0].info = "Start time: " + moment(data.startTime).format('h:ma')
+        states[1].value = data.caloriesBurnedSummary.totalCalories
+        states[2].value = data.heartRateSummary.averageHeartRate
+        states[3].value = Math.round(data.distanceSummary.totalDistance / 1000) / 100
+        
+        for point in data.mapPoints
+            if point.speed
+                series.data.push([point.totalDistance, point.speed])
+            if point.location
+                latlng = [point.location.latitude/10000000, point.location.longitude/10000000]
+                map.path.push(latlng)
+                if point.isPaused
+                    map.paused.push(latlng)
+                
+        return {states: states, series: [series], summary: states[0], map: map}
 
     updateCharts()
     

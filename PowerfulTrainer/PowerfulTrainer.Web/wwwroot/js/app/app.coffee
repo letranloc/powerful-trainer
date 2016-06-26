@@ -5,6 +5,7 @@
     'ui.router'
     'ui.router.title'
     'cfp.loadingBar'
+    'ngMap'
     'ngAnimate'
     'ngMessages'
     'ngMaterial'

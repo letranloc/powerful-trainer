@@ -59,7 +59,7 @@
             $rootScope.setLoadingState(false)
     
         MSHealth.getActivities
-            activityTypes: 'Sleep'
+            activityTypes: 'Sleep,Run'
             activityIncludes: 'Details'
             startTime: utc.startOf('day').toISOString()
             endTime: utc.endOf('day').toISOString()
@@ -67,8 +67,13 @@
             if resp.data.sleepActivities
                 $scope.sleepActivities = resp.data.sleepActivities
                 for a in $scope.sleepActivities
-                    a.sleepDuration = parseTimeToArray(a.sleepDuration)
-                $rootScope.setLoadingState(false)
+                    a.sleepDuration = parseTimeToArray(a.sleepDuration, 'H:m:s')
+            if resp.data.runActivities
+                $scope.runActivities = resp.data.runActivities
+                for a in $scope.runActivities
+                    a.duration = parseTimeToArray(a.duration, 'H:m:s')
+                    a.distanceSummary.totalDistance = Math.round(a.distanceSummary.totalDistance/1000)/100
+            $rootScope.setLoadingState(false)
         , (resp) ->
             mdToast.showSimple resp.data.Message, 'danger'
             $rootScope.setLoadingState(false)

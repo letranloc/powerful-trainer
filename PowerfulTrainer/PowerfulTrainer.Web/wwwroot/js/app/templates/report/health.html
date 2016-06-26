@@ -19,7 +19,7 @@
                 <md-icon md-font-icon="fa fa-calendar"></md-icon>
             </md-button>
         </div>
-        <md-input-container ng-hide="chartType=='sleeps'" md-no-float md-theme="default-dark" style="margin-top:12px;font-size:18px">
+        <md-input-container ng-hide="chartType=='sleeps'||chartType=='run'" md-no-float md-theme="default-dark" style="margin-top:12px;font-size:18px">
             <md-select ng-model="period">
                 <md-option ng-repeat="p in ['hourly', 'daily'] track by $index" ng-click="updatePeriod(p)" value="{{p}}">{{p.capitalizeFirstLetter()}}</md-option>
             </md-select>
@@ -52,10 +52,30 @@
     <div layout-padding ng-repeat="chart in charts">
         <md-card>
             <md-card-content>
-                <state-card ng-show="chart.summary" title="{{chart.summary.showTitle?summaryState.title:null}}"
+                <div ng-show="chart.map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="https://maps.googleapis.com/maps/api/js??libraries=placeses,visualization,drawing,geometry,places&key=AIzaSyCiLlgFpNV_165QtQppaBdN3nKYiyCzopk">
+                    <ng-map center="{{chart.map.path[0]}}" zoom="17">
+                        <shape name="polyline"
+                               path="{{chart.map.path}}"
+                               geodesic="true"
+                               stroke-color="#FF0000"
+                               stroke-opacity="1.0"
+                               stroke-weight="3">
+                        </shape>
+                        <marker position="{{chart.map.path[0]}}" title="Start point" icon="../images/start.png"></marker>
+                        <marker position="{{chart.map.path[chart.map.path.length-1]}}" title="End point" icon="../images/end.png"></marker>
+                        <marker ng-repeat="p in chart.map.paused"
+                                position="{{p}}"
+                                title="Paused point"
+                                icon="../images/pause.png"></marker>
+                    </ng-map>
+                </div>
+
+                <state-card ng-show="chart.summary" title="{{chart.summary.showTitle?chart.summary.title:null}}"
                             value="{{chart.summary.value}}" unit="{{chart.summary.unit}}" values="chart.summary.values"
                             units="chart.summary.units"></state-card>
+
                 <highchart config="chart.configs"></highchart>
+
             </md-card-content>
         </md-card>
         <md-card>

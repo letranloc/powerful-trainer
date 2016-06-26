@@ -84,12 +84,46 @@
             <div layout="column" ng-repeat="activity in sleepActivities">
                 <div layout="column" layout-padding layout-gt-sm="row">
                     <div layout="row" flex >
-                        <state-card title="Time asleep" values="activity.sleepDuration" units="['h', 'm']"></state-card>
+                        <state-card title="Time asleep" values="activity.sleepDuration" units="['h', 'm', 's']"></state-card>
                         <state-card title="Time efficiency" value="{{activity.sleepEfficiencyPercentage}}" unit="%"></state-card>
                     </div>
                     <div layout="row" flex>
                         <state-card title="Peak heart rate" value="{{activity.heartRateSummary.peakHeartRate}}" unit="bpm"></state-card>
                         <state-card title="Woke up" value="{{activity.numberOfWakeups}}" unit="times"></state-card>
+                    </div>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </div>
+        </md-card-content>
+    </md-card>
+    <md-card ng-click="showReportChart('run')" class="pointer">
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Run</span>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <div layout="column" ng-hide="runActivities.length">
+                <div layout="column" layout-padding layout-gt-sm="row">
+                    <div layout="row" flex>
+                        <state-card title="Duration"></state-card>
+                        <state-card title="Calories burned"></state-card>
+                    </div>
+                    <div layout="row" flex>
+                        <state-card title="Peak heart rate"></state-card>
+                        <state-card title="Distance"></state-card>
+                    </div>
+                </div>
+            </div>
+            <div layout="column" ng-repeat="activity in runActivities">
+                <div layout="column" layout-padding layout-gt-sm="row">
+                    <div layout="row" flex>
+                        <state-card title="Duration" values="activity.duration" units="['h', 'm', 's']"></state-card>
+                        <state-card title="Calories burned" value="{{activity.caloriesBurnedSummary.totalCalories}}" unit="cals"></state-card>
+                    </div>
+                    <div layout="row" flex>
+                        <state-card title="Peak heart rate" value="{{activity.heartRateSummary.peakHeartRate}}" unit="bpm"></state-card>
+                        <state-card title="Distance" value="{{activity.distanceSummary.totalDistance}}" unit="km"></state-card>
                     </div>
                 </div>
                 <md-divider ng-if="!$last"></md-divider>
