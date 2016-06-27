@@ -1,7 +1,25 @@
 ﻿angular.module "controllers.report", []
-.controller "ReportHealthCtrl", ($scope, $state, $timeout, $location, $stateParams, $mdpDatePicker, $sessionStorage, MSHealth) ->
-    $scope.chartTypes = ['calories', 'steps', 'heartrates', 'sleeps']
-    
+.controller "ReportHealthCtrl", ($rootScope, $scope, $state, $timeout, $location, $stateParams, $mdpDatePicker, $sessionStorage, MSHealth, mdToast) ->
+    $scope.chartTypes = ['calories', 'steps', 'heartrates', 'sleeps', 'run']
+    $scope.nodata =
+        calories:
+            title: "Every step counts! Don't forget to wear your Band to track your progress."
+            image: "../images/calories_day_1.png"
+        steps:
+            title: "You don't have to climb Everest for your steps to count."
+            image: "../images/steps_day_1.png"
+        heartrates:
+            title: "Every step counts! Don't forget to wear your Band to track your progress."
+            image: "../images/calories_day_1.png"
+        sleeps:
+            title: "Just because the city never sleeps, doesn't mean you shouldn't."
+            image: "../images/sleeps_day_1.png"
+        run:
+            title: "Fresh air + a good run = insta-mood-lift. Get on out there."
+            image: "../images/run_day_1.png"
+
+    $scope.charts = []
+
     params = $location.search()
     unless $sessionStorage.startTime
         $sessionStorage.startTime = new Date()
@@ -14,8 +32,6 @@
     $scope.endTime = new Date($sessionStorage.endTime)
     $scope.period = params.period || 'hourly'
     $scope.chartType = $stateParams.chartType || $sessionStorage.chartType
-    $scope.summaryState = null
-    $scope.chartStates = []
 
     updateTempParams = ->
         $sessionStorage.startTime = $scope.startTime
@@ -30,14 +46,14 @@
 
     $scope.updatePeriod = (period) ->
         $scope.period = period
-        updateChart()
+        updateCharts()
 
     isDaily = ->
         return $scope.period is 'daily'
 
     $scope.updateChartType = (type) ->
         $scope.chartType = type
-        $scope.period = 'hourly' if type is 'sleeps'
+        $scope.period = 'hourly' if type is 'sleeps' || type is 'run'
         updateTempParams()
         $state.go('cpanel.report.health', {
             chartType: type
@@ -62,12 +78,86 @@
                 .then (endTime) ->
                     $scope.startTime = startTime
                     $scope.endTime = endTime
-                    updateChart()
+                    updateCharts()
             else
                 $scope.startTime = startTime
-                updateChart()
+                updateCharts()
 
-    updateChart = ->
+    updateCharts = ->
+        $rootScope.setLoadingState(true)
+
+        timeRange = calcTimeRange()
+
+        $scope.charts = []
+
+        switch $scope.chartType
+            when 'steps', 'calories', 'heartrates'
+                MSHealth.getSummaries
+                    period: $scope.period
+                    #activityIncludes: 'Details,MinuteSummaries,MapPoints'
+                    startTime: timeRange.startTime.toISOString()
+                    endTime: timeRange.endTime.toISOString()
+                .then (resp) ->
+                    if resp.data.itemCount
+                        switch $scope.chartType
+                            when 'steps'
+                                chartData = parseStepData(resp.data)
+                            when 'calories'
+                                chartData = parseCaloriesData(resp.data)
+                            when 'heartrates'
+                                chartData = parseHeartrateData(resp.data)
+
+                        chart = initChartData()
+                        chart.configs.series = chart.configs.series.concat(chartData.series)
+                        chart.summary = chartData.summary
+                        chart.states = chart.states.concat(chartData.states)
+                        addChart(chart)
+                    $rootScope.setLoadingState(false)
+                , (resp) ->
+                    mdToast.showSimple resp.data.Message, "danger"
+                    $rootScope.setLoadingState(false)
+            when 'sleeps'
+                MSHealth.getActivities
+                    activityTypes: 'Sleep'
+                    activityIncludes: 'Details'#,MinuteSummaries,MapPoints'
+                    startTime: timeRange.startTime.toISOString()
+                    endTime: timeRange.endTime.toISOString()
+                .then (resp) ->
+                    console.log resp.data
+                    if resp.data.itemCount
+                        for sleepActivity in resp.data.sleepActivities
+                            chartData = parseSleepData(sleepActivity)
+                            chart = initChartData()
+                            chart.configs.series = chart.configs.series.concat(chartData.series)
+                            chart.summary = chartData.summary
+                            chart.states = chart.states.concat(chartData.states) 
+                            addChart(chart)
+                    $rootScope.setLoadingState(false)
+                , (resp) ->
+                    mdToast.showSimple resp.data.Message, "danger"
+                    $rootScope.setLoadingState(false)
+            when 'run'
+                MSHealth.getActivities
+                    activityTypes: 'Run'
+                    activityIncludes: 'Details,MapPoints'
+                    startTime: timeRange.startTime.toISOString()
+                    endTime: timeRange.endTime.toISOString()
+                .then (resp) ->
+                    console.log resp.data
+                    if resp.data.itemCount
+                        for runActivity in resp.data.runActivities
+                            chartData = parseRunData(runActivity)
+                            chart = initChartData()
+                            chart.configs.series = chart.configs.series.concat(chartData.series)
+                            chart.summary = chartData.summary
+                            chart.map = chartData.map
+                            chart.states = chart.states.concat(chartData.states)
+                            addChart(chart)
+                    $rootScope.setLoadingState(false)
+                , (resp) ->
+                    $rootScope.setLoadingState(false)
+
+    calcTimeRange = ->
         startTime = moment($scope.startTime).startOf('day') #.subtract(1, 'h')
         if $scope.period is 'hourly'
             endTime = moment($scope.startTime).endOf('day')
@@ -80,134 +170,131 @@
                 endTime = maxDate
                 $scope.endTime = endTime.toISOString()
             else if endTime.unix() <= startTime.unix()
-                endTime = startTime.add(1, 'h')
+                endTime = startTime.endOf('day')
                 $scope.endTime = endTime.toISOString()
         updateTempParams()
 
-        $scope.summaryState = null
-        $scope.chartStates = []
+        return {startTime: startTime, endTime: endTime}
 
-        switch $scope.chartType
-            when 'steps', 'calories', 'heartrates'
-                MSHealth.getSummaries
-                    period: $scope.period
-                    startTime: startTime.toISOString()
-                    endTime: endTime.toISOString()
-                .then (resp) ->
-                    series = []
-                    switch $scope.chartType
-                        when 'steps'
-                            chartData = parseStepData(resp.data)
-                        when 'calories'
-                            chartData = parseCaloriesData(resp.data)
-                        when 'heartrates'
-                            chartData = parseHeartrateData(resp.data)
-
-                    series = series.concat(chartData.series)
-                    $scope.summaryState = chartData.summary
-                    $scope.chartStates = $scope.chartStates.concat(chartData.states) 
-
-                    updateChartConfig(series)
-            when 'sleeps'
-                MSHealth.getActivities
-                    activityTypes: 'Sleep'
-                    activityIncludes: 'Details'
-                    startTime: startTime.toISOString()
-                    endTime: endTime.toISOString()
-                .then (resp) ->
-                    console.log resp.data
-                    series = []
-                    chartData = parseSleepData(resp.data)
-
-                    series = series.concat(chartData.series)
-                    $scope.summaryState = chartData.summary
-                    $scope.chartStates = $scope.chartStates.concat(chartData.states) 
-
-                    updateChartConfig(series)
-
-    updateChartConfig = (series) ->
-        $scope.chartConfig.series = series
+    addChart = (chart) ->
         f = moment($scope.startTime).startOf('day')
         switch $scope.period
             when 'hourly'
-                series.pointInterval = 3600 * 1000
-                series.pointStart = f.valueOf()
-                $scope.chartConfig.options.tooltip = 
+                chart.configs.series.pointInterval = 3600 * 1000
+                chart.configs.series.pointStart = f.valueOf()
+                chart.configs.options.tooltip = 
                     xDateFormat: '%A, %b %e, %I:%M%P'
                     shared: true
-                $scope.chartConfig.xAxis.tickInterval = 3600 * 1000 * 2
-                $scope.chartConfig.xAxis.dateTimeLabelFormats = 
+                chart.configs.xAxis.tickInterval = 3600 * 1000 * 2
+                chart.configs.xAxis.dateTimeLabelFormats = 
                     hour: '%I%P'
             when 'daily'
-                series.pointInterval = 3600 * 1000 * 24
-                series.pointStart = f.valueOf()
-                $scope.chartConfig.options.tooltip = 
+                chart.configs.series.pointInterval = 3600 * 1000 * 24
+                chart.configs.series.pointStart = f.valueOf()
+                chart.configs.options.tooltip = 
                     xDateFormat: '%A, %b %e'
                     shared: true
-                $scope.chartConfig.xAxis.tickInterval = 3600 * 1000 * 24
-                $scope.chartConfig.xAxis.dateTimeLabelFormats = 
+                chart.configs.xAxis.tickInterval = 3600 * 1000 * 24
+                chart.configs.xAxis.dateTimeLabelFormats = 
                     day: '%e. %b'
 
         switch $scope.chartType
             when 'sleeps'
-                $scope.chartConfig.options.chart =
-                    zoomType: undefined
+                chart.configs.options.chart =
+                    #zoomType: 'y'
                     type: 'bar'
-                $scope.chartConfig.options.tooltip.enabled = false
-                $scope.chartConfig.yAxis = 
+                chart.configs.options.tooltip =
+                    formatter: ->
+                        dt = this.y - chart.configs.series[0].startAt
+                        if dt > 0
+                            return this.series.name + ": " + moment(dt).utc().format('H\\hm\\ms\\s')
+                        return this.series.name + ": " + moment(this.y).utc().format('H\\hm\\ms\\s')
+                chart.configs.yAxis = 
+                    type: 'datetime'
+                    #minRange: 3600 * 1000
+                    #tickInterval: 3600 * 1000
+                    dateTimeLabelFormats:
+                        hour: '%H:%M'
+                    min: chart.configs.series[0].startAt
+                    title:
+                        text: ''
+                    #labels:
+                        #enabled: false
+                        #formatter: ->
+                        #    Highcharts.dateFormat('%I:%M', this.value);
+                chart.configs.options.plotOptions.series =
+                    stacking: 'true'
+                chart.configs.xAxis =
+                    title:
+                        text: ''
+                    labels:
+                        enabled: false
+            when 'run'
+                chart.configs.options.chart.type = 'line'
+                chart.configs.yAxis.title.text = 'min/km'
+                #chart.configs.yAxis.reversed = true
+                chart.configs.yAxis.labels = 
+                    formatter: ->
+                        return Math.round(this.value / 6) / 10
+                chart.configs.xAxis =
+                    title:
+                        text: 'km'
+                    labels:
+                        formatter: ->
+                            return Math.round(this.value / 1000) / 100
+                chart.configs.options.tooltip =
+                    formatter: ->
+                        return "km+" + Math.round(this.x / 1000) / 100 + ": " + Math.round(this.y / 6) / 10 + "min/km"
+        $scope.charts.push(chart)
+        $scope.$broadcast('highchartsng.reflow')
+
+    initChartData = ->
+        return {
+            summary: null
+            states: []
+            configs:
+                options:
+                    exporting:
+                        enabled: false
+                    chart:
+                        zoomType: 'x'
+                    credits:
+                        enabled: false
+                    plotOptions:
+                        bar:
+                            events:
+                                legendItemClick: -> false
+                        line:
+                            events:
+                                legendItemClick: -> false
+                        column:
+                            events:
+                                legendItemClick: -> false
+                series:[]
+                title:
+                    text: ""
+                loading: false
+                #tooltip:
+                    #crosshairs: true
+                yAxis:
+                    title:
+                        text: ''
+                    min: 0
+                xAxis:
                     type: 'datetime'
                     minRange: 3600 * 1000
                     tickInterval: 3600 * 1000
-                    dateTimeLabelFormats:
-                        hour: '%I%P'
-                    labels:
-                        enabled: false
-                        formatter: ->
-                            console.log this.value
-                            Highcharts.dateFormat('%I%P', this.value);
+                    dateTimeLabelFormats: {}
                     title:
                         text: ''
-                $scope.chartConfig.xAxis =
-                    title:
-                        text: ''
-                    labels:
-                        enabled: false
-        $scope.$broadcast('highchartsng.reflow')
-
-    $scope.chartConfig =
-        options:
-            exporting:
-                enabled: false
-            chart:
-                zoomType: 'x'
-            credits:
-                enabled: false
-            tooltip:
-                crosshairs: true
-        series:[]
-        title:
-            text: ""
-        loading: false
-        tooltip:
-            crosshairs: true
-        yAxis:
-            title:
-                text: ''
-            min: 0
-        xAxis:
-            type: 'datetime'
-            minRange: 3600 * 1000
-            tickInterval: 3600 * 1000
-            dateTimeLabelFormats: {}
-            title:
-                text: ''
-        useHighStocks: false
-        panel:
-            size: 100
-        size:
-            width: null
-            height: null
-        func: (chart) -> $timeout -> chart.reflow()
+                useHighStocks: false
+                panel:
+                    size: 100
+                size:
+                    width: null
+                    height: null
+                func: (chart) -> $timeout -> chart.reflow()
+        } 
 
     Highcharts.setOptions
         global:
@@ -381,47 +468,114 @@
             {title: 'Woke up', unit: 'times'}
         ]
         series = []
-        if data.itemCount
-            data = data.sleepActivities[data.itemCount-1]
-            states[0].values = parseTimeToArray(data.sleepDuration)
-            states[1].values = parseTimeToArray(data.totalRestfulSleepDuration)
-            states[2].values = parseTimeToArray(data.totalRestlessSleepDuration)
-            states[3].values = parseTimeToArray(data.fallAsleepDuration, 'm:s')
-            states[4].values = parseTimeToArray(data.duration)
-            states[5].value = data.sleepEfficiencyPercentage
-            states[6].value = data.restingHeartRate
-            states[7].value = data.caloriesBurnedSummary.totalCalories
-            states[8].value = data.numberOfWakeups
-            series.pointStart = moment(data.startTime).valueOf()
-            for seg in data.activitySegments
-                t = parseTimeToArray(seg.duration, 'H:m:s')
-                color = if seg.segmentType is 'Sleep' then Highcharts.getOptions().colors[0] else '#FFC107'
-                ts = (t[0]*60 + t[1]*60 + t[2]) * 1000
-                series.push
-                    type: 'bar'
-                    showInLegend: false
-                    stacking: 'normal'
-                    color: color
-                    data: [ts]
-            #series.reverse()
-            #series[0].pointStart = moment(data.activitySegments[0].startTime).valueOf()
+        states[0].values = parseTimeToArray(data.sleepDuration)
+        states[1].values = parseTimeToArray(data.totalRestfulSleepDuration)
+        states[2].values = parseTimeToArray(data.totalRestlessSleepDuration)
+        states[3].values = parseTimeToArray(data.fallAsleepDuration, 'm:s')
+        states[4].values = parseTimeToArray(data.duration)
+        states[5].value = data.sleepEfficiencyPercentage
+        states[6].value = data.restingHeartRate
+        states[7].value = data.caloriesBurnedSummary.totalCalories
+        states[8].value = data.numberOfWakeups
+        series.pointStart = moment(data.startTime).valueOf()
+        
+        ids = 0
+        last = [-1, -1, -1]
+        linkto = null
+        for seg in data.activitySegments
+            t = parseTimeToArray(seg.duration, 'H:m:s')
+            if seg.segmentType is 'Sleep'
+                if seg.sleepType is 'RestfulSleep'
+                    color = '#3F51B5'
+                    name = 'Restful Sleep'
+                    if last[0] isnt -1
+                        linkto = last[0]
+                    last[0] = ids
+                else
+                    name = 'Light'
+                    color = Highcharts.getOptions().colors[0]
+                    if last[1] isnt -1
+                        linkto = last[1]
+                    last[1] = ids
+            else
+                name = 'Awake'
+                color = '#FFC107'
+                if last[2] isnt -1
+                    linkto = last[2]
+                last[2] = ids
+            ts = (t[0]*60 + t[1]*60 + t[2]) * 1000
+            series.push
+                id: ids++
+                name: name
+                #type: 'bar'
+                #showInLegend: false
+                #stacking: 'normal'
+                linkedTo: linkto
+                color: color
+                data: [ts]
+        series.reverse()
+        startTime = moment(data.activitySegments[0].startTime)
+        series[0].startAt = ((startTime.hours()*60 + startTime.minutes())*60 + startTime.seconds())*1000 + startTime.milliseconds()
+        series[series.length-1].data[0] += series[0].startAt
         return {states: states, series: series, summary: states[0]} 
 
-    updateChart()
+    parseRunData = (data) ->
+        states = [
+            {title: 'Duration', units: ['h', 'm', 's'], showTitle: true}
+            {title: 'Calories burned', unit: 'cals'}
+            {title: 'Average HR', unit: 'bpm'}
+            {title: 'Distance', unit: 'km'}
+        ]
+        series = 
+            name: 'run'
+            type: 'line'
+            showInLegend: false
+            color: Highcharts.getOptions().colors[0]
+            data: []
+        map =
+            path: []
+            paused: []
+            resumed: []
+
+        states[0].values = parseTimeToArray(data.duration, 'H:m:s')
+        states[0].info = "Start time: " + moment(data.startTime).format('h:ma')
+        states[1].value = data.caloriesBurnedSummary.totalCalories
+        states[2].value = data.heartRateSummary.averageHeartRate
+        states[3].value = Math.round(data.distanceSummary.totalDistance / 1000) / 100
+        
+        for point in data.mapPoints
+            if point.speed
+                series.data.push([point.totalDistance, point.speed])
+            if point.location
+                latlng = [point.location.latitude/10000000, point.location.longitude/10000000]
+                map.path.push(latlng)
+                if point.isPaused
+                    map.paused.push(latlng)
+                
+        return {states: states, series: [series], summary: states[0], map: map}
+
+    updateCharts()
     
-.controller "ReportWorkoutCtrl", ($scope, $stateParams, $state, $mdpDatePicker, Report, Auth) ->
-    
-    
-    if $stateParams.date
-        $scope.selectedDate = moment($stateParams.date, 'YYYY-MM-DD')
-    else
-        $scope.selectedDate = moment()
+.controller "ReportWorkoutCtrl", ($rootScope, $scope, $stateParams, $state, $mdpDatePicker, $sessionStorage, Report, Auth, mdToast) ->
+    $scope.nodata =
+        title: "No guided workout tracked this day."
+        image: "../images/guided_day_1.png"
 
     if $stateParams.username
         $scope.username =  $stateParams.username
     else
         $scope.username =  Auth.isAuthenticated().Username
         $scope.isOwnReport = true
+    
+    if $stateParams.date
+        $scope.selectedDate = moment($stateParams.date, 'YYYY-MM-DD')
+    else
+        if $scope.isOwnReport
+            unless $sessionStorage.startTime
+                $sessionStorage.startTime = new Date()
+            $state.go 'cpanel.report.workout',
+                    date: moment($sessionStorage.startTime).format('YYYY-MM-DD')
+        else $scope.selectedDate = moment()
     $scope.reports = []
     
     if $scope.selectedDate.valueOf() <= moment().subtract(1, 'd').valueOf()
@@ -433,6 +587,7 @@
             targetEvent: evt
             maxDate: moment().add(1, 'd')
         .then (selectedDate) ->
+            $sessionStorage.startTime = selectedDate
             $state.go 'cpanel.report.workout',
                 date: moment(selectedDate).format('YYYY-MM-DD')
 
@@ -453,14 +608,21 @@
                 report.DurationArr = getArrayTimeFromSeconds(report.Duration)
 
     $scope.getReport = ->
+        $rootScope.setLoadingState(true)
         if $scope.isOwnReport
             Report.getReport($scope.selectedDate.startOf('day').toISOString(), $scope.selectedDate.endOf('day').toISOString())
             .then (resp) ->
                 updateReports(resp.data.Data)
+                $rootScope.setLoadingState(false)
+            , (resp) ->
+                    mdToast.showSimple resp.data.Message, "danger"
         else
             Report.get($scope.username, $scope.selectedDate.startOf('day').toISOString(), $scope.selectedDate.endOf('day').toISOString())
             .then (resp) ->
                 updateReports(resp.data.Data)
+                $rootScope.setLoadingState(false)
+            , (resp) ->
+                    mdToast.showSimple resp.data.Message, "danger"
 
     $scope.getReport()
             

@@ -20,7 +20,7 @@
         if isShouldOpenToggleMenu && $rootScope.enableScrollShrink
             openToggleMenu()
 
-.controller "DashboardIndexCtrl", ($scope, $sessionStorage, $mdpDatePicker, $state, Auth, MSHealth) ->
+.controller "DashboardIndexCtrl", ($rootScope, $scope, $sessionStorage, $mdpDatePicker, $state, Auth, MSHealth) ->
 
     unless $sessionStorage.startTime
         $sessionStorage.startTime = new Date()
@@ -45,27 +45,38 @@
             Auth.loginMSHealth()
     
     $scope.updateSummaries = ->
+        $rootScope.setLoadingState(true)
+        utc = moment($scope.currentDate)
         MSHealth.getSummaries
             period: 'daily'
-            startTime: moment($scope.currentDate).startOf('day').toISOString()
-            endTime: moment($scope.currentDate).startOf('day').add(1, 'h').toISOString()
+            startTime: utc.startOf('day').toISOString()
+            endTime: utc.endOf('day').toISOString()
         .then (resp) ->
             $scope.summary = resp.data.summaries[0]
+            $rootScope.setLoadingState(false)
         , (resp) ->
-            console.log resp
+            mdToast.showSimple resp.data.Message, 'danger'
+            $rootScope.setLoadingState(false)
     
         MSHealth.getActivities
-            activityTypes: 'Sleep'
+            activityTypes: 'Sleep,Run'
             activityIncludes: 'Details'
-            startTime: moment($scope.currentDate).startOf('day').toISOString()
-            endTime: moment($scope.currentDate).endOf('day').toISOString()
+            startTime: utc.startOf('day').toISOString()
+            endTime: utc.endOf('day').toISOString()
         .then (resp) ->
             if resp.data.sleepActivities
                 $scope.sleepActivities = resp.data.sleepActivities
                 for a in $scope.sleepActivities
-                    a.sleepDuration = parseTimeToArray(a.sleepDuration)
+                    a.sleepDuration = parseTimeToArray(a.sleepDuration, 'H:m:s')
+            if resp.data.runActivities
+                $scope.runActivities = resp.data.runActivities
+                for a in $scope.runActivities
+                    a.duration = parseTimeToArray(a.duration, 'H:m:s')
+                    a.distanceSummary.totalDistance = Math.round(a.distanceSummary.totalDistance/1000)/100
+            $rootScope.setLoadingState(false)
         , (resp) ->
-            console.log resp
+            mdToast.showSimple resp.data.Message, 'danger'
+            $rootScope.setLoadingState(false)
 
     $scope.updateSummaries()
             

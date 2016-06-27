@@ -14,6 +14,7 @@
         $scope.waitingResponses = resp.data.Data
 
     $scope.getContacts = ->
+        $rootScope.setLoadingState(true)
         Contact.getAll($scope.query).then (resp) ->
             $scope.contacts = resp.data.Data.Result
             $scope.query.total = resp.data.Data.Count
@@ -21,8 +22,10 @@
                 $location.search('limit', $scope.query.limit)
                 $location.search('page', $scope.query.page)
             else $scope.updateLocationSearch = true
+            $rootScope.setLoadingState(false)
         , (resp) ->
             mdToast.showSimple resp.data.Message, "danger"
+            $rootScope.setLoadingState(false)
     if $scope.searchStr.length
         $scope.search($scope.searchStr)
     else
@@ -33,21 +36,29 @@
         $location.search('q', searchStr)
         if searchStr.length
             $scope.query.page = 1
+            $rootScope.setLoadingState(true)
             Contact.search(searchStr, $scope.query).then (resp) ->
                 $scope.contacts = resp.data.Data.Result
                 $scope.query.total = resp.data.Data.Count
                 $scope.showResults = $scope.searchStr
+                $rootScope.setLoadingState(false)
+            , (resp) ->
+                mdToast.showSimple resp.data.Message, "danger"
+                $rootScope.setLoadingState(false)
         else
             $scope.query.page = 1
             $scope.getContacts()
 
     $scope.queryResults = ->
         if $scope.searchStr.length
+            $rootScope.setLoadingState(true)
             Contact.search($scope.showResults, $scope.query).then (resp) ->
                     $scope.results = resp.data.Data.Result
                     $scope.query.total = resp.data.Data.Count
+                    $rootScope.setLoadingState(false)
             , (resp) ->
                 mdToast.showSimple resp.data.Message, "danger"
+                $rootScope.setLoadingState(false)
         else
             getContacts()
 

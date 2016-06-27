@@ -65,7 +65,7 @@
                                 invokeCSharpAction("Token:" + resp.data.Data.AccessToken)
                             catch
                         , 500
-                        _user = resp.data.Data
+                        auth.setUser(resp.data.Data)
                         refreshMSAccessToken(_user)
                     , (resp) ->
                         auth.logout()

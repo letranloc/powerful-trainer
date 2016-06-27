@@ -22,7 +22,8 @@
     "angular-loading-bar": "latest",
     "angular-material-sidenav-menu": "latest",
     "mdPickers": "latest",
-    "angular-ui-sortable": "latest"
+    "angular-ui-sortable": "latest",
+    "ngmap": "latest"
   },
   "resolutions": {
     "angular-material": "master",
