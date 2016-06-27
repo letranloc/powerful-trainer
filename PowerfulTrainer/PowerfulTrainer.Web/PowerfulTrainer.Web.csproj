@@ -151,6 +151,7 @@
       <LastGenOutput>DataEntity.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Data\Event.json" />
     <None Include="Properties\PublishProfiles\Aloraha.pubxml" />
     <None Include="Properties\PublishProfiles\D.pubxml" />
     <None Include="Properties\PublishProfiles\PowerfulTrainer.pubxml" />
@@ -301,7 +302,6 @@
     <Content Include="wwwroot\web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Default\" />
     <Folder Include="wwwroot\js\app\templates\header\" />
     <Folder Include="wwwroot\js\app\widgets\" />

@@ -2,6 +2,7 @@
 using PowerfulTrainer.Web.Models.Api;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -112,6 +113,21 @@ namespace PowerfulTrainer.Web.Controllers.Api
             return response;
         }
 
+        [Route("api/exercise/video/{Id}")]
+        [HttpGet]
+        public object GetExerciseByVideoId(string Id)
+        {
+            try
+            {
+                var Ex = DB.Exercises.First(u => u.VideoId == Id);
+                return SuccessResult(Ex);
+            }
+            catch (Exception ex)
+            {
+                return FailResult(ex);
+            }
+        }
+
         [Route("api/exercise/image/{Id}")]
         [HttpGet]
         public object GetFullImage(int Id)
@@ -124,6 +140,22 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 Result.Content = new ByteArrayContent(Convert.FromBase64String(Image));
                 Result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
                 return Result;
+            }
+            catch (Exception ex)
+            {
+                return FailResult(ex);
+            }
+        }
+
+        [Route("api/event")]
+        [HttpGet]
+        public object GetPlanEvent()
+        {
+            try
+            {
+                var Path = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/Event.json");
+                var Text = File.ReadAllText(Path);
+                return SuccessResult(Text);
             }
             catch (Exception ex)
             {

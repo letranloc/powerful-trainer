@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace PowerfulTrainer.Shared.TrainingModels.TrainingActions
+namespace PowerfulTrainer
 {
     public class PlaySoundAction: TrainingAction
     {
-        protected string FileName = "Come_on.mp3";
+        public string FileName;
         public override void Execute()
         {
             var Implement = DependencyService.Get<PlaySoundAction>();

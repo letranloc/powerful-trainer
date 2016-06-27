@@ -1,4 +1,5 @@
 ﻿using Microsoft.Band.Portable;
+using Microsoft.Band.Portable.Notifications;
 using Microsoft.Band.Portable.Sensors;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace PowerfulTrainer
         AccelerometerY,
         AccelerometerZ,
         HeartRate,
+        InstantHeartRate,
         Calories,
         Step,
         Distance,
@@ -39,6 +41,14 @@ namespace PowerfulTrainer
         public static double? LastCalories;
         public static double? LastDistance;
         public static double? LastStep;
+
+        public static Guid tileGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+
+        public static async void SendNotification(string Msg, VibrationType VibrationType)
+        {
+            await BandClient.NotificationManager.VibrateAsync(VibrationType);
+            await BandClient.NotificationManager.ShowDialogAsync(tileGuid, "PowerfulTrainer", Msg);
+        }
 
         public static async Task Init()
         {
@@ -162,21 +172,16 @@ namespace PowerfulTrainer
             switch (sensorType)
             {
                 case BandSensorType.HeartRate:
-                    return false;
                 case BandSensorType.AccelerometerX:
-                    return false;
+                case BandSensorType.InstantHeartRate:
                 case BandSensorType.AccelerometerY:
-                    return false;
                 case BandSensorType.AccelerometerZ:
-                    return false;
-                case BandSensorType.Calories:
-                    return true;
-                case BandSensorType.Step:
-                    return true;
-                case BandSensorType.Distance:
-                    return true;
                 case BandSensorType.Speed:
                     return false;
+                case BandSensorType.Calories:
+                case BandSensorType.Step:
+                case BandSensorType.Distance:
+                    return true;               
             }
             return false;
         }
@@ -189,6 +194,8 @@ namespace PowerfulTrainer
                 {
                     case BandSensorType.HeartRate:
                         return ListHeartRate.Average();
+                    case BandSensorType.InstantHeartRate:
+                        return HeartRate.HeartRate;
                     case BandSensorType.AccelerometerX:
                         return Accelerometer.AccelerationX;
                     case BandSensorType.AccelerometerY:

@@ -9,7 +9,6 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using PowerfulTrainer.Shared.TrainingModels.TrainingActions;
 using PowerfulTrainer.Droid.Models.TrainingActions;
 using Android.Media;
 

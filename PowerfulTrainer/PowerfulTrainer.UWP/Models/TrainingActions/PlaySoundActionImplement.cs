@@ -1,5 +1,4 @@
-﻿using PowerfulTrainer.Shared.TrainingModels.TrainingActions;
-using PowerfulTrainer.UWP.Models.TrainingActions;
+﻿using PowerfulTrainer.UWP.Models.TrainingActions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

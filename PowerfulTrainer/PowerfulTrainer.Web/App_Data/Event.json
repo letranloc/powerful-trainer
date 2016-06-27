@@ -1,0 +1,51 @@
+﻿[
+  {
+    "Bundles": [
+      {
+        "Conditions": [
+          {
+            "$type": "PowerfulTrainer.ExceedMaxCondition, PowerfulTrainer",
+            "SensorType": "InstantHeartRate",
+            "Value": 80
+          }
+        ]
+      }
+    ],
+    "Actions": [
+      {
+        "$type": "PowerfulTrainer.StopWorkoutAction, PowerfulTrainer"
+      }
+    ]
+  },
+
+  {
+    "Bundles": [
+      {
+        "Conditions": [
+          {
+            "$type": "PowerfulTrainer.GoalStepCondition, PowerfulTrainer"
+          }
+        ]
+      },
+      {
+        "Conditions": [
+          {
+            "$type": "PowerfulTrainer.GoalHeartRateCondition, PowerfulTrainer"
+          }
+        ]
+      },
+      {
+        "Conditions": [
+          {
+            "$type": "PowerfulTrainer.GoalCalCondition, PowerfulTrainer"
+          }
+        ]
+      }
+    ],
+    "Actions": [
+      {
+        "$type": "PowerfulTrainer.EncourageAction, PowerfulTrainer"
+      }
+    ]
+  }
+]

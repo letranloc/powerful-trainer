@@ -39,6 +39,7 @@
     <Compile Include="AppManagement.cs" />
     <Compile Include="BandManagement.cs" />
     <Compile Include="IFileManagement.cs" />
+    <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\HttpClient.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -48,10 +49,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrainingModels\EventCondition.cs" />
     <Compile Include="TrainingModels\TrainingAction.cs" />
+    <Compile Include="TrainingModels\TrainingActions\EncourageAction.cs" />
     <Compile Include="TrainingModels\TrainingActions\PlaySoundAction.cs" />
+    <Compile Include="TrainingModels\TrainingActions\StopWorkoutAction.cs" />
+    <Compile Include="TrainingModels\TrainingConditions\ExceedMaxCondition.cs" />
+    <Compile Include="TrainingModels\TrainingConditions\ExceedMinCondition.cs" />
+    <Compile Include="TrainingModels\TrainingConditions\GoalCondition.cs" />
     <Compile Include="TrainingModels\TrainingEvent.cs" />
     <Compile Include="VideoPlayer.cs" />
     <Compile Include="WebBrowser.cs" />
+    <Compile Include="WorkoutManagement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -84,9 +91,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TrainingModels\TrainingConditions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Images\BandIcon.png" />
     <EmbeddedResource Include="Images\BandSmallIcon.png" />

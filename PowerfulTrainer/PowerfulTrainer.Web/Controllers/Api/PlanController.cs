@@ -3,10 +3,12 @@ using PowerfulTrainer.Web.Models;
 using PowerfulTrainer.Web.Models.Api;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Windows.Storage;
 
 namespace PowerfulTrainer.Web.Controllers.Api
 {

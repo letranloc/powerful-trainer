@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerfulTrainer.Shared.TrainingModels
+namespace PowerfulTrainer
 {
     public abstract class TrainingAction
     {

@@ -5,7 +5,6 @@ using Microsoft.Band.Portable.Tiles.Pages;
 using Microsoft.Band.Portable.Tiles.Pages.Data;
 using Newtonsoft.Json;
 using PowerfulTrainer.Models;
-using PowerfulTrainer.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +23,7 @@ namespace PowerfulTrainer
 
             InitializeComponent();
             Browser.OnJsNotify += Browser_OnJsNotify;
+            AppManagement.Init();
         }
 
         protected override async void OnAppearing()
@@ -37,8 +37,6 @@ namespace PowerfulTrainer
             Device.StartTimer(TimeSpan.FromSeconds(1), Timer_Tick);
         }
 
-        PlanData PlanData;
-
         private void Browser_OnJsNotify(WebBrowser Sender, string Data)
         {
             var Key = Data.Substring(0, Data.IndexOf(':')).ToLower();
@@ -51,11 +49,8 @@ namespace PowerfulTrainer
             {
                 try
                 {
-                    PlanData = JsonConvert.DeserializeObject<PlanData>(Value);
-                    PlanData.AvgHeartRate = 90;
-                    PlanData.TotalSteps = 200;
-                    PlanData.TotalCals = 10;
-                    PlanData = OptimizePlanData(PlanData);
+                    var PlanData = JsonConvert.DeserializeObject<PlanData>(Value);
+                    WorkoutManagement.PlanData = PlanData;
                     StartWorkout();
                     DependencyService.Get<IFileManagement>().SaveText("data", JsonConvert.SerializeObject(PlanData));
                 }
@@ -64,89 +59,17 @@ namespace PowerfulTrainer
                     DisplayAlert("Something went wrong", "Please try again.", "OK");
                 }
             }
-        }
+        }   
 
-        private PlanData OptimizePlanData(PlanData PlanData)
-        {
-            PlanData TmpData = new PlanData();
-            TmpData.AvgHeartRate = PlanData.AvgHeartRate;
-            TmpData.TotalCals = PlanData.TotalCals;
-            TmpData.TotalSteps = PlanData.TotalSteps;
-            TmpData.Id = PlanData.Id;
-            foreach (var Exercise in PlanData.Data)
-            {
-                if (Exercise.Name.Contains("Rest"))
-                {
-                    Exercise.Thumbnail = "http://rugbydudefitness.com/wp-content/uploads/2013/09/Rest-and-Repair.jpg";
-                }
-                for (int i = 0; i < Exercise.Sets; i++)
-                {
-                    string ExtraInfo = "";
-                    if (!String.IsNullOrEmpty(Exercise.Duration))
-                    {
-                        TimeSpan timediff = new TimeSpan(0, 0, int.Parse(Exercise.Duration));
-                        ExtraInfo += timediff.Minutes.ToString("00") + ":" + timediff.Seconds.ToString("00");
-                    }
-                    else
-                    {
-                        if (Exercise.Repetitions != null && Exercise.Repetitions > 0)
-                        {
-                            ExtraInfo += Exercise.Repetitions + " rep";
-                        }
-                        else
-                        {
-                            ExtraInfo += "Max rep";
-                        }
-                    }
-
-                    TmpData.Data.Add(new PlanItem()
-                    {
-                        Duration = Exercise.Duration,
-                        Repetitions = Exercise.Repetitions,
-                        SubInfo = ExtraInfo,
-                        VideoId = Exercise.VideoId,
-                        Thumbnail = Exercise.Thumbnail,
-                        Name = Exercise.Name + (Exercise.Sets > 1 ? (" (" + (i + 1) + "/" + Exercise.Sets + ")") : "")
-                    });
-                    if (i < Exercise.Sets - 1)
-                    {
-                        if (!string.IsNullOrEmpty(Exercise.RestTime))
-                        {
-                            int tmp;
-                            string RestName = "";
-                            if (int.TryParse(Exercise.RestTime, out tmp))
-                            {
-                                TimeSpan timediff = new TimeSpan(0, 0, tmp);
-                                RestName = "" + timediff.Minutes.ToString("00") + ":" + timediff.Seconds.ToString("00");
-                            }
-                            else
-                            {
-                                RestName = "" + Exercise.RestTime;
-                            }
-                            TmpData.Data.Add(new PlanItem()
-                            {
-                                Duration = Exercise.RestTime,
-                                Name = "Rest",
-                                SubInfo = RestName,
-                                IsRestItem = true,
-                                Thumbnail = "http://rugbydudefitness.com/wp-content/uploads/2013/09/Rest-and-Repair.jpg"
-                            });
-                        }
-                    }
-                }
-            }
-            return TmpData;
-        }
-
-        Guid tileGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
         Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
         BandClient BandClient = null;
         private async Task CreateBandTitle()
         {
             var Tiles = await BandClient.TileManager.GetTilesAsync();
-            if (Tiles.Count(u => u.Id == tileGuid) > 0)
+            if (Tiles.Count(u => u.Id == BandManagement.tileGuid) > 0)
             {
                 return;
+                //await BandClient.TileManager.RemoveTileAsync(BandManagement.tileGuid);
             }
             var Theme = await BandClient.PersonalizationManager.GetThemeAsync();
 
@@ -154,7 +77,7 @@ namespace PowerfulTrainer
             var SmallIconStream = typeof(MainPage).GetTypeInfo().Assembly.GetManifestResourceStream("PowerfulTrainer.Images.BandSmallIcon.png");
             var Icon = await BandImage.FromStreamAsync(IconStream);
             var SmallIcon = await BandImage.FromStreamAsync(SmallIconStream);
-            BandTile tile = new BandTile(tileGuid)
+            BandTile tile = new BandTile(BandManagement.tileGuid)
             {
                 Name = "Powerful Trainer",
                 Icon = Icon,
@@ -219,7 +142,7 @@ namespace PowerfulTrainer
                 Text = "^^!"
             });
 
-            await BandClient.TileManager.SetTilePageDataAsync(tileGuid, pageContent);
+            await BandClient.TileManager.SetTilePageDataAsync(BandManagement.tileGuid, pageContent);
         }
 
         private async void SetTileData()
@@ -232,14 +155,14 @@ namespace PowerfulTrainer
                 PageLayoutIndex = 0,
             };
             var pageContentData = pageContent.Data;
-            if (ExIndex < PlanData.Data.Count)
+            if (ExIndex < WorkoutManagement.PlanData.Data.Count)
             {
                 pageContentData.Add(new TextButtonData()
                 {
                     ElementId = 1,
                     Text = "Next"
                 });
-                var PlanItem = PlanData.Data[ExIndex];
+                var PlanItem = WorkoutManagement.PlanData.Data[ExIndex];
                 pageContentData.Add(new WrappedTextBlockData()
                 {
                     ElementId = 2,
@@ -252,7 +175,7 @@ namespace PowerfulTrainer
                     Text = BandTime.Minutes.ToString("00") + ":" + BandTime.Seconds.ToString("00")
                 });
             }
-            await BandClient.TileManager.SetTilePageDataAsync(tileGuid, pageContent);
+            await BandClient.TileManager.SetTilePageDataAsync(BandManagement.tileGuid, pageContent);
             CanSetTileData = true;
             Monitor.Exit(LockObj);
         }
@@ -285,16 +208,18 @@ namespace PowerfulTrainer
             SetWorkout();
             await BandManagement.Start();
             RunTimer = true;
+            AppManagement.IsEventRuning = true;
         }
 
         private async void StopWorkout()
         {
             RunTimer = false;
+            AppManagement.IsEventRuning = false;
             SetTileBeginData();
             BandManagement.Stop();
             await HttpClient.Post<string>("http://aloraha.com/api/report", new AddReportReq()
             {
-                PlanID = PlanData.Id,
+                PlanID = WorkoutManagement.PlanData.Id,
                 AvgHeartRate = (float)BandManagement.GetValue(BandSensorType.HeartRate),
                 TotalCals = (float)BandManagement.GetValue(BandSensorType.Calories),
                 TotalSteps = (float)BandManagement.GetValue(BandSensorType.Step),
@@ -302,7 +227,7 @@ namespace PowerfulTrainer
                 Duration = (int)TotalTimeSpan.TotalSeconds
             });
             Workout.IsVisible = false;
-            Browser.Uri = "http://aloraha.com/report/workout";
+            Browser.Uri = "http://aloraha.com/report/workout//?inapp";
         }
 
         bool RunTimer = false;
@@ -321,16 +246,16 @@ namespace PowerfulTrainer
                 ExTime.Text = ExTimeSpan.Minutes.ToString("00") + ":" + ExTimeSpan.Seconds.ToString("00");
 
                 CalValue.Text = (BandManagement.GetValue(BandSensorType.Calories)).ToString("0");
-                CalChart(CalBar, PlanData.TotalCals, BandManagement.GetValue(BandSensorType.Calories));
+                CalChart(CalBar, WorkoutManagement.PlanData.TotalCals, BandManagement.GetValue(BandSensorType.Calories));
 
                 StepValue.Text = (BandManagement.GetValue(BandSensorType.Step)).ToString("0");
-                CalChart(StepBar, PlanData.TotalSteps, BandManagement.GetValue(BandSensorType.Step));
+                CalChart(StepBar, WorkoutManagement.PlanData.TotalSteps, BandManagement.GetValue(BandSensorType.Step));
 
                 HeartValue.Text = (BandManagement.GetValue(BandSensorType.HeartRate)).ToString("0");
-                CalChart(HeartBar, PlanData.AvgHeartRate, BandManagement.GetValue(BandSensorType.HeartRate));
+                CalChart(HeartBar, WorkoutManagement.PlanData.AvgHeartRate, BandManagement.GetValue(BandSensorType.HeartRate));
 
                 DistanceValue.Text = (BandManagement.GetValue(BandSensorType.Step)*0.5).ToString("0");
-                CalChart(DistanceBar, PlanData.TotalSteps * 0.5, BandManagement.GetValue(BandSensorType.Step)*0.5);
+                CalChart(DistanceBar, WorkoutManagement.PlanData.TotalSteps * 0.5, BandManagement.GetValue(BandSensorType.Step)*0.5);
             }
             return true;
         }
@@ -339,9 +264,9 @@ namespace PowerfulTrainer
         {
             ExIndex++;
             ExTimeSpan = new TimeSpan();
-            if (ExIndex < PlanData.Data.Count)
+            if (ExIndex < WorkoutManagement.PlanData.Data.Count)
             {
-                var PlanItem = PlanData.Data[ExIndex];
+                var PlanItem = WorkoutManagement.PlanData.Data[ExIndex];
                 Title.Text = PlanItem.Name;
                 SubInfo.Text = PlanItem.SubInfo;
                 if (!String.IsNullOrEmpty(PlanItem.VideoId))
@@ -365,7 +290,7 @@ namespace PowerfulTrainer
             {
                 StopWorkout();
             }
-            if (ExIndex == PlanData.Data.Count - 1)
+            if (ExIndex == WorkoutManagement.PlanData.Data.Count - 1)
             {
                 NextBtn.Text = "Done";
             }

@@ -43,12 +43,12 @@ namespace PowerfulTrainer.Web.Controllers.Api
         }
         protected object SuccessResult(object Data)
         {
-            return new
+            return Ok(new
             {
                 ReturnCode = 0,
                 Message = "Success",
                 Data = Data
-            };
+            });
         }
         protected object FailResult(Exception ex)
         {

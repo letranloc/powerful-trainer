@@ -1,4 +1,5 @@
-﻿using PowerfulTrainer.Shared.TrainingModels;
+﻿using Newtonsoft.Json;
+using PowerfulTrainer.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,36 +9,39 @@ using System.Threading.Tasks;
 
 namespace PowerfulTrainer
 {
-    public class SuccessEvent
-    {
-        public string EventName { set; get; }
-        public String Time { set; get; }
-    }
-
     public class AppManagement
     {
         public static bool IsOnline;
-        public static List<TrainingEvent> Events;
+        public static List<TrainingEvent> Events = new List<TrainingEvent>();
         public static string AccessToken { set; get; }
+        public static bool IsEventRuning = false;
 
-        public static async void Run()
-        {
-            //BandManagement.Update();
-            //await ObserveEvent();
-        }
-
-        private static async Task ObserveEvent()
+        private static async void ObserveEvent()
         {
             while (true)
             {
                 await Task.Delay(1000);
+                if (IsEventRuning)
                 {
-                    foreach (var trainingEvent in Events)
                     {
-                        trainingEvent.Run();                       
+                        foreach (var trainingEvent in Events)
+                        {
+                            trainingEvent.Run();
+                        }
                     }
                 }
             }
+        }
+
+        public static async void Init()
+        {
+            var Result = await HttpClient.Get<ApiResponse>("http://aloraha.com/api/event");
+            Events = JsonConvert.DeserializeObject<List<TrainingEvent>>(Result.Data as string, new JsonSerializerSettings()
+            {
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+            ObserveEvent();
         }
     }
 }
