@@ -158,14 +158,14 @@
                     $rootScope.setLoadingState(false)
 
     calcTimeRange = ->
-        startTime = moment($scope.startTime).utc().startOf('day') #.subtract(1, 'h')
+        startTime = moment($scope.startTime).startOf('day') #.subtract(1, 'h')
         if $scope.period is 'hourly'
-            endTime = moment($scope.startTime).utc().endOf('day')
+            endTime = moment($scope.startTime).endOf('day')
         else
-            maxDate = moment($scope.startTime).utc().add(31, 'd')
+            maxDate = moment($scope.startTime).add(31, 'd')
             if maxDate.unix() > moment().unix()
                 maxDate = moment()
-            endTime = moment($scope.endTime).utc().startOf('day')
+            endTime = moment($scope.endTime).startOf('day')
             if maxDate.unix() < endTime.unix()
                 endTime = maxDate
                 $scope.endTime = endTime.toISOString()
@@ -205,6 +205,9 @@
                     type: 'bar'
                 chart.configs.options.tooltip =
                     formatter: ->
+                        dt = this.y - chart.configs.series[0].startAt
+                        if dt > 0
+                            return this.series.name + ": " + moment(dt).utc().format('H\\hm\\ms\\s')
                         return this.series.name + ": " + moment(this.y).utc().format('H\\hm\\ms\\s')
                 chart.configs.yAxis = 
                     type: 'datetime'
@@ -238,10 +241,10 @@
                         text: 'km'
                     labels:
                         formatter: ->
-                            return Math.round(this.value / 10000) / 100
+                            return Math.round(this.value / 1000) / 100
                 chart.configs.options.tooltip =
                     formatter: ->
-                        return "km+" + Math.round(this.x / 1000) / 10 + ": " + Math.round(this.y / 6) / 10 + "min/km"
+                        return "km+" + Math.round(this.x / 1000) / 100 + ": " + Math.round(this.y / 6) / 10 + "min/km"
         $scope.charts.push(chart)
         $scope.$broadcast('highchartsng.reflow')
 
@@ -295,7 +298,7 @@
 
     Highcharts.setOptions
         global:
-            useUTC: true
+            useUTC: false
 
     parseStepData = (data) ->
         states = [

@@ -46,7 +46,7 @@
     
     $scope.updateSummaries = ->
         $rootScope.setLoadingState(true)
-        utc = moment($scope.currentDate).utc()
+        utc = moment($scope.currentDate)
         MSHealth.getSummaries
             period: 'daily'
             startTime: utc.startOf('day').toISOString()
