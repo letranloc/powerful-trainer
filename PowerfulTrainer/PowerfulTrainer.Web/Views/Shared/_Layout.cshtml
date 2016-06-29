@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" ng-app="app" ng-cloak>
+<html lang="en" ng-app="app" ng-cloak fix-height>
     <head>
         <base href="/" />
         <meta charset="utf-8" />
@@ -17,8 +17,9 @@
             <link rel="stylesheet" href="~/css/styles.min.css" />
         }
     </head>
-    <body layout="column">
+    <body layout="column" add-height-to-this>
         @RenderBody()
+        <span flex add-height-from-this></span>
 
         @if (HttpContext.Current.IsDebuggingEnabled)
         {

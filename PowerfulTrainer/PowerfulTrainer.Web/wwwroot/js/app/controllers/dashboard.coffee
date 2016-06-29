@@ -13,7 +13,6 @@
         isShouldOpenToggleMenu = false
         $timeout ->
             $('#dashboard-toggle-menu').click()
-        , 1000
 
     $scope.toggleNavLeft = ->
         $mdSidenav("left").toggle()
