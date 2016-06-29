@@ -33,4 +33,6 @@ using Android.App;
 [assembly: UsesPermission(Android.Manifest.Permission.Internet)]
 [assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
 [assembly: UsesPermission(Android.Manifest.Permission.Bluetooth)]
+[assembly: UsesPermission(Android.Manifest.Permission.WakeLock)]
+[assembly: UsesPermission(Android.Manifest.Permission.MediaContentControl)]
 [assembly: UsesPermission(Microsoft.Band.BandClientManager.BindBandService)]

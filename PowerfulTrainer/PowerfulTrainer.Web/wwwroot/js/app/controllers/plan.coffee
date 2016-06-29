@@ -56,7 +56,7 @@
                 mdToast.showSimple resp.data.Message, "danger"
                 $rootScope.setLoadingState(false)
 
-.controller "PlanCreateCtrl", ($scope, $stateParams, $state, $q, $timeout, cookies, mdDialog, mdToast, Plan, Exercise) ->
+.controller "PlanCreateCtrl", ($rootScope, $scope, $stateParams, $state, $q, $timeout, cookies, mdDialog, mdToast, Plan, Exercise) ->
     if $stateParams.id
         Plan.get($stateParams.id).then (resp) ->
             $scope.plan = resp.data.Data

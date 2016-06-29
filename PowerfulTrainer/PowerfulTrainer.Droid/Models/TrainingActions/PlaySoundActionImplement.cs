@@ -17,10 +17,11 @@ namespace PowerfulTrainer.Droid.Models.TrainingActions
 {
     public class PlaySoundActionImplement:PlaySoundAction
     {
+        static MediaPlayer Player = new MediaPlayer();
         public override void Execute()
         {
-            var Player = new MediaPlayer();
             var fd = global::Android.App.Application.Context.Assets.OpenFd(FileName);
+            Player.Stop();
             Player.Prepared += (s, e) =>
             {
                 Player.Start();

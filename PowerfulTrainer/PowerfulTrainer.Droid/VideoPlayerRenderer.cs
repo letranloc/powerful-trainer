@@ -27,6 +27,8 @@ namespace PowerfulTrainer.Droid
             if (Control == null)
             {
                 Element.HandleSource += Element_HandleSource;
+                Element.PlayEvent += Element_PlayEvent;
+                Element.StopEvent += Element_StopEvent;
                 var VideoHolder = new VideoView(Context);
                 VideoHolder.SetMediaController(new MediaController(Context));
                 SetNativeControl(VideoHolder);
@@ -45,11 +47,23 @@ namespace PowerfulTrainer.Droid
             }
         }
 
+        private object Element_StopEvent(VideoPlayer Sender)
+        {
+            Control.StopPlayback();
+            return true;
+        }
+
+        private object Element_PlayEvent(VideoPlayer Sender)
+        {
+            Control.Start();
+            return true;
+        }
+
         private object Element_HandleSource(VideoPlayer Sender)
         {
             var uri = Android.Net.Uri.Parse(Element.Source);
             Control.SetVideoURI(uri);
-            Control.Start();
+            Control.SeekTo(500);
             return Sender.Source;
         }
     }

@@ -214,6 +214,7 @@ namespace PowerfulTrainer
         private async void StopWorkout()
         {
             RunTimer = false;
+            ExVideo.Stop();
             AppManagement.IsEventRuning = false;
             SetTileBeginData();
             BandManagement.Stop();
@@ -235,10 +236,14 @@ namespace PowerfulTrainer
         {
             if (RunTimer)
             {
-                if (CanSetTileData)
+                try
                 {
-                    SetTileData();
+                    if (CanSetTileData)
+                    {
+                        SetTileData();
+                    }
                 }
+                catch { }
                 TotalTimeSpan = TotalTimeSpan.Add(TimeSpan.FromSeconds(1));
                 TotalTime.Text = TotalTimeSpan.Hours.ToString("00") + ":" + TotalTimeSpan.Minutes.ToString("00") + ":" + TotalTimeSpan.Seconds.ToString("00");
 
@@ -264,6 +269,7 @@ namespace PowerfulTrainer
         {
             ExIndex++;
             ExTimeSpan = new TimeSpan();
+            ExVideo.Stop();
             if (ExIndex < WorkoutManagement.PlanData.Data.Count)
             {
                 var PlanItem = WorkoutManagement.PlanData.Data[ExIndex];

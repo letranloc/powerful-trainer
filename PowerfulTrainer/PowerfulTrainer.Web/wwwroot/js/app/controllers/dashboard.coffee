@@ -20,7 +20,7 @@
         if isShouldOpenToggleMenu && $rootScope.enableScrollShrink
             openToggleMenu()
 
-.controller "DashboardIndexCtrl", ($rootScope, $scope, $sessionStorage, $mdpDatePicker, $state, Auth, MSHealth) ->
+.controller "DashboardIndexCtrl", ($rootScope, $scope, $sessionStorage, $mdpDatePicker, $state, Auth, MSHealth, mdToast) ->
 
     unless $sessionStorage.startTime
         $sessionStorage.startTime = new Date()

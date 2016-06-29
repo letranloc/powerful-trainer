@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PowerfulTrainer;assembly=PowerfulTrainer"
              x:Class="PowerfulTrainer.MainPage"
-             Title="Main">
-  <Grid>
-    <local:WebBrowser x:Name="Browser" Uri="http://aloraha.com/?inapp"/>
+             Title="Main" BackgroundColor="Red">
+  <Grid VerticalOptions="Fill" BackgroundColor="Blue">
+    <local:WebBrowser x:Name="Browser" Uri="http://aloraha.com/login?inapp" VerticalOptions="Fill"/>
     <Grid x:Name="Workout" IsVisible="False"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White">
       <Grid.RowDefinitions>
         <RowDefinition Height="100"/>
