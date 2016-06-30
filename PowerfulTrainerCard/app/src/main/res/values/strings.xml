@@ -12,11 +12,10 @@
     <string name="status_bar_scanning">Scanning</string>
     <string name="content_desc_vuforia_logo">Vuforia Logo</string>
     <string name="content_desc_vuforia_background">Vuforia Background</string>
-    <string name="book_data_your_price">Your Price</string>
     <string name="content_description_cover">Cover</string>
     <string name="content_description_strike">Strike</string>
     <string name="content_description_background">Background</string>
-    <string name="book_data_touch_for_more">Touch for more information</string>
+    <string name="data_touch_for_more">Touch for more information</string>
     <string name="UPDATE_ERROR_AUTHORIZATION_FAILED_TITLE">Authorization Error</string>
     <string name="UPDATE_ERROR_PROJECT_SUSPENDED_TITLE">Authorization Error</string>
     <string name="UPDATE_ERROR_NO_NETWORK_CONNECTION_TITLE">Network Unavailable</string>

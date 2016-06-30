@@ -82,8 +82,8 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
     private static final String mServerURL = "http://aloraha.com/api/exercise/video/";
 
-    private static final int BOOKINFO_NOT_DISPLAYED = 0;
-    private static final int BOOKINFO_IS_DISPLAYED = 1;
+    private static final int INFO_NOT_DISPLAYED = 0;
+    private static final int INFO_IS_DISPLAYED = 1;
 
     static final int INIT_SUCCESS = 2;
     static final int INIT_ERROR_NO_NETWORK_CONNECTION = -1;
@@ -106,18 +106,18 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
     static final int HIDE_LOADING_DIALOG = 0;
     static final int SHOW_LOADING_DIALOG = 1;
 
-    private int mBookInfoStatus = BOOKINFO_NOT_DISPLAYED;
+    private int mInfoStatus = INFO_NOT_DISPLAYED;
 
     private String mStatusBarText;
 
     private Exercise mExerciseData;
-    private String mBookJSONUrl;
-    private Texture mBookDataTexture;
+    private String mMovieName;
+    private Texture mDataTexture;
 
-    private boolean mIsLoadingBookData = false;
+    private boolean mIsLoadingData = false;
     private boolean mIsVideoPreviewPlaying = false;
 
-    private GetBookDataTask mGetBookDataTask;
+    private GetDataTask mGetDataTask;
 
     private VuforiaAppGLView mGlView;
 
@@ -156,7 +156,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
     private AppMenu mAppMenu;
 
-    public void deinitBooks() {
+    public void deinitData() {
         TrackerManager trackerManager = TrackerManager.getInstance();
         ObjectTracker objectTracker = (ObjectTracker) trackerManager
                 .getTracker(ObjectTracker.getClassType());
@@ -335,7 +335,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
             mGlView.onResume();
         }
 
-        mBookInfoStatus = BOOKINFO_NOT_DISPLAYED;
+        mInfoStatus = INFO_NOT_DISPLAYED;
 
         if (mRenderer != null) {
             if (!mReturningFromFullScreen) {
@@ -438,7 +438,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
     private void startLoadingAnimation() {
         LayoutInflater inflater = LayoutInflater.from(this);
         mUILayout = (RelativeLayout) inflater.inflate(
-                R.layout.camera_overlay_books, null, false);
+                R.layout.camera_overlay_layout, null, false);
 
         mUILayout.setVisibility(View.VISIBLE);
         mUILayout.setBackgroundColor(Color.BLACK);
@@ -461,13 +461,13 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
         mCloseButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                mBookInfoStatus = BOOKINFO_NOT_DISPLAYED;
+                mInfoStatus = INFO_NOT_DISPLAYED;
 
                 loadingDialogHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
 
-                if (mIsLoadingBookData) {
-                    mGetBookDataTask.cancel(true);
-                    mIsLoadingBookData = false;
+                if (mIsLoadingData) {
+                    mGetDataTask.cancel(true);
+                    mIsLoadingData = false;
 
                     cleanTargetTrackedId();
                 }
@@ -596,17 +596,17 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
         });
     }
 
-    public void createProductTexture(String bookJSONUrl) {
-        mBookJSONUrl = bookJSONUrl;
+    public void createProductTexture(String movieName) {
+        mMovieName = movieName;
 
-        if (mBookDataTexture != null) {
-            mBookDataTexture = null;
+        if (mDataTexture != null) {
+            mDataTexture = null;
 
             System.gc();
         }
 
-        mGetBookDataTask = new GetBookDataTask();
-        mGetBookDataTask.execute();
+        mGetDataTask = new GetDataTask();
+        mGetDataTask.execute();
     }
 
     public void createProductTexture() {
@@ -616,32 +616,32 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
             updateProductView(exView, mExerciseData);
 
-            mBookDataTexture = convertViewToTexture(exView);
+            mDataTexture = convertViewToTexture(exView);
 
             exView = null;
             System.gc();
 
             loadingDialogHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
 
-            mIsLoadingBookData = false;
+            mIsLoadingData = false;
 
             productTextureIsCreated();
         }
     }
 
-    private class GetBookDataTask extends AsyncTask<Void, Void, Void> {
-        private String mBookDataJSONFullUrl;
+    private class GetDataTask extends AsyncTask<Void, Void, Void> {
+        private String mDataJSONFullUrl;
         private static final String CHARSET = "UTF-8";
 
 
         protected void onPreExecute() {
-            mIsLoadingBookData = true;
+            mIsLoadingData = true;
 
             StringBuilder builder = new StringBuilder();
             builder.append(mServerURL);
-            builder.append(mBookJSONUrl);
+            builder.append(mMovieName);
 
-            mBookDataJSONFullUrl = builder.toString();
+            mDataJSONFullUrl = builder.toString();
 
             loadingDialogHandler.sendEmptyMessage(SHOW_LOADING_DIALOG);
         }
@@ -650,7 +650,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
             HttpURLConnection connection = null;
 
             try {
-                URL url = new URL(mBookDataJSONFullUrl);
+                URL url = new URL(mDataJSONFullUrl);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestProperty("Accept-Charset", CHARSET);
                 connection.connect();
@@ -659,7 +659,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
                 if (status != HttpURLConnection.HTTP_OK) {
                     mExerciseData = null;
-                    mBookInfoStatus = BOOKINFO_NOT_DISPLAYED;
+                    mInfoStatus = INFO_NOT_DISPLAYED;
 
                     loadingDialogHandler.sendEmptyMessage(HIDE_LOADING_DIALOG);
 
@@ -699,7 +699,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
                 mExerciseData.setThumbnail(bitmap);
 
             } catch (Exception e) {
-                Log.d(LOGTAG, "Couldn't get books. e: " + e);
+                Log.d(LOGTAG, "Couldn't get data. e: " + e);
             } finally {
                 connection.disconnect();
             }
@@ -716,7 +716,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
     }
 
     public Texture getProductTexture() {
-        return mBookDataTexture;
+        return mDataTexture;
     }
 
     private void updateProductView(ExerciseOverlayView productView, Exercise exercise) {
@@ -772,7 +772,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
     }
 
     public void enterContentMode() {
-        mBookInfoStatus = BOOKINFO_IS_DISPLAYED;
+        mInfoStatus = INFO_IS_DISPLAYED;
 
         show2DOverlay();
 
@@ -836,7 +836,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
         public boolean onSingleTapUp(MotionEvent event) {
             boolean isSingleTapHandled = true;
 
-            if (mBookInfoStatus == BOOKINFO_NOT_DISPLAYED) {
+            if (mInfoStatus == INFO_NOT_DISPLAYED) {
 
                 boolean result = CameraDevice.getInstance().setFocusMode(
                         CameraDevice.FOCUS_MODE.FOCUS_MODE_TRIGGERAUTO);
@@ -844,8 +844,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
                 if (!result)
                     Log.e("SingleTapUp", "Unable to trigger focus");
 
-                // If the book info is displayed it shows the book data web view
-            } else if (mBookInfoStatus == BOOKINFO_IS_DISPLAYED) {
+            } else if (mInfoStatus == INFO_IS_DISPLAYED) {
 
                 if (mIsVideoPreviewPlaying) {
                     isSingleTapHandled = false;
@@ -914,7 +913,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
     @Override
     public boolean doLoadTrackersData() {
-        Log.d(LOGTAG, "initBooks");
+        Log.d(LOGTAG, "initData");
 
         // Get the object tracker:
         TrackerManager trackerManager = TrackerManager.getInstance();
