@@ -2,11 +2,20 @@
 <resources>
 
     <string name="app_name">Powerful Trainer Card</string>
-    <string name="app_description">Powerful Trainer Card Description</string>
-    
+    <string name="app_description">Powerful Trainer Card</string>
     <string name="button_start">Start</string>
     <string name="button_OK">OK</string>
-
+    <string name="string_$">$</string>
+    <string name="string_openParentheses">(</string>
+    <string name="string_closeParentheses">)</string>
+    <string name="string_ratings">ratings</string>
+    <string name="status_bar_scanning">Scanning</string>
+    <string name="content_desc_vuforia_logo">Vuforia Logo</string>
+    <string name="content_desc_vuforia_background">Vuforia Background</string>
+    <string name="content_description_cover">Cover</string>
+    <string name="content_description_strike">Strike</string>
+    <string name="content_description_background">Background</string>
+    <string name="data_touch_for_more">Touch for more information</string>
     <string name="UPDATE_ERROR_AUTHORIZATION_FAILED_TITLE">Authorization Error</string>
     <string name="UPDATE_ERROR_PROJECT_SUSPENDED_TITLE">Authorization Error</string>
     <string name="UPDATE_ERROR_NO_NETWORK_CONNECTION_TITLE">Network Unavailable</string>
@@ -26,6 +35,9 @@
     <string name="UPDATE_ERROR_BAD_FRAME_QUALITY_DESC">The camera does not have enough detail, please try again later.</string>
     <string name="UPDATE_ERROR_UNKNOWN_DESC">The service is unavaiable, please try again later.</string>
 
+    <string name="splash_screen_description">Vuforia Splash</string>
+    
+    
     <string name="INIT_ERROR">Error</string>
     <string name="INIT_ERROR_DEVICE_NOT_SUPPORTED">Failed to initialize Vuforia. This device is not supported.</string>
     <string name="INIT_ERROR_NO_CAMERA_ACCESS">Failed to initialize Vuforia. Camera not accessible</string>
@@ -50,7 +62,4 @@
     <string name="menu_camera">CAMERA</string>
     <string name="menu_camera_front">Front</string>
     <string name="menu_camera_back">Rear</string>
-        
-    <string name="splash_screen_description">Vuforia Splash</string>
-    
 </resources>

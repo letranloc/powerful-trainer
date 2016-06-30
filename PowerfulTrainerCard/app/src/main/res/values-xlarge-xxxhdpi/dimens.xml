@@ -14,8 +14,5 @@
 
     <dimen name="menu_title">22sp</dimen>
     <dimen name="menu_title_padding">14sp</dimen>
-
-    <dimen name="menu_entries_text">4sp</dimen>
-    <dimen name="menu_entries_title">4sp</dimen>
     
 </resources>
