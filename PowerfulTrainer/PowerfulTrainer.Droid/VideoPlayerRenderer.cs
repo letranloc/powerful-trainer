@@ -14,6 +14,7 @@ using PowerfulTrainer;
 using PowerfulTrainer.Droid;
 using Xamarin.Forms.Platform.Android;
 using Android.Net;
+using System.ComponentModel;
 
 [assembly: ExportRenderer(typeof(VideoPlayer), typeof(VideoPlayerRenderer))]
 namespace PowerfulTrainer.Droid
@@ -26,7 +27,6 @@ namespace PowerfulTrainer.Droid
 
             if (Control == null)
             {
-                Element.HandleSource += Element_HandleSource;
                 Element.PlayEvent += Element_PlayEvent;
                 Element.StopEvent += Element_StopEvent;
                 var VideoHolder = new VideoView(Context);
@@ -40,9 +40,19 @@ namespace PowerfulTrainer.Droid
             }
             if (e.NewElement != null)
             {
+            }
+        }
+
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+            if(e.PropertyName==VideoPlayer.SourceProperty.PropertyName)
+            {
                 if (Element.Source != null)
                 {
-                    Control.SetVideoURI(Android.Net.Uri.Parse(Element.Source));
+                    var uri = Android.Net.Uri.Parse(Element.Source);
+                    Control.SetVideoURI(uri);
+                    Control.SeekTo(500);
                 }
             }
         }
@@ -57,14 +67,6 @@ namespace PowerfulTrainer.Droid
         {
             Control.Start();
             return true;
-        }
-
-        private object Element_HandleSource(VideoPlayer Sender)
-        {
-            var uri = Android.Net.Uri.Parse(Element.Source);
-            Control.SetVideoURI(uri);
-            Control.SeekTo(500);
-            return Sender.Source;
         }
     }
 }

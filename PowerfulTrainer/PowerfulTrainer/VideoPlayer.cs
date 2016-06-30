@@ -21,7 +21,7 @@ namespace PowerfulTrainer
         public string Source
         {
             get { return (string)GetValue(SourceProperty); }
-            set { SetValue(SourceProperty, value); HandleSource(this); }
+            set { SetValue(SourceProperty, value); }
         }
 
         public void Stop()
@@ -39,7 +39,5 @@ namespace PowerfulTrainer
                 PlayEvent(this);
             }
         }
-
-        public event OnRendererHandleEvent HandleSource;
     }
 }

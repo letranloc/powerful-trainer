@@ -38,6 +38,7 @@
     <Compile Include="App.cs" />
     <Compile Include="AppManagement.cs" />
     <Compile Include="BandManagement.cs" />
+    <Compile Include="ICallVuforia.cs" />
     <Compile Include="IFileManagement.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\HttpClient.cs" />

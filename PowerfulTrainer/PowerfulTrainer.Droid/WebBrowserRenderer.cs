@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -15,6 +14,7 @@ using PowerfulTrainer.Droid;
 using Xamarin.Forms.Platform.Android;
 using Android.Webkit;
 using Java.Interop;
+using System.ComponentModel;
 
 [assembly: ExportRenderer(typeof(WebBrowser), typeof(WebBrowserRenderer))]
 namespace PowerfulTrainer.Droid
@@ -57,7 +57,6 @@ namespace PowerfulTrainer.Droid
                 var webView = new Android.Webkit.WebView(Forms.Context);
                 webView.Settings.JavaScriptEnabled = true;
                 Element.OnBack += OnBack;
-                Element.HandleUri += HandleUri;
                 Element.HandleCanGoBack += HandleCanGoBack;
                 SetNativeControl(webView);
             }
@@ -75,10 +74,13 @@ namespace PowerfulTrainer.Droid
             }
         }
 
-        private object HandleUri(WebBrowser Sender)
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Control.LoadUrl(Element.Uri);
-            return true;
+            base.OnElementPropertyChanged(sender, e);
+            if (e.PropertyName == WebBrowser.UriProperty.PropertyName)
+            {
+                Control.LoadUrl(Element.Uri);
+            }
         }
 
         private object HandleCanGoBack(WebBrowser Sender)

@@ -16,7 +16,6 @@ namespace PowerfulTrainer
         public event OnRendererRequestEvent OnBack = null;
         public event OnJsNotifyEvent OnJsNotify = null;
         public event OnRendererHandleEvent HandleCanGoBack = null;
-        public event OnRendererHandleEvent HandleUri = null;
 
 
         public static readonly BindableProperty UriProperty = BindableProperty.Create(
@@ -28,7 +27,7 @@ namespace PowerfulTrainer
         public string Uri
         {
             get { return (string)GetValue(UriProperty); }
-            set { SetValue(UriProperty, value); HandleUri(this); }
+            set { SetValue(UriProperty, value);}
         }
         
         public void JsNotify(string Data)

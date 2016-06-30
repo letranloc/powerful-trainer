@@ -134,6 +134,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallVuforia.cs" />
     <Compile Include="FileManagement.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Models\TrainingActions\PlaySoundActionImplement.cs" />

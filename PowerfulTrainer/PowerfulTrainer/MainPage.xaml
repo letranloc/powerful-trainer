@@ -5,8 +5,8 @@
              x:Class="PowerfulTrainer.MainPage"
              Title="Main" BackgroundColor="Red">
   <Grid VerticalOptions="Fill" BackgroundColor="Blue">
-    <local:WebBrowser x:Name="Browser" Uri="http://aloraha.com/login?inapp" VerticalOptions="Fill"/>
-    <Grid x:Name="Workout" IsVisible="False"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White">
+    
+    <Grid x:Name="Workout"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White">
       <Grid.RowDefinitions>
         <RowDefinition Height="100"/>
         <RowDefinition Height="Auto"/>
@@ -23,9 +23,8 @@
         <Label x:Name="ExTime" TextColor="White" Margin="10, 0" HorizontalOptions="End" VerticalOptions="Center"/>
       </Grid>
 
-      <Grid Grid.Row="1" VerticalOptions="Start" BackgroundColor="White" HeightRequest="270">
-        <local:VideoPlayer x:Name="ExVideo"/>
-        <Image x:Name="ExImage" IsVisible="False" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="AspectFill"/>
+      <Grid Grid.Row="1" VerticalOptions="StartAndExpand" BackgroundColor="White" x:Name="ExGrid">
+
       </Grid>
 
       <Grid Grid.Row="2">
@@ -113,6 +112,6 @@
         <Button HorizontalOptions="End" Opacity="0" Clicked="NextBtn_Click" Text="Next" TextColor="White" VerticalOptions="Fill"/>
       </Grid>
     </Grid>
-      
+    <local:WebBrowser x:Name="Browser" Uri="http://aloraha.com/login?inapp" VerticalOptions="Fill"/>
   </Grid>
 </ContentPage>

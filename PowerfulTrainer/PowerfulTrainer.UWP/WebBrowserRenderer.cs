@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Platform.UWP;
 using Windows.UI.Xaml.Controls;
+using System.ComponentModel;
 
 [assembly: ExportRenderer(typeof(WebBrowser), typeof(WebBrowserRenderer))]
 namespace PowerfulTrainer.UWP
@@ -22,7 +23,6 @@ namespace PowerfulTrainer.UWP
             {
                 Element.OnBack += OnBack;
                 Element.HandleCanGoBack += HandleCanGoBack;
-                Element.HandleUri += HandleUri;
                 SetNativeControl(new Windows.UI.Xaml.Controls.WebView());
             }
             if (e.OldElement != null)
@@ -37,11 +37,13 @@ namespace PowerfulTrainer.UWP
                 Control.Source = new Uri(Element.Uri);
             }
         }
-
-        private object HandleUri(WebBrowser Sender)
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            return Control.Source = new Uri(Element.Uri);
-
+            base.OnElementPropertyChanged(sender, e);
+            if(e.PropertyName==WebBrowser.UriProperty.PropertyName)
+            {
+                Control.Source = new Uri(Element.Uri);
+            }
         }
 
         private object HandleCanGoBack(WebBrowser Sender)

@@ -25,16 +25,33 @@ namespace PowerfulTrainer
             Browser.OnJsNotify += Browser_OnJsNotify;
             AppManagement.Init();
         }
-
+        VideoPlayer ExVideo = new VideoPlayer();
+        Image ExImage = new Image();
         protected override async void OnAppearing()
         {
             base.OnAppearing();
             await BandManagement.Init();
             BandClient = BandManagement.BandClient;
-            await CreateBandTitle();
-            SetTileBeginData();
-            BandClient.TileManager.TileButtonPressed += TileManager_TileButtonPressed;
-            Device.StartTimer(TimeSpan.FromSeconds(1), Timer_Tick);
+            if (BandClient != null)
+            {
+                await CreateBandTitle();
+                SetTileBeginData();
+                BandClient.TileManager.TileButtonPressed += TileManager_TileButtonPressed;
+                Device.StartTimer(TimeSpan.FromSeconds(1), Timer_Tick);
+            }
+            else
+            {
+                await DisplayAlert("Band connection", "Please connect to MS Band", "OK");
+            }
+            await Task.Delay(3000);
+            ExImage.IsVisible = false;
+            ExImage.VerticalOptions = LayoutOptions.Fill;
+            ExImage.HorizontalOptions = LayoutOptions.Fill;
+            ExImage.Aspect = Aspect.AspectFill;
+            ExImage.WidthRequest = ExGrid.Width;
+            ExImage.HeightRequest = ExVideo.HeightRequest = ExGrid.Width / 16 * 9;
+            ExGrid.Children.Add(ExImage);
+            ExGrid.Children.Add(ExVideo);
         }
 
         private void Browser_OnJsNotify(WebBrowser Sender, string Data)
@@ -58,6 +75,14 @@ namespace PowerfulTrainer
                 {
                     DisplayAlert("Something went wrong", "Please try again.", "OK");
                 }
+            }
+            if(Key== "ptcard")
+            {
+                try
+                {
+                    DependencyService.Get<ICallVuforia>().Call();
+                }
+                catch { }
             }
         }   
 
@@ -200,15 +225,19 @@ namespace PowerfulTrainer
         DateTime BeginTime = new DateTime();
         private async void StartWorkout()
         {
-            ExIndex = -1;
-            NextBtn.Text = "Next";     
-            Workout.IsVisible = true;
-            TotalTimeSpan = new TimeSpan();
-            BeginTime = DateTime.Now;
-            SetWorkout();
-            await BandManagement.Start();
-            RunTimer = true;
-            AppManagement.IsEventRuning = true;
+            if (BandClient != null)
+            {
+                ExIndex = -1;
+                NextBtn.Text = "Next";
+                Browser.IsVisible = false;
+                
+                TotalTimeSpan = new TimeSpan();
+                BeginTime = DateTime.Now;
+                SetWorkout();
+                await BandManagement.Start();
+                RunTimer = true;
+                AppManagement.IsEventRuning = true;
+            }
         }
 
         private async void StopWorkout()
@@ -227,7 +256,7 @@ namespace PowerfulTrainer
                 BeginTime = BeginTime,
                 Duration = (int)TotalTimeSpan.TotalSeconds
             });
-            Workout.IsVisible = false;
+            Browser.IsVisible = true;
             Browser.Uri = "http://aloraha.com/report/workout//?inapp";
         }
 
@@ -238,7 +267,7 @@ namespace PowerfulTrainer
             {
                 try
                 {
-                    if (CanSetTileData)
+                    if (CanSetTileData && BandClient!=null)
                     {
                         SetTileData();
                     }

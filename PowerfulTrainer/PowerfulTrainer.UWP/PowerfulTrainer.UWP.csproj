@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CallVuforia.cs" />
     <Compile Include="FileManagement.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -113,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Come_on.mp3" />
-    <AndroidAsset Include="Assets\Danger.mp3" />
+    <Content Include="Assets\Danger.mp3" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

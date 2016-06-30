@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Playback;
 using Xamarin.Forms.Platform.UWP;
+using System.ComponentModel;
 
 [assembly: ExportRenderer(typeof(VideoPlayer), typeof(VideoPlayerRenderer))]
 namespace PowerfulTrainer.UWP
@@ -19,7 +20,8 @@ namespace PowerfulTrainer.UWP
 
             if (Control == null)
             {
-                Element.HandleSource += Element_HandleSource;
+                Element.StopEvent += Element_StopEvent;
+                Element.PlayEvent += Element_PlayEvent;
                 SetNativeControl(new Windows.UI.Xaml.Controls.MediaElement()
                 {
                     AutoPlay = false,
@@ -28,9 +30,17 @@ namespace PowerfulTrainer.UWP
             }
             if (e.OldElement != null)
             {
-
+                
             }
             if (e.NewElement != null)
+            {
+            }
+        }
+
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+            if(e.PropertyName==VideoPlayer.SourceProperty.PropertyName)
             {
                 if (Element.Source != null)
                 {
@@ -39,10 +49,16 @@ namespace PowerfulTrainer.UWP
             }
         }
 
-        private object Element_HandleSource(VideoPlayer Sender)
+        private object Element_PlayEvent(VideoPlayer Sender)
         {
-            Control.Source = new Uri(Sender.Source);
-            return Sender.Source;
+            Control.Play();
+            return true;
+        }
+
+        private object Element_StopEvent(VideoPlayer Sender)
+        {
+            Control.Stop();
+            return true;
         }
     }
 }
