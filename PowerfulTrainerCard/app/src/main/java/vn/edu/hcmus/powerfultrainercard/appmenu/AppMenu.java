@@ -1,12 +1,3 @@
-/*===============================================================================
-Copyright (c) 2016 PTC Inc. All Rights Reserved.
-
-Copyright (c) 2012-2014 Qualcomm Connected Experiences, Inc. All Rights Reserved.
-
-Vuforia is a trademark of PTC Inc., registered in the United States and other 
-countries.
-===============================================================================*/
-
 package vn.edu.hcmus.powerfultrainercard.appmenu;
 
 import android.app.Activity;
@@ -30,7 +21,6 @@ import java.util.ArrayList;
 
 import vn.edu.hcmus.powerfultrainercard.R;
 
-// Handles the sample apps menu settings
 public class AppMenu {
 
     protected static final String SwipeSettingsInterface = null;
@@ -49,10 +39,8 @@ public class AppMenu {
     private int mScreenWidth;
     private int mListViewWidth = 0;
 
-    // True if dragging and displaying the menu
     boolean mSwipingMenu = false;
 
-    // True if menu is showing and docked
     boolean mStartMenuDisplaying = false;
 
     float mGingerbreadMenuClipping = 0;
@@ -62,15 +50,6 @@ public class AppMenu {
 
     boolean mIsBelowICS = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 
-
-    // Parameters:
-    // menuInterface - Reference to the object which will be handling the
-    // processes from the menu entries
-    // activity - The activity where the swipe menu will be used
-    // menuTitle - Title to be displayed
-    // movableView - SurfaceView where the OpenGL rendering is done
-    // listView - Parent view where the settings layout will be attached
-    // additionalViewToHide - Additional view to move with openGl view
     public AppMenu(AppMenuInterface menuInterface,
                    Activity activity, String menuTitle, GLSurfaceView movableView,
                    RelativeLayout parentView, ArrayList<View> additionalViewsToHide) {
@@ -108,7 +87,6 @@ public class AppMenu {
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         mScreenWidth = metrics.widthPixels;
 
-        // Used to set the listView length depending on the glView width
         ViewTreeObserver vto = mMovableView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             @SuppressWarnings("deprecation")
@@ -141,7 +119,6 @@ public class AppMenu {
 
     }
 
-
     public boolean processEvent(MotionEvent event) {
         boolean result = false;
         result = mGestureDetector.onTouchEvent(event);
@@ -149,7 +126,6 @@ public class AppMenu {
         if (event.getAction() == MotionEvent.ACTION_UP && !result) {
             setSwipingMenu(false);
 
-            // Hides the menu if it is not docked when releasing
             if (!isMenuDisplaying()
                     || getViewX(mMovableView) < (mScreenWidth * SETTINGS_MENU_SCREEN_PERCENTAGE)) {
                 if (isMenuDisplaying()
@@ -163,7 +139,6 @@ public class AppMenu {
 
         return result;
     }
-
 
     private void startViewsAnimation(boolean display) {
         float targetX = display ? mGestureListener.getMaxSwipe() : 0;
@@ -179,20 +154,15 @@ public class AppMenu {
         }
     }
 
-
     public void setSwipingMenu(boolean isSwiping) {
         mSwipingMenu = isSwiping;
     }
-
 
     public boolean isMenuDisplaying() {
         return mStartMenuDisplaying;
     }
 
-
     public void setMenuDisplaying(boolean isMenuDisplaying) {
-        // This is used to avoid the ListView to consume the incoming event when
-        // the menu is not displayed.
         mParentMenuView.setFocusable(isMenuDisplaying);
         mParentMenuView.setFocusableInTouchMode(isMenuDisplaying);
         mParentMenuView.setClickable(isMenuDisplaying);
@@ -201,7 +171,6 @@ public class AppMenu {
         mStartMenuDisplaying = isMenuDisplaying;
 
     }
-
 
     public void hide() {
         setViewX(mMovableView, 0);
@@ -217,14 +186,12 @@ public class AppMenu {
 
     }
 
-
     private void setViewX(View view, float x) {
         if (!mIsBelowICS)
             view.setX(x);
         else
             mGingerbreadMenuClipping = x;
     }
-
 
     private float getViewX(View view) {
         float x = 0;
@@ -236,7 +203,6 @@ public class AppMenu {
         return x;
     }
 
-
     public void showMenu() {
         if (!mIsBelowICS) {
             startViewsAnimation(true);
@@ -245,7 +211,6 @@ public class AppMenu {
             setMenuDisplaying(true);
         }
     }
-
 
     public void hideMenu() {
         if (!mIsBelowICS) {
@@ -259,14 +224,12 @@ public class AppMenu {
         }
     }
 
-
     public AppMenuGroup addGroup(String string, boolean hasTitle) {
         AppMenuGroup newGroup = new AppMenuGroup(mMenuInterface,
                 mActivity, this, hasTitle, string, 700);
         mSettingsItems.add(newGroup);
         return mSettingsItems.get(mSettingsItems.size() - 1);
     }
-
 
     public void attachMenu() {
 
@@ -284,7 +247,6 @@ public class AppMenu {
 
     }
 
-
     public void setAnimationX(float animtationX) {
         mParentMenuView.setVisibility(View.VISIBLE);
         setViewX(mMovableView, animtationX);
@@ -299,22 +261,16 @@ public class AppMenu {
         }
     }
 
-
     public void setDockMenu(boolean isDocked) {
         setMenuDisplaying(isDocked);
         if (!isDocked)
             hideMenu();
     }
 
-    // Process the gestures to handle the menu
     private class GestureListener extends
             GestureDetector.SimpleOnGestureListener {
-        // Minimum distance to start displaying the menu
         int DISTANCE_TRESHOLD = 10;
-        // Minimum velocity to display the menu upon fling
         int VELOCITY_TRESHOLD = 2000;
-
-        // Maximum x to dock the menu
         float mMaxXSwipe;
 
 
@@ -363,12 +319,9 @@ public class AppMenu {
                     }
 
                 }, 100L);
-
             }
-
             return false;
         }
-
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
@@ -379,7 +332,6 @@ public class AppMenu {
             return false;
         }
 
-
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             boolean consumeTapUp = isMenuDisplaying();
@@ -387,7 +339,6 @@ public class AppMenu {
 
             return consumeTapUp;
         }
-
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
@@ -402,8 +353,6 @@ public class AppMenu {
             return true;
         }
 
-
-        // Percentage of the screen to display and maintain the menu
         public void setMaxSwipe(float maxXSwipe) {
             mMaxXSwipe = maxXSwipe;
             if (!mIsBelowICS) {
@@ -412,11 +361,8 @@ public class AppMenu {
             }
         }
 
-
         public float getMaxSwipe() {
             return mMaxXSwipe;
         }
-
     }
-
 }

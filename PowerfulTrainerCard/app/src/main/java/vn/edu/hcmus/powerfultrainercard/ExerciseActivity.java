@@ -915,15 +915,12 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
     public boolean doLoadTrackersData() {
         Log.d(LOGTAG, "initData");
 
-        // Get the object tracker:
         TrackerManager trackerManager = TrackerManager.getInstance();
         ObjectTracker objectTracker = (ObjectTracker) trackerManager
                 .getTracker(ObjectTracker.getClassType());
 
-        // Initialize target finder:
         TargetFinder targetFinder = objectTracker.getTargetFinder();
 
-        // Start initialization:
         if (targetFinder.startInit(PowerfulTrainerContants.CLOUD_ACCESS_KEY, PowerfulTrainerContants.CLOUD_SECRET_KEY)) {
             targetFinder.waitUntilInitFinished();
         }

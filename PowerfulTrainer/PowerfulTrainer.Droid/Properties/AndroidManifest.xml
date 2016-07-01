@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="vn.edu.hcmus.powerfultrainer" android:installLocation="auto" android:versionCode="1" android:versionName="1.0">
 	<uses-sdk android:minSdkVersion="15" />
 	<uses-permission android:name="android.permission.BLUETOOTH" />
-  <uses-permission android:name="com.microsoft.band.service.access.BIND_BAND_SERVICE" />
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="com.microsoft.band.service.access.BIND_BAND_SERVICE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<application android:label="Powerful Trainer" android:icon="@drawable/icon"></application>
 </manifest>

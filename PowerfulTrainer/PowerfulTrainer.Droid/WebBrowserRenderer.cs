@@ -56,6 +56,7 @@ namespace PowerfulTrainer.Droid
             {
                 var webView = new Android.Webkit.WebView(Forms.Context);
                 webView.Settings.JavaScriptEnabled = true;
+                webView.LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
                 Element.OnBack += OnBack;
                 Element.HandleCanGoBack += HandleCanGoBack;
                 SetNativeControl(webView);
