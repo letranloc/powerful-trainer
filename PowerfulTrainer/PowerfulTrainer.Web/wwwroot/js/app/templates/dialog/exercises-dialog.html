@@ -55,26 +55,30 @@
                             </div>
                         </div>
                         <div layout="column" layout-gt-sm="row" ng-if="ex.showPreview">
-                            <video width="400" height="225" controls autoplay>
+                            <video width="355" height="200" controls autoplay>
                                 <source src="" ng-src="{{getVideoSrc(ex.VideoId)}}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
-                            <div layout="column" layout-padding>
-                                <div>
-                                    Difficulty level<br />
-                                    {{ex.DifficultyLevel}}
+                            <div layout="row" layout-padding>
+                                <div layout="column" layout-padding>
+                                    <div>
+                                        Difficulty level<br />
+                                        {{ex.DifficultyLevel}}
+                                    </div>
+                                    <div>
+                                        Focus<br />
+                                        {{ex.Focus}}
+                                    </div>
                                 </div>
-                                <div>
-                                    Focus<br />
-                                    {{ex.Focus}}
-                                </div>
-                                <div>
-                                    Equipment<br />
-                                    {{ex.Equipment}}
-                                </div>
-                                <div>
-                                    Body part(s)<br />
-                                    {{ex.BodyParts}}
+                                <div layout="column" layout-padding>
+                                    <div>
+                                        Equipment<br />
+                                        {{ex.Equipment}}
+                                    </div>
+                                    <div>
+                                        Body part(s)<br />
+                                        {{ex.BodyParts}}
+                                    </div>
                                 </div>
                             </div>
                         </div>

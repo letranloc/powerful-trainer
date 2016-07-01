@@ -189,12 +189,7 @@
     <Content Include="wwwroot\js\app\templates\dialog\friend-requests.html" />
     <Content Include="wwwroot\js\app\templates\dialog\share-plan.html" />
     <Content Include="wwwroot\js\app\templates\dialog\workout-report.html" />
-    <Content Include="wwwroot\js\app\templates\directives\event-model.html" />
     <Content Include="wwwroot\js\app\templates\directives\state-card.html" />
-    <Content Include="wwwroot\js\app\templates\directives\input-control\band-sensor-type.html" />
-    <Content Include="wwwroot\js\app\templates\directives\input-control\number.html" />
-    <Content Include="wwwroot\js\app\templates\directives\input-control\string.html" />
-    <Content Include="wwwroot\js\app\templates\directives\input-control\text.html" />
     <Content Include="wwwroot\js\app\templates\layout\container.html" />
     <Content Include="wwwroot\js\app\templates\plan\build.html" />
     <Content Include="wwwroot\js\app\templates\plan\index.html" />
@@ -220,23 +215,16 @@
     <Content Include="wwwroot\js\app\resources\resources.coffee" />
     <Content Include="wwwroot\js\app\resources\plan.coffee" />
     <Content Include="wwwroot\js\app\controllers\plan.coffee" />
-    <Content Include="wwwroot\js\app\directives\class-route.coffee" />
     <Content Include="wwwroot\js\app\directives\directives.coffee" />
-    <Content Include="wwwroot\js\app\directives\elem-ready.coffee" />
-    <Content Include="wwwroot\js\app\directives\on-long-press.coffee" />
     <Content Include="wwwroot\js\app\services\md-dialog.coffee" />
     <Content Include="wwwroot\js\app\resources\event-model.coffee" />
-    <Content Include="wwwroot\js\app\directives\input-control.coffee" />
-    <Content Include="wwwroot\js\app\directives\event-model.coffee" />
     <Content Include="wwwroot\scss\plan.scss" />
     <Content Include="wwwroot\scss\_color.scss" />
     <Content Include="wwwroot\js\app\services\cookies.coffee" />
-    <Content Include="wwwroot\js\app\directives\app-scroll.coffee" />
     <Content Include="wwwroot\js\app\directives\hide-keyboard-on-touch-outside.coffee" />
     <Content Include="wwwroot\js\app\controllers\contact.coffee" />
     <Content Include="wwwroot\js\app\resources\contact.coffee" />
     <Content Include="wwwroot\js\app\config\notify.coffee" />
-    <Content Include="wwwroot\scss\animate.scss" />
     <Content Include="wwwroot\js\app\resources\report.coffee" />
     <Content Include="wwwroot\js\app\config\loading-bar.coffee" />
     <Content Include="wwwroot\js\app\controllers\report.coffee" />
@@ -252,8 +240,6 @@
     <Content Include="wwwroot\fonts\fontawesome-webfont.woff" />
     <Content Include="wwwroot\fonts\fontawesome-webfont.woff2" />
     <Content Include="wwwroot\fonts\FontAwesome.otf" />
-    <Content Include="wwwroot\js\app\directives\set-class-when-at-top.coffee" />
-    <Content Include="wwwroot\js\app\directives\include-replace.coffee" />
     <Content Include="wwwroot\js\app\resources\mshealth.coffee" />
     <Content Include="wwwroot\js\app\directives\state-card.coffee" />
     <Content Include="wwwroot\js\app\filters\filters.coffee" />
@@ -335,11 +321,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52309</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:62466</IISUrl>
+          <IISUrl>http://localhost:52309/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

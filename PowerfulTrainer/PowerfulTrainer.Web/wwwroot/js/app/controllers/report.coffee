@@ -114,7 +114,7 @@
                         addChart(chart)
                     $rootScope.setLoadingState(false)
                 , (resp) ->
-                    mdToast.showSimple resp.data.Message, "danger"
+                    #mdToast.showSimple resp.data.Message, "danger"
                     $rootScope.setLoadingState(false)
             when 'sleeps'
                 MSHealth.getActivities
@@ -134,7 +134,7 @@
                             addChart(chart)
                     $rootScope.setLoadingState(false)
                 , (resp) ->
-                    mdToast.showSimple resp.data.Message, "danger"
+                    #mdToast.showSimple resp.data.Message, "danger"
                     $rootScope.setLoadingState(false)
             when 'run'
                 MSHealth.getActivities
@@ -575,6 +575,7 @@
                 $sessionStorage.startTime = new Date()
             $state.go 'cpanel.report.workout',
                     date: moment($sessionStorage.startTime).format('YYYY-MM-DD')
+            return
         else $scope.selectedDate = moment()
     $scope.reports = []
     
@@ -615,14 +616,16 @@
                 updateReports(resp.data.Data)
                 $rootScope.setLoadingState(false)
             , (resp) ->
-                    mdToast.showSimple resp.data.Message, "danger"
+                # mdToast.showSimple resp.data.Message, "danger"
+                $rootScope.setLoadingState(false)
         else
             Report.get($scope.username, $scope.selectedDate.startOf('day').toISOString(), $scope.selectedDate.endOf('day').toISOString())
             .then (resp) ->
                 updateReports(resp.data.Data)
                 $rootScope.setLoadingState(false)
             , (resp) ->
-                    mdToast.showSimple resp.data.Message, "danger"
+                #mdToast.showSimple resp.data.Message, "danger"
+                $rootScope.setLoadingState(false)
 
     $scope.getReport()
             

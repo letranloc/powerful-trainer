@@ -10,6 +10,12 @@ body {
 
 .fa-15x {
     font-size: 1.5em;
+    padding-top: 2px;
+}
+
+.fa-2x {
+    height: 100%;
+    padding-top: 16px;
 }
 
 .center {
@@ -229,5 +235,13 @@ span.dotted {
     .spinner-icon {
         border-top-color: #fff;
         border-left-color: #fff;
+    }
+}
+
+md-menu-sidenav-title {
+    padding: 0;
+
+    md-toogle-menu, md-title-text {
+        padding: 0px 12px 0px 20px;
     }
 }

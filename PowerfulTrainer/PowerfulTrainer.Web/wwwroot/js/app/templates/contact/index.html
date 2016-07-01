@@ -1,4 +1,4 @@
-﻿<md-toolbar md-scroll-shrink="enableScrollShrink" ng-if="true" md-whiteframe="2">
+﻿<md-toolbar md-scroll-shrink="enableScrollShrink" md-whiteframe="2">
     <div class="md-toolbar-tools">
         <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
             <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
@@ -57,7 +57,7 @@
                 <h3><b>{{contact.Name || contact.Username}}</b></h3>
                 <p>
                     {{contact.Username}}
-                    <span ng-show="contact.Type"> (Trainer)</span>
+                    <span ng-show="false"> (Trainer)</span>
                 </p>
             </div>
             <div class="md-secondary" ng-show="showMenuBtn">
@@ -107,7 +107,7 @@
             <div class="md-secondary" layout="row">
                 <md-chips>
                     <md-chip class="pointer" ng-show="contact.IsWaitingResponse" ng-click="cancel($event, contact)">
-                        Cancel request
+                        Cancel
                     </md-chip>
                     <md-chip class="pointer" ng-show="contact.IsWaitingAccept" ng-click="accept(contact)">
                         Accept

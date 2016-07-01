@@ -1,4 +1,4 @@
-﻿<md-toolbar md-whiteframe="2">
+﻿<md-toolbar  md-scroll-shrink="enableScrollShrink" md-whiteframe="2">
     <div class="md-toolbar-tools">
         <md-button hide-gt-sm class="md-icon-button" aria-label="Left navigation toggle" ng-click="toggleNavLeft()" ng-controller="DashboardCtrl">
             <md-icon md-font-icon="fa fa-bars fa-15x"></md-icon>
@@ -7,7 +7,7 @@
             <b>Workout report</b>
         </h2>
         <span flex></span>
-        <h2>{{selectedDate.toISOString() | date: 'EEE, MMM d, yyyy'}}</h2>
+        <h2 style="text-align:right">{{selectedDate.toISOString() | date: 'EEE, MMM d, yyyy'}}</h2>
         <md-button class="md-icon-button" aria-label="Change date" ng-click="showDatePicker($event)">
             <md-tooltip direction="bottom" ng-hide="hideTooltipOnXS">
                 Change date
@@ -38,7 +38,7 @@
                 </div>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-show="report.IsGoal" aria-label="Goal">
-                    <md-icon md-font-icon="fa fa-trophy fa-2x" ></md-icon>
+                    <md-icon md-font-icon="fa fa-trophy fa-2x white-text" ></md-icon>
                 </md-button>
             </md-card-header-text>
         </md-card-header>

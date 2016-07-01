@@ -10,3 +10,12 @@
                 $timeout ->
                     to.css('height', to.height() + from.height())
     }
+
+.directive 'body', ($timeout, $window) ->
+    return {
+        restrict: 'E'
+        link: (scope, element, attrs) ->
+            elem = angular.element(element[0])
+            $timeout ->
+                elem.css('min-height', $window.innerHeight)
+    }

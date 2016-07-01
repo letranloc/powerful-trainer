@@ -1,5 +1,5 @@
 ﻿<md-sidenav layout="column"  class="md-sidenav-left blue darken-3 white-text" md-component-id="left"
-            md-is-locked-open="$mdMedia('gt-sm')" style="min-width:320px">
+            md-is-locked-open="$mdMedia('gt-sm')" style="min-width:320px" layout-fill>
     <md-toolbar md-whiteframe="2" class="blue darken-4">
         <span flex></span>
         <div class="md-toolbar-tools">
@@ -12,9 +12,9 @@
         </div>
     </md-toolbar>
     <md-menu-sidenav flex>
-        <md-menu-sidenav-item ng-class="{'toggle-active': ('cpanel.index' | includedByState)||('cpanel.report' | includedByState)}">
+        <md-menu-sidenav-item id="dashboard-toggle-menu" ng-class="{'toggle-active': ('cpanel.index' | includedByState)||('cpanel.report' | includedByState)}">
             <md-menu-sidenav-title>
-                <md-toogle-menu id="dashboard-toggle-menu" layout="row" flex ng-click="caretup=!caretup">
+                <md-toogle-menu layout="row" flex ng-click="caretup=!caretup">
                     <md-icon md-font-icon="fa fa-dashboard"></md-icon>
                     <h1 class="md-body-2" flex>Dashboard</h1>
                     <span flex></span>
@@ -30,14 +30,18 @@
         </md-menu-sidenav-item>
         <md-menu-sidenav-item ng-class="{active: ('cpanel.plan' | includedByState)}" ui-sref="cpanel.plan.index"  ng-click="toggleNavLeft()">
             <md-menu-sidenav-title>
-                <md-icon md-font-icon="fa fa-leaf"></md-icon>
-                <h1 class="md-body-2" flex>Workout plans</h1>
+                <md-title-text layout="row">
+                    <md-icon md-font-icon="fa fa-leaf"></md-icon>
+                    <h1 class="md-body-2" flex>Workout plans</h1>
+                </md-title-text>
             </md-menu-sidenav-title>
         </md-menu-sidenav-item>
         <md-menu-sidenav-item ng-class="{active: ('cpanel.contact' | includedByState)}" ui-sref="cpanel.contact.index"  ng-click="toggleNavLeft()">
             <md-menu-sidenav-title>
-                <md-icon md-font-icon="fa fa-users"></md-icon>
-                <h1 class="md-body-2" flex>My contacts</h1>
+                <md-title-text layout="row">
+                    <md-icon md-font-icon="fa fa-users"></md-icon>
+                    <h1 class="md-body-2" flex>My contacts</h1>
+                </md-title-text>
             </md-menu-sidenav-title>
         </md-menu-sidenav-item>
     </md-menu-sidenav>

@@ -3,20 +3,29 @@
     $scope.$watch Auth.isAuthenticated, ->
         $scope.User = Auth.isAuthenticated()
 
-    isShouldOpenToggleMenu = $state.includes('cpanel.index') || $state.includes('cpanel.report')
+    isOpenedToggleMenu = false;
+
+    isShouldOpenToggleMenu = ->
+        if $state.includes('cpanel.index') || $state.includes('cpanel.report')
+            if $('#dashboard-toggle-menu').find('md-menu-sidenav-content').css('max-height') is '0px'
+                return true
+        return false
 
     $scope.$on '$viewContentLoaded', ->
-        if isShouldOpenToggleMenu && !$rootScope.enableScrollShrink
-            openToggleMenu()
+        $timeout ->
+            if isShouldOpenToggleMenu() && !$rootScope.enableScrollShrink
+                openToggleMenu()
 
     openToggleMenu = ->
-        isShouldOpenToggleMenu = false
-        $timeout ->
-            $('#dashboard-toggle-menu').click()
+        unless isOpenedToggleMenu
+            isOpenedToggleMenu = true
+            $timeout ->
+                console.log 'clicked'
+                $('#dashboard-toggle-menu').find('md-toogle-menu').click()
 
     $scope.toggleNavLeft = ->
         $mdSidenav("left").toggle()
-        if isShouldOpenToggleMenu && $rootScope.enableScrollShrink
+        if isShouldOpenToggleMenu() && $rootScope.enableScrollShrink
             openToggleMenu()
 
 .controller "DashboardIndexCtrl", ($rootScope, $scope, $sessionStorage, $mdpDatePicker, $state, Auth, MSHealth, mdToast) ->
@@ -54,7 +63,7 @@
             $scope.summary = resp.data.summaries[0]
             $rootScope.setLoadingState(false)
         , (resp) ->
-            mdToast.showSimple resp.data.Message, 'danger'
+            #mdToast.showSimple resp.data.Message, 'danger'
             $rootScope.setLoadingState(false)
     
         MSHealth.getActivities
@@ -74,7 +83,7 @@
                     a.distanceSummary.totalDistance = Math.round(a.distanceSummary.totalDistance/1000)/100
             $rootScope.setLoadingState(false)
         , (resp) ->
-            mdToast.showSimple resp.data.Message, 'danger'
+            #mdToast.showSimple resp.data.Message, 'danger'
             $rootScope.setLoadingState(false)
 
     $scope.updateSummaries()
