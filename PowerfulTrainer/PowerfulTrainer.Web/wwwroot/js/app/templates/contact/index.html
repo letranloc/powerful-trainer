@@ -45,7 +45,7 @@
         </md-button>
     </div>
 </md-toolbar>
-<md-content flex>
+<md-content layout-padding flex ng-class="{'fix-shrink-content': !enableScrollShrink}">
     <div layout="row" layout-align="center center" ng-show="contacts.length==0&&!searchStr.length">
         <h3>Oops...You don't have any contacts.</h3>
     </div>
@@ -101,7 +101,7 @@
                 </h3>
                 <p>
                     {{contact.Username}}
-                    <span ng-show="contact.Type"> (Trainer)</span>
+                    <span ng-show="false"> (Trainer)</span>
                 </p>
             </div>
             <div class="md-secondary" layout="row">

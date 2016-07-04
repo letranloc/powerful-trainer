@@ -15,7 +15,7 @@
         </md-button>
     </div>
 </md-toolbar>
-<md-content flex>
+<md-content layout-padding flex ng-class="{'fix-shrink-content': !enableScrollShrink}">
     <div layout="row" layout-align="center center" ng-show="plans.length==0">
         <h3>Oops...You don't have any workout plans.</h3>
     </div>

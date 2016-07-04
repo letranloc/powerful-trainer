@@ -16,7 +16,7 @@
         </md-button>
     </div>
 </md-toolbar>
-<md-content flex>
+<md-content layout-padding flex ng-class="{'fix-shrink-content': !enableScrollShrink}">
     <div ng-if="!reports.length && !isLoadingState" layout="column" layout-gt-sm="row" layout-padding layout-align="center center">
         <div layout="column">
             <h2 class="md-title" style="font-size:34px">{{nodata.title}}</h2>
@@ -29,7 +29,7 @@
         </div>
         <img ng-src="{{nodata.image}}" height="400" />
     </div>
-    <md-card ng-repeat="report in reports">
+    <md-card ng-repeat="report in reports" style="padding:0">
         <md-card-header ng-class="{'orange': report.IsGoal}">
             <md-card-header-text layout="row">
                 <div layout="column">

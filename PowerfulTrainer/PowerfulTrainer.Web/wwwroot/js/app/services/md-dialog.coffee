@@ -97,14 +97,6 @@
                                     _self._items = _self._items.concat(resp.data.Data.Result)
                                     _self._query.total = resp.data.Data.Count
                     $scope.contacts.refresh()
-                    $scope.toggle = (contact, list) ->
-                        idx = list.indexOf(contact)
-                        if idx > -1
-                            list.splice(idx, 1)
-                        else
-                            list.push(contact)
-                    $scope.exists = (contact, list) ->
-                        return list.indexOf(contact) > -1
                     $scope.share = (list) ->
                         $mdDialog.hide(list)
                     $scope.decline = (contact) ->
@@ -177,14 +169,6 @@
                         if $event.target.tagetName isnt "INPUT"
                             return !showPreview
                         return showPreview
-                    $scope.toggle = (ex, list) ->
-                        idx = list.indexOf(ex)
-                        if idx > -1
-                            list.splice(idx, 1)
-                        else
-                            list.push(ex)
-                    $scope.exists = (ex, list) ->
-                        return list.indexOf(ex) > -1
                     $scope.loadBodyParts = ->
                         unless $scope.bodyParts
                             Exercise.getBodyPart().then (resp) ->
@@ -207,27 +191,27 @@
                 fullscreen: ($mdMedia('sm') || $mdMedia('xs'))
 
         showSetEdit: (evt, exercise) ->
-            evt.stopPropagation()
-            $mdEditDialog.large
+            $mdDialog.show
+                templateUrl: 'dialog/edit-sets.html'
+                controller: ($scope, $mdDialog) ->
+                    $scope.sets = exercise.Sets
+                    $scope.cancel = ->
+                        $mdDialog.cancel()
+                    $scope.close = ->
+                        if 0 <= $scope.sets <= 99
+                            if $scope.sets > 1
+                                exercise.RestTime = "As need"
+                            else exercise.RestTime = null
+                            exercise.Sets = $scope.sets
+                            $mdDialog.hide()
+                parent: angular.element(document.body)
                 targetEvent: evt
-                title: 'Edit set'
-                modelValue: exercise.Sets
-                type: 'number'
-                validators:
-                    min: 0
-                    max: 99
-                save: (input) ->
-                    exercise.Sets = input.$modelValue
-                    if exercise.Sets > 1
-                        exercise.RestTime = "AsNeed"
-                    else exercise.RestTime = null
+                clickOutsideToClose: true
 
         showCompletionEdit: (evt, exercise) ->
-            evt.stopPropagation()
-            $mdEditDialog.show
-                targetEvent: evt
+            $mdDialog.show
                 templateUrl: 'dialog/edit-completion.html'
-                controller: ['$scope', '$element', ($scope, $element) ->
+                controller: ($scope, $mdDialog) ->
                     $scope.duration = 1
                     $scope.selectedIndex = 0
                     $scope.durationMin = 1
@@ -247,58 +231,69 @@
                             $scope.repetitionChecker = 1
                             $scope.repetitionCount = exercise.Repetitions
                     $scope.cancel = ->
-                        $element.remove()
-                        return
-                    $scope.save = ->
-                        console.log $scope
+                        $mdDialog.cancel()
+                    $scope.close = ->
+                        hide = false
                         if $scope.repetition
                             exercise.Duration = null
                             if +$scope.repetitionChecker is 1
-                                exercise.Repetitions = $scope.repetitionCount
-                            else exercise.Repetitions = -1
+                                if 0 < $scope.repetitionCount < 1000
+                                    exercise.Repetitions = $scope.repetitionCount
+                            else
+                                exercise.Repetitions = -1
+                                hide = true
                         else if $scope.duration
-                            exercise.Repetitions = null
-                            exercise.Duration = "" + ($scope.durationMin*60 + $scope.durationSec)
-                        $element.remove()
-                        return
-                ]
+                            if (0 <= $scope.durationMin < 100) && (0 <= $scope.durationSec < 60)
+                                hide = true
+                                exercise.Repetitions = null
+                                exercise.Duration = "" + ($scope.durationMin*60 + $scope.durationSec)
+                        $mdDialog.hide() if hide
+                parent: angular.element(document.body)
+                targetEvent: evt
+                clickOutsideToClose: true
 
         showRestTimeEdit: (evt, exercise) ->
-            evt.stopPropagation()
-            $mdEditDialog.show
-                targetEvent: evt
+            $mdDialog.show
                 templateUrl: 'dialog/edit-rest-between-sets.html'
-                controller: ['$scope', '$element', ($scope, $element) ->
+                controller: ($scope, $mdDialog) ->
                     if exercise.Sets < 2 then $scope.cancel()
                     $scope.restTimeChecker = 1
                     $scope.restTimeMin = 1
                     $scope.restTimeSec = 0
                     if exercise.RestTime
-                        if exercise.RestTime is "AsNeed"
+                        if exercise.RestTime is "As need"
                             $scope.restTimeChecker = 0
                         else if exercise.RestTime
                             $scope.restTimeMin = Math.floor(exercise.RestTime / 60)
                             $scope.restTimeSec = exercise.RestTime % 60
                     $scope.cancel = ->
-                        $element.remove()
-                        return
-                    $scope.save = ->
+                        $mdDialog.cancel()
+                    $scope.close = ->
+                        hide = false
                         if +$scope.restTimeChecker is 0
-                                exercise.RestTime = "AsNeed"
+                            exercise.RestTime = "As need"
+                            hide = true
                         else
-                            exercise.RestTime = "" + ($scope.restTimeMin*60 + $scope.restTimeSec)
-                        $element.remove()
-                        return
-                ]
+                            if (0 <= $scope.restTimeMin < 100) && (0 <= $scope.restTimeSec < 60)
+                                exercise.RestTime = "" + ($scope.restTimeMin*60 + $scope.restTimeSec)
+                                hide = true
+                        $mdDialog.hide() if hide
+                parent: angular.element(document.body)
+                targetEvent: evt
+                clickOutsideToClose: true
         
         showExPreview: (evt, exercise) ->
-            evt.stopPropagation()
-            $mdEditDialog.show
-                targetEvent: evt
-                controller: ['$scope', '$element', ($scope, $element) ->
-                    $scope.exercise = exercise
-                ]
+            $mdDialog.show
                 templateUrl: 'dialog/exercise-preview.html'
+                controller: ($rootScope, $scope, $mdDialog) ->
+                    $scope.exercise = exercise
+                    $scope.getVideoSrc = $rootScope.getVideoSrc
+                    $scope.cancel = ->
+                        $mdDialog.cancel()
+                parent: angular.element(document.body)
+                targetEvent: evt
+                clickOutsideToClose: true
+                fullscreen: ($mdMedia('sm') || $mdMedia('xs'))
 
         showWorkoutReport: (evt, contact) ->
             $mdDialog.show

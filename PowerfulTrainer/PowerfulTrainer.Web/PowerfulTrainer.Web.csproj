@@ -183,6 +183,7 @@
     <Content Include="wwwroot\js\app\templates\dashboard\index.html" />
     <Content Include="wwwroot\js\app\templates\dialog\confirm.html" />
     <Content Include="wwwroot\js\app\templates\dialog\edit-completion.html" />
+    <Content Include="wwwroot\js\app\templates\dialog\edit-sets.html" />
     <Content Include="wwwroot\js\app\templates\dialog\event-model.html" />
     <Content Include="wwwroot\js\app\templates\dialog\exercise-preview.html" />
     <Content Include="wwwroot\js\app\templates\dialog\exercises-dialog.html" />

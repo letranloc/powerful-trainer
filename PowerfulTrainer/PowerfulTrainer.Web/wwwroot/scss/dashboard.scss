@@ -97,8 +97,12 @@
 
     ui-view {
         > md-content {
-            padding-bottom: 64px;
-            margin-bottom: 32px !important;
+            //padding-bottom: 64px;
+            //margin-bottom: 32px !important;
         }
+    }
+
+    .fix-shrink-content {
+        margin-bottom: 32px !important;
     }
 }

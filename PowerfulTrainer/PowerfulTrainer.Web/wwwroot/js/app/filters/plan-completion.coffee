@@ -12,6 +12,6 @@
             if min > 0
                 if sec > 0 then str = min + " min " + sec + " sec"
                 else str = min + " minute"
-            else str = sec + " second" + (if sec > 1 then 's')
+            else str = sec + " second" + (if sec > 1 then 's' else '')
             return str
         else return "Select"

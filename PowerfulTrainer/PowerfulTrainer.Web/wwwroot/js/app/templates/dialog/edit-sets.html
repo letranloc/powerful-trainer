@@ -1,0 +1,27 @@
+﻿<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Edit sets</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" aria-label="Close dialog" ng-click="cancel()">
+                <md-icon md-font-icon="fa fa-times fa-15x"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content" layout="column" style="max-width:250px">
+            <md-input-container>
+                <input type="number" ng-model="sets" min="0" max="99" placeholder="Sets" />
+            </md-input-container>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-accent" aria-label="Cancel" ng-click="cancel()">
+            Cancel
+        </md-button>
+        <md-button class="md-primary" aria-label="Ok" ng-click="close()">
+            Ok
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

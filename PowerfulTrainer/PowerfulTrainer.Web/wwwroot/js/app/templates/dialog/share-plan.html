@@ -15,7 +15,7 @@
             </div>
             <md-virtual-repeat-container class="virtual-repeat-infinite-scroll vertical-container">
                 <div md-virtual-repeat="contact in contacts" md-on-demand class="repeated-item" flex>
-                    <md-checkbox ng-checked="exists(contact, selected)" ng-click="toggle(contact, selected)">
+                    <md-checkbox ng-checked="selected.exists(contact)" ng-click="selected.toggle(contact)">
                         {{contact.Name || contact.Username}}
                     </md-checkbox>
                 </div>

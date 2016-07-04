@@ -10,6 +10,15 @@ Array::add = (e) ->
     e.$id = makeid()
     this.push(e)
 
+Array::toggle = (e) ->
+    idx = this.indexOf(e)
+    if idx > -1
+        this.splice(idx, 1)
+    else
+        this.push(e)
+Array::exists = (e) ->
+    this.indexOf(e) > -1
+
 makeid = ->
     text = "";
     possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -42,3 +51,8 @@ window.parseTimeToArray = (input, keys) ->
         if keys.indexOf('m') > -1 then res.push(time.minutes())
         if keys.indexOf('s') > -1 then res.push(time.seconds())
     return res
+
+$(window).load ->
+  setTimeout ->
+    $('body').addClass('loaded')
+  , 200

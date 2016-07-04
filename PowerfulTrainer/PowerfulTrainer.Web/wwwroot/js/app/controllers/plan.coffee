@@ -114,7 +114,7 @@
         for ex in plan.Data
             console.log ex
             break unless valid
-            if !ex.Repetitions && !ex.Duration
+            if !ex.IsRestItem && !ex.Repetitions && !ex.Duration
                 valid = false
         return valid
 
