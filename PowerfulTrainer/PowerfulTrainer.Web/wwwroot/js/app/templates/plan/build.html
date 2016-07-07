@@ -85,25 +85,28 @@
                         {{ex.Name}}
                     </span>
                     <div class="md-body-2" layout-padding layout="column" ng-if="!ex.IsRestItem">
-                        <div layout="row">
+                        <div layout="row" layout-xs="column">
                             <span flex="50">SETS: </span>
                             <div layout="row" ng-click="editSets($event, ex)" class="pointer">
                                 <span class="dotted">{{ex.Sets||0}}</span>
                                 <md-icon md-font-icon="fa fa-pencil"></md-icon>
+                                <span flex></span>
                             </div>
                         </div>
-                        <div layout="row">
+                        <div layout="row" layout-xs="column">
                             <span flex="50">COMPLETION: </span>
                             <div layout="row" ng-click="editCompletion($event, ex)" class="pointer">
                                 <span class="dotted" ng-class="{error:!ex.Repetitions&&!ex.Duration}">{{ex | CompletionFilter}}</span>
                                 <md-icon md-font-icon="fa fa-pencil"></md-icon>
+                                <span flex></span>
                             </div>
                         </div>
-                        <div layout="row" ng-if="ex.Sets>1">
+                        <div layout="row" ng-if="ex.Sets>1"  layout-xs="column">
                             <span flex="50">REST BETWEEN SETS</span>
                             <div layout="row" ng-click="editRestTime($event, ex)" class="pointer">
                                 <span class="dotted">{{ex | RestTimeFilter}}</span>
                                 <md-icon md-font-icon="fa fa-pencil"></md-icon>
+                                <span flex></span>
                             </div>
                         </div>
                     </div>
