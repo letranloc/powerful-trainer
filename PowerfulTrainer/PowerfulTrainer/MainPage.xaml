@@ -36,19 +36,19 @@
         </Grid.ColumnDefinitions>
 
         <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10, 15, 0"  Grid.Column="0">
-          <Label Text="Cals" FontSize="20" HorizontalOptions="Center"></Label>
+          <Label Text="Cals" FontSize="17" HorizontalOptions="Center" TextColor="Black"></Label>
         </Grid>
 
         <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10, 15, 0"  Grid.Column="1">
-          <Label Text="Steps" FontSize="20" HorizontalOptions="Center"></Label>
+          <Label Text="Steps" FontSize="17" HorizontalOptions="Center" TextColor="Black"></Label>
         </Grid>
 
         <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10, 15, 0"  Grid.Column="2">
-          <Label Text="HeartRate" FontSize="20" HorizontalOptions="Center"></Label>
+          <Label Text="HeartRate" FontSize="17" HorizontalOptions="Center" TextColor="Black"></Label>
         </Grid>
 
         <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="15, 10, 15, 0"  Grid.Column="3">
-          <Label Text="Distance" FontSize="20" HorizontalOptions="Center"></Label>
+          <Label Text="Distance" FontSize="17" HorizontalOptions="Center" TextColor="Black"></Label>
         </Grid>
         
       </Grid>
