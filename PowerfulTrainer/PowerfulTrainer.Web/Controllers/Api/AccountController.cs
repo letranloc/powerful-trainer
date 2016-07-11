@@ -48,7 +48,8 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     AccessToken = Guid.NewGuid().ToString("N"),
                     ExpireDate = DateTime.Now.AddDays(60),
                     Birthday = Req.Birthday,
-                    Avatar = Req.Avatar
+                    Avatar = Req.Avatar,
+                    Phone = Req.Phone
                 };
                 DB.Accounts.InsertOnSubmit(NewAccount);
                 DB.SubmitChanges();

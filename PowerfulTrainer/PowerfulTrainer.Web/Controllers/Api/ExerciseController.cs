@@ -76,7 +76,8 @@ namespace PowerfulTrainer.Web.Controllers.Api
         {
             try
             {
-                var Focus = DB.Exercises.Select(u => u.Focus).Distinct().Where(u => u != "").ToList();
+                var Focus = DB.Exercises.Select(u => u.Focus).Distinct().ToList();
+                Focus = Focus.Where(u => !string.IsNullOrEmpty(u)).ToList();
                 var ListFocus = new List<string>();
                 Focus.ForEach(u => u.Split(',').ToList().ForEach(v => ListFocus.Add(v.Trim())));
                 return SuccessResult(ListFocus.Distinct().ToArray());
@@ -93,7 +94,8 @@ namespace PowerfulTrainer.Web.Controllers.Api
         {
             try
             {
-                return SuccessResult(DB.Exercises.Select(u => u.BodyParts).Distinct().Where(u => u != "").ToArray());
+                var ListBodyPart = DB.Exercises.Select(u => u.BodyParts).Distinct().ToArray();
+                return SuccessResult(ListBodyPart.Where(u=>!string.IsNullOrEmpty(u)).ToArray());
             }
             catch (Exception ex)
             {

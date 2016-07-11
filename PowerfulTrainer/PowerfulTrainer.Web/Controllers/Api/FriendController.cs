@@ -28,7 +28,8 @@ namespace PowerfulTrainer.Web.Controllers.Api
                         Username = FriendDetail.Username,
                         Name = FriendDetail.Name,
                         Avatar = FriendDetail.Avatar,
-                        Type = FriendDetail.Type
+                        Type = FriendDetail.Type,
+                        Phone = FriendDetail.Phone
                     });
                 }
                 return PagingResult(Result, page, size);

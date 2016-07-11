@@ -45,7 +45,8 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     ExpireDate = CurrentAccount.ExpireDate,
                     Username = CurrentAccount.Username,
                     MSAccessToken = CurrentAccount.MSAccessToken,
-                    MSExpireDate = CurrentAccount.MSExpireDate
+                    MSExpireDate = CurrentAccount.MSExpireDate,
+                    Phone = CurrentAccount.Phone
                 });
             }
             catch (Exception ex)
@@ -123,6 +124,10 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 if (Req.Avatar != null)
                 {
                     CurrentAccount.Avatar = Req.Avatar;
+                }
+                if(Req.Phone!=null)
+                {
+                    CurrentAccount.Phone = Req.Phone;
                 }
                 DB.SubmitChanges();
                 return Validate();

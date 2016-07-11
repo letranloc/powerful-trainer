@@ -14,6 +14,7 @@ namespace PowerfulTrainer.Web.Models.Api
         public DateTime? Birthday;
         public string Avatar;
         public string Password;
+        public string Phone;
     }
 
     public class UpdateAccountReq
@@ -24,6 +25,7 @@ namespace PowerfulTrainer.Web.Models.Api
         public DateTime? Birthday;
         public string Avatar;
         public string Password;
+        public string Phone;
         public string CurrentPassword;
     }
 

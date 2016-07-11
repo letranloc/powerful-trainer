@@ -124,7 +124,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                         UpdateDate = CurrentPlan.UpdateDate,
                         Name = CurrentPlan.Name,
                         OwnerName = OwnerName,
-                        OwnerUsername = OwnerUsername
+                        OwnerUsername = OwnerUsername,
                     });
                 });
                 return PagingResult(Plans, page, size);
