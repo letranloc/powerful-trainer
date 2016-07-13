@@ -46,6 +46,10 @@
     </div>
 </md-toolbar>
 <md-content layout-padding flex ng-class="{'fix-shrink-content': !enableScrollShrink}">
+    <md-button ng-if="inApp" class="md-mini" aria-label="Add friend via QR" ng-click="addViaQR()">
+        <md-icon md-font-icon="fa fa-qrcode fa-2x"></md-icon>
+        Add friend via QR code
+    </md-button>
     <div layout="row" layout-align="center center" ng-show="contacts.length==0&&!searchStr.length">
         <h3>Oops...You don't have any contacts.</h3>
     </div>
@@ -87,7 +91,7 @@
     </md-list>
     <md-list ng-show="searchStr.length">
         <md-subheader class="md-no-sticky">Search for "{{showResults}}": {{query.total}} result{{query.total<=1?'':'s'}}</md-subheader>
-        <md-list-item md-ink-ripple class="md-2-line" ng-repeat="contact in contacts">
+        <md-list-item md-ink-ripple class="md-3-line" ng-repeat="contact in contacts">
             <img src="../images/avatar-default.png" data-ng-src="{{contact.Avatar}}" class="md-avatar">
             <div class="md-list-item-text">
                 <h3>
@@ -103,11 +107,29 @@
                     {{contact.Username}}
                     <span ng-show="false"> (Trainer)</span>
                 </p>
+                <md-chips ng-if="hideTooltipOnXS">
+                    <md-chip class="pointer" ng-show="contact.IsWaitingResponse" ng-click="cancel($event, contact)">
+                        Cancel Request
+                    </md-chip>
+                    <md-chip class="pointer" ng-show="contact.IsWaitingAccept" ng-click="accept(contact)">
+                        Accept
+                    </md-chip>
+                    <md-chip class="pointer" ng-show="contact.IsWaitingAccept" ng-click="decline(contact)">
+                        Decline
+                    </md-chip>
+                    <md-chip class="pointer" ng-show="contact.IsFriend" ng-click="delete($event, contact)">
+                        Unfriend
+                    </md-chip>
+                    <md-chip class="pointer teal white-text" ng-show="!contact.IsWaitingResponse&&!contact.IsWaitingAccept&&!contact.IsFriend"
+                             ng-click="add($event, contact)">
+                        Add friend
+                    </md-chip>
+                </md-chips>
             </div>
-            <div class="md-secondary" layout="row">
+            <div class="md-secondary" layout="row" ng-if="!hideTooltipOnXS">
                 <md-chips>
                     <md-chip class="pointer" ng-show="contact.IsWaitingResponse" ng-click="cancel($event, contact)">
-                        Cancel
+                        Cancel Request
                     </md-chip>
                     <md-chip class="pointer" ng-show="contact.IsWaitingAccept" ng-click="accept(contact)">
                         Accept

@@ -99,6 +99,9 @@
                     $scope.contacts.refresh()
                     $scope.share = (list) ->
                         $mdDialog.hide(list)
+                    $scope.shareViaQR = ->
+                        invokeCSharpAction('sharebyqr:')
+                        $scope.cancel()
                     $scope.decline = (contact) ->
                         Contact.delete(contact.Username).then (resp) ->
                             $scope.contacts.remove(contact)

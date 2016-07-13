@@ -1,4 +1,4 @@
-﻿<md-dialog style="min-width:30%">
+﻿<md-dialog style="min-width:300px">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>Share plan</h2>
@@ -13,6 +13,10 @@
             <div layout="row" layout-align="center center" ng-show="contacts.items.length==0">
                 <h3>You don't have any request.</h3>
             </div>
+            <md-button ng-if="inApp" class="md-raised" aria-label="share-via-qrcode" ng-click="shareViaQR()">
+                <md-icon md-font-icon="fa fa-qrcode fa-2x"></md-icon>
+                Share via QR
+            </md-button>
             <md-virtual-repeat-container class="virtual-repeat-infinite-scroll vertical-container">
                 <div md-virtual-repeat="contact in contacts" md-on-demand class="repeated-item" flex>
                     <md-checkbox ng-checked="selected.exists(contact)" ng-click="selected.toggle(contact)">

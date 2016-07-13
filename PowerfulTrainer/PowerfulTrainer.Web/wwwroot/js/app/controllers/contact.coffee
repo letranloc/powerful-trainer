@@ -26,10 +26,6 @@
         , (resp) ->
             mdToast.showSimple resp.data.Message, "danger"
             $rootScope.setLoadingState(false)
-    if $scope.searchStr.length
-        $scope.search($scope.searchStr)
-    else
-        $scope.getContacts()
 
     $scope.search = (searchStr) ->
         $scope.searchStr = searchStr
@@ -65,6 +61,9 @@
     $scope.showWorkoutReport = (evt, contact) ->
         $state.go 'cpanel.report.workout',
             username: contact.Username
+
+    $scope.addViaQR = ->
+        invokeCSharpAction('addfriendbyqr:')
 
     $scope.accept = (contact) ->
         if contact.IsWaitingAccept && !contact.IsFriend
@@ -133,3 +132,8 @@
         if waitingResponses.length
             mdDialog.showFriendRequests($event, waitingResponses, true).then ->
                 $scope.getContacts()        
+
+    if $scope.searchStr.length
+        $scope.search($scope.searchStr)
+    else
+        $scope.getContacts()

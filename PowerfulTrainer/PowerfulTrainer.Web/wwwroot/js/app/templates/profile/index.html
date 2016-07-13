@@ -23,9 +23,14 @@
                     <form layout="column" layout-gt-sm="row" layout-fill name="profileForm" ng-submit="update(profileForm)">
                         <div flex layout="column">
                             <md-input-container layout-align="center center" layout="row">
-                                <img ng-if="user.Avatar" src="../images/avatar-default.png" data-ng-src="{{user.Avatar}}"
-                                     class="md-avatar md-circle" width="160" height="160" />
-                                <img ng-if="!user.Avatar" src="../images/avatar-default.png" class="md-avatar md-circle" width="160" height="160" />
+                                <div ng-hide="qrcode">
+                                    <img ng-if="user.Avatar" src="../images/avatar-default.png" data-ng-src="{{user.Avatar}}"
+                                         class="md-avatar md-circle" width="160" height="160" />
+                                    <img ng-if="!user.Avatar" src="../images/avatar-default.png" class="md-avatar md-circle" width="160" height="160" />
+                                </div>
+                                <img ng-if="qrcode" ng-src="{{user.QR}}" width="160" height="160" />
+                                <md-icon ng-hide="qrcode" md-font-icon="fa fa-qrcode fa-2x pointer" ng-click="qrcode=!qrcode"></md-icon>
+                                <md-icon ng-show="qrcode" md-font-icon="fa fa-picture-o fa-2x pointer" ng-click="qrcode=!qrcode"></md-icon>
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <md-icon md-font-icon="fa fa-picture-o"></md-icon>

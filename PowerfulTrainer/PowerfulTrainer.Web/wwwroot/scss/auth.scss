@@ -15,14 +15,20 @@
             }
 
             &:last-child {
-                left: 36px;
                 margin: inherit;
+
+                @media (min-width: 360px) {
+                    left: 36px;
+                }
+                @media (max-width: 359px) {
+                    left: 5px;
+                }
             }
         }
     }
 
     md-card-content {
-        min-width: 312px;
+        //min-width: 312px;
     }
 }
 
