@@ -20,7 +20,6 @@
         unless isOpenedToggleMenu
             isOpenedToggleMenu = true
             $timeout ->
-                console.log 'clicked'
                 $('#dashboard-toggle-menu').find('md-toogle-menu').click()
 
     $scope.toggleNavLeft = ->

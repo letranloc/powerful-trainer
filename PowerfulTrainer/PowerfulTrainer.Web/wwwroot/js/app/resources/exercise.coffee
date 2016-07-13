@@ -21,4 +21,7 @@
 
         getBodyPart: ->
             $http.get AppCfg.apiUrl + '/exercise/bodypart'
+
+        getThumbnail: (id) ->
+            AppCfg.apiUrl + '/exercise/image/' + id
     }

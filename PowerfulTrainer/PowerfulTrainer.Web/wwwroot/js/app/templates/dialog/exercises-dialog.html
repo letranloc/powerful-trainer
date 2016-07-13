@@ -40,7 +40,7 @@
                  style="border-bottom: 1px solid #e4e6e8;">
                 <md-checkbox ng-checked="selected.exists(restItem)" ng-click="selected.toggle(restItem)" aria-label="{{restItem.Name}}"></md-checkbox>
                 <div layout="row" layout-align="start center" ng-click="toggle(restItem, selected)" flex>
-                    <img src="" ng-src="{{restItem.Thumbnail}}" class="md-avatar" width="48" height="48" />
+                    <img src="" ng-src="{{getThumbnail(restItem)}}" class="md-avatar" width="48" height="48" />
                     {{restItem.Name}}
                 </div>
             </div>
@@ -50,7 +50,7 @@
                         <div layout="row" layout-align="start center" class="pointer">
                             <md-checkbox ng-checked="selected.exists(ex)" ng-click="selected.toggle(ex)" aria-label="{{ex.Name}}"></md-checkbox>
                             <div layout="row" layout-align="start center" flex ng-click="showExPreview(ex)">
-                                <img src="" ng-src="{{ex.Thumbnail}}" class="md-avatar" />
+                                <img src="" ng-src="{{getThumbnail(ex)}}" class="md-avatar" height="80" />
                                 {{ex.Name}}
                             </div>
                         </div>

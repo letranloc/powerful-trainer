@@ -64,7 +64,7 @@
                 targetEvent: evt
                 clickOutsideToClose: true
         
-        showContactsSelector: (evt) ->
+        showContactsSelector: (evt, plan) ->
             $mdDialog.show
                 templateUrl: 'dialog/share-plan.html'
                 controller: ($scope, $mdDialog, AppCfg, Contact, mdToast) ->
@@ -100,7 +100,7 @@
                     $scope.share = (list) ->
                         $mdDialog.hide(list)
                     $scope.shareViaQR = ->
-                        invokeCSharpAction('sharebyqr:')
+                        invokeCSharpAction('sharebyqr:' + plan.Id)
                         $scope.cancel()
                     $scope.decline = (contact) ->
                         Contact.delete(contact.Username).then (resp) ->
@@ -155,6 +155,10 @@
                                     _self._items = _self._items.concat(resp.data.Data.Result)
                                     _self._query.total = resp.data.Data.Count
                     $scope.exercises.refresh()
+                    $scope.getThumbnail = (ex) ->
+                        if ex.IsRestItem
+                            ex.Thumbnail
+                        else Exercise.getThumbnail(ex.Id)
                     $scope.showExPreview = (ex) ->
                         if ex
                             if ex.showPreview
@@ -163,7 +167,7 @@
                                 if $scope.currentItemPre
                                     $scope.currentItemPre.showPreview = false
                                 $scope.currentItemPre = ex
-                                $scope.topIndex = ex.idx + 2
+                                $scope.topIndex = ex.idx + 1
                             ex.showPreview = !ex.showPreview
                     $scope.$watch "[name, bodypart, level, focus]", ->
                         $scope.exercises.refresh()

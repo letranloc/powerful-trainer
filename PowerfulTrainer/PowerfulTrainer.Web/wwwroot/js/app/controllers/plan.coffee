@@ -37,7 +37,7 @@
 
     $scope.share = (evt, plan) ->
         $mdMenu.hide()
-        mdDialog.showContactsSelector(evt).then (contacts) ->
+        mdDialog.showContactsSelector(evt, plan).then (contacts) ->
             for contact in contacts
                 Plan.share(plan.Id, contact.Username).then (resp) ->
                     mdToast.showSimple "Shared plan \"#{plan.Name}\" to #{contact.Name||contact.Username}", "success"
@@ -92,6 +92,11 @@
     $scope.showExPreview = ($event, ex) ->
         unless ex.IsRestItem
             mdDialog.showExPreview($event, ex)
+
+    $scope.getThumbnail = (ex) ->
+        if ex.IsRestItem
+            ex.Thumbnail
+        else Exercise.getThumbnail(ex.Id)
 
     $scope.editSets = ($event, ex) ->
         unless ex.IsRestItem
