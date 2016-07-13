@@ -304,11 +304,11 @@ namespace PowerfulTrainer
                 var PlanItem = WorkoutManagement.PlanData.Data[ExIndex];
                 Title.Text = PlanItem.Name;
                 SubInfo.Text = PlanItem.SubInfo;
-                if (!String.IsNullOrEmpty(PlanItem.VideoId))
+                if (!String.IsNullOrEmpty(PlanItem.VideoUrl))
                 {
                     ExImage.IsVisible = false;
                     ExVideo.IsVisible = true;
-                    ExVideo.Source = @"https://az803746.vo.msecnd.net/tenant/amp/entityid/" + PlanItem.VideoId + "?blobrefkey=103&$blob=1";
+                    ExVideo.Source =  PlanItem.VideoUrl;
                 }
                 else
                 {

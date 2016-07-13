@@ -42,7 +42,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     Id = u.Id,
                     Name = u.Name,
                     Thumbnail = u.Thumbnail,
-                    VideoId = u.VideoId,
+                    VideoUrl = u.VideoUrl,
                     BodyParts = u.BodyParts,
                     DifficultyLevel = u.DifficultyLevel,
                     Equipment = u.Equipment,

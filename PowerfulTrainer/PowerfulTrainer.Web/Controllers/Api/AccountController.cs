@@ -115,13 +115,13 @@ namespace PowerfulTrainer.Web.Controllers.Api
             return response;
         }
 
-        [Route("api/exercise/video/{Id}")]
+        [Route("api/exercise/{Id}")]
         [HttpGet]
-        public object GetExerciseByVideoId(string Id)
+        public object GetExerciseById(int Id)
         {
             try
             {
-                var Ex = DB.Exercises.First(u => u.VideoId == Id);
+                var Ex = DB.Exercises.First(u => u.Id == Id);
                 return SuccessResult(Ex);
             }
             catch (Exception ex)
@@ -148,6 +148,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 return FailResult(ex);
             }
         }
+        
 
         [Route("api/event")]
         [HttpGet]

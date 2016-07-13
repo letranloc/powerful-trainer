@@ -20,7 +20,7 @@ namespace PowerfulTrainer.Models
         //Thoi gian nghi giua cac set
         public string RestTime;
         public bool IsRestItem;
-        public string VideoId;
+        public string VideoUrl;
         public string Thumbnail;
     }
     public class PlanData

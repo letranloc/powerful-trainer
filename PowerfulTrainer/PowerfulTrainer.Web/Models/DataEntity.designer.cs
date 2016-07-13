@@ -39,12 +39,12 @@ namespace PowerfulTrainer.Web.Models
     partial void InsertReport(Report instance);
     partial void UpdateReport(Report instance);
     partial void DeleteReport(Report instance);
-    partial void InsertExercise(Exercise instance);
-    partial void UpdateExercise(Exercise instance);
-    partial void DeleteExercise(Exercise instance);
     partial void InsertAccount(Account instance);
     partial void UpdateAccount(Account instance);
     partial void DeleteAccount(Account instance);
+    partial void InsertExercise(Exercise instance);
+    partial void UpdateExercise(Exercise instance);
+    partial void DeleteExercise(Exercise instance);
     #endregion
 		
 		public DataEntityDataContext() : 
@@ -101,19 +101,19 @@ namespace PowerfulTrainer.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Exercise> Exercises
-		{
-			get
-			{
-				return this.GetTable<Exercise>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Account> Accounts
 		{
 			get
 			{
 				return this.GetTable<Account>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Exercise> Exercises
+		{
+			get
+			{
+				return this.GetTable<Exercise>();
 			}
 		}
 	}
@@ -880,332 +880,6 @@ namespace PowerfulTrainer.Web.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="alo895cb_powerfultrainer.Exercise")]
-	public partial class Exercise : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _Name;
-		
-		private string _BodyParts;
-		
-		private string _Thumbnail;
-		
-		private string _Image;
-		
-		private string _DifficultyLevel;
-		
-		private string _Equipment;
-		
-		private string _Focus;
-		
-		private System.Nullable<short> _IsRest;
-		
-		private string _VideoId;
-		
-		private string _Url;
-		
-		private string _Phone;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnBodyPartsChanging(string value);
-    partial void OnBodyPartsChanged();
-    partial void OnThumbnailChanging(string value);
-    partial void OnThumbnailChanged();
-    partial void OnImageChanging(string value);
-    partial void OnImageChanged();
-    partial void OnDifficultyLevelChanging(string value);
-    partial void OnDifficultyLevelChanged();
-    partial void OnEquipmentChanging(string value);
-    partial void OnEquipmentChanged();
-    partial void OnFocusChanging(string value);
-    partial void OnFocusChanged();
-    partial void OnIsRestChanging(System.Nullable<short> value);
-    partial void OnIsRestChanged();
-    partial void OnVideoIdChanging(string value);
-    partial void OnVideoIdChanged();
-    partial void OnUrlChanging(string value);
-    partial void OnUrlChanged();
-    partial void OnPhoneChanging(string value);
-    partial void OnPhoneChanged();
-    #endregion
-		
-		public Exercise()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BodyParts", DbType="NVarChar(20)")]
-		public string BodyParts
-		{
-			get
-			{
-				return this._BodyParts;
-			}
-			set
-			{
-				if ((this._BodyParts != value))
-				{
-					this.OnBodyPartsChanging(value);
-					this.SendPropertyChanging();
-					this._BodyParts = value;
-					this.SendPropertyChanged("BodyParts");
-					this.OnBodyPartsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Thumbnail", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Thumbnail
-		{
-			get
-			{
-				return this._Thumbnail;
-			}
-			set
-			{
-				if ((this._Thumbnail != value))
-				{
-					this.OnThumbnailChanging(value);
-					this.SendPropertyChanging();
-					this._Thumbnail = value;
-					this.SendPropertyChanged("Thumbnail");
-					this.OnThumbnailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Image
-		{
-			get
-			{
-				return this._Image;
-			}
-			set
-			{
-				if ((this._Image != value))
-				{
-					this.OnImageChanging(value);
-					this.SendPropertyChanging();
-					this._Image = value;
-					this.SendPropertyChanged("Image");
-					this.OnImageChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DifficultyLevel", DbType="NVarChar(20)")]
-		public string DifficultyLevel
-		{
-			get
-			{
-				return this._DifficultyLevel;
-			}
-			set
-			{
-				if ((this._DifficultyLevel != value))
-				{
-					this.OnDifficultyLevelChanging(value);
-					this.SendPropertyChanging();
-					this._DifficultyLevel = value;
-					this.SendPropertyChanged("DifficultyLevel");
-					this.OnDifficultyLevelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Equipment", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Equipment
-		{
-			get
-			{
-				return this._Equipment;
-			}
-			set
-			{
-				if ((this._Equipment != value))
-				{
-					this.OnEquipmentChanging(value);
-					this.SendPropertyChanging();
-					this._Equipment = value;
-					this.SendPropertyChanged("Equipment");
-					this.OnEquipmentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Focus", DbType="NVarChar(50)")]
-		public string Focus
-		{
-			get
-			{
-				return this._Focus;
-			}
-			set
-			{
-				if ((this._Focus != value))
-				{
-					this.OnFocusChanging(value);
-					this.SendPropertyChanging();
-					this._Focus = value;
-					this.SendPropertyChanged("Focus");
-					this.OnFocusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRest", DbType="SmallInt")]
-		public System.Nullable<short> IsRest
-		{
-			get
-			{
-				return this._IsRest;
-			}
-			set
-			{
-				if ((this._IsRest != value))
-				{
-					this.OnIsRestChanging(value);
-					this.SendPropertyChanging();
-					this._IsRest = value;
-					this.SendPropertyChanged("IsRest");
-					this.OnIsRestChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VideoId", DbType="NVarChar(8)")]
-		public string VideoId
-		{
-			get
-			{
-				return this._VideoId;
-			}
-			set
-			{
-				if ((this._VideoId != value))
-				{
-					this.OnVideoIdChanging(value);
-					this.SendPropertyChanging();
-					this._VideoId = value;
-					this.SendPropertyChanged("VideoId");
-					this.OnVideoIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Url", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Url
-		{
-			get
-			{
-				return this._Url;
-			}
-			set
-			{
-				if ((this._Url != value))
-				{
-					this.OnUrlChanging(value);
-					this.SendPropertyChanging();
-					this._Url = value;
-					this.SendPropertyChanged("Url");
-					this.OnUrlChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Phone
-		{
-			get
-			{
-				return this._Phone;
-			}
-			set
-			{
-				if ((this._Phone != value))
-				{
-					this.OnPhoneChanging(value);
-					this.SendPropertyChanging();
-					this._Phone = value;
-					this.SendPropertyChanged("Phone");
-					this.OnPhoneChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="alo895cb_powerfultrainer.Account")]
 	public partial class Account : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1531,6 +1205,332 @@ namespace PowerfulTrainer.Web.Models
 					this._Phone = value;
 					this.SendPropertyChanged("Phone");
 					this.OnPhoneChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="alo895cb_powerfultrainer.Exercise")]
+	public partial class Exercise : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Name;
+		
+		private string _BodyParts;
+		
+		private string _Thumbnail;
+		
+		private string _Image;
+		
+		private string _DifficultyLevel;
+		
+		private string _Equipment;
+		
+		private string _Focus;
+		
+		private System.Nullable<short> _IsRest;
+		
+		private string _Url;
+		
+		private string _Phone;
+		
+		private string _VideoUrl;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnBodyPartsChanging(string value);
+    partial void OnBodyPartsChanged();
+    partial void OnThumbnailChanging(string value);
+    partial void OnThumbnailChanged();
+    partial void OnImageChanging(string value);
+    partial void OnImageChanged();
+    partial void OnDifficultyLevelChanging(string value);
+    partial void OnDifficultyLevelChanged();
+    partial void OnEquipmentChanging(string value);
+    partial void OnEquipmentChanged();
+    partial void OnFocusChanging(string value);
+    partial void OnFocusChanged();
+    partial void OnIsRestChanging(System.Nullable<short> value);
+    partial void OnIsRestChanged();
+    partial void OnUrlChanging(string value);
+    partial void OnUrlChanged();
+    partial void OnPhoneChanging(string value);
+    partial void OnPhoneChanged();
+    partial void OnVideoUrlChanging(string value);
+    partial void OnVideoUrlChanged();
+    #endregion
+		
+		public Exercise()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BodyParts", DbType="NVarChar(20)")]
+		public string BodyParts
+		{
+			get
+			{
+				return this._BodyParts;
+			}
+			set
+			{
+				if ((this._BodyParts != value))
+				{
+					this.OnBodyPartsChanging(value);
+					this.SendPropertyChanging();
+					this._BodyParts = value;
+					this.SendPropertyChanged("BodyParts");
+					this.OnBodyPartsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Thumbnail", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Thumbnail
+		{
+			get
+			{
+				return this._Thumbnail;
+			}
+			set
+			{
+				if ((this._Thumbnail != value))
+				{
+					this.OnThumbnailChanging(value);
+					this.SendPropertyChanging();
+					this._Thumbnail = value;
+					this.SendPropertyChanged("Thumbnail");
+					this.OnThumbnailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Image
+		{
+			get
+			{
+				return this._Image;
+			}
+			set
+			{
+				if ((this._Image != value))
+				{
+					this.OnImageChanging(value);
+					this.SendPropertyChanging();
+					this._Image = value;
+					this.SendPropertyChanged("Image");
+					this.OnImageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DifficultyLevel", DbType="NVarChar(20)")]
+		public string DifficultyLevel
+		{
+			get
+			{
+				return this._DifficultyLevel;
+			}
+			set
+			{
+				if ((this._DifficultyLevel != value))
+				{
+					this.OnDifficultyLevelChanging(value);
+					this.SendPropertyChanging();
+					this._DifficultyLevel = value;
+					this.SendPropertyChanged("DifficultyLevel");
+					this.OnDifficultyLevelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Equipment", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Equipment
+		{
+			get
+			{
+				return this._Equipment;
+			}
+			set
+			{
+				if ((this._Equipment != value))
+				{
+					this.OnEquipmentChanging(value);
+					this.SendPropertyChanging();
+					this._Equipment = value;
+					this.SendPropertyChanged("Equipment");
+					this.OnEquipmentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Focus", DbType="NVarChar(50)")]
+		public string Focus
+		{
+			get
+			{
+				return this._Focus;
+			}
+			set
+			{
+				if ((this._Focus != value))
+				{
+					this.OnFocusChanging(value);
+					this.SendPropertyChanging();
+					this._Focus = value;
+					this.SendPropertyChanged("Focus");
+					this.OnFocusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsRest", DbType="SmallInt")]
+		public System.Nullable<short> IsRest
+		{
+			get
+			{
+				return this._IsRest;
+			}
+			set
+			{
+				if ((this._IsRest != value))
+				{
+					this.OnIsRestChanging(value);
+					this.SendPropertyChanging();
+					this._IsRest = value;
+					this.SendPropertyChanged("IsRest");
+					this.OnIsRestChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Url", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Url
+		{
+			get
+			{
+				return this._Url;
+			}
+			set
+			{
+				if ((this._Url != value))
+				{
+					this.OnUrlChanging(value);
+					this.SendPropertyChanging();
+					this._Url = value;
+					this.SendPropertyChanged("Url");
+					this.OnUrlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VideoUrl", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string VideoUrl
+		{
+			get
+			{
+				return this._VideoUrl;
+			}
+			set
+			{
+				if ((this._VideoUrl != value))
+				{
+					this.OnVideoUrlChanging(value);
+					this.SendPropertyChanging();
+					this._VideoUrl = value;
+					this.SendPropertyChanged("VideoUrl");
+					this.OnVideoUrlChanged();
 				}
 			}
 		}

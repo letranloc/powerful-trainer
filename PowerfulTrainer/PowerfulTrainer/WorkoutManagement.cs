@@ -60,7 +60,7 @@ namespace PowerfulTrainer
                         Duration = Exercise.Duration,
                         Repetitions = Exercise.Repetitions,
                         SubInfo = ExtraInfo,
-                        VideoId = Exercise.VideoId,
+                        VideoUrl = Exercise.VideoUrl,
                         Thumbnail = Exercise.Thumbnail,
                         Name = Exercise.Name + (Exercise.Sets > 1 ? (" (" + (i + 1) + "/" + Exercise.Sets + ")") : "")
                     });
