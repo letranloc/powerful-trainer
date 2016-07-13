@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/camera_overlay_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/camera_overlay_layout" >
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/loading_layout"
@@ -11,7 +11,7 @@
         android:layout_centerInParent="true"
         android:background="@color/semi_transparent_black"
         android:padding="30dip"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <ProgressBar
             style="@android:style/Widget.ProgressBar"
@@ -47,5 +47,33 @@
         android:textColor="@color/white"
         android:textSize="@dimen/overlay_status"
         android:visibility="gone" />
-    
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/overlay_homepage_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/gray"
+            android:text="Homepage"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/overlay_contact_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/gray"
+            android:text="Contact"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+    </LinearLayout>
+
 </RelativeLayout>

@@ -10,11 +10,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -106,6 +108,9 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
     static final int HIDE_LOADING_DIALOG = 0;
     static final int SHOW_LOADING_DIALOG = 1;
 
+    static final int HIDE_EXTRA_INFO = 0;
+    static final int SHOW_EXTRA_INFO = 1;
+
     private int mInfoStatus = INFO_NOT_DISPLAYED;
 
     private String mStatusBarText;
@@ -126,6 +131,8 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
     private RelativeLayout mUILayout;
     private TextView mStatusBar;
     private Button mCloseButton;
+    private Button mHomePageButton;
+    private Button mContactButton;
 
     private int mlastErrorCode = 0;
     private int mInitErrorCode = 0;
@@ -258,8 +265,36 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
     private Handler overlay2DHandler = new Overlay2dHandler(this);
 
-    private LoadingDialogHandler loadingDialogHandler = new LoadingDialogHandler(
-            this);
+    private LoadingDialogHandler loadingDialogHandler = new LoadingDialogHandler(this);
+
+    static class ExtraHandler extends Handler {
+        private final WeakReference<ExerciseActivity> mExercise;
+
+        ExtraHandler(ExerciseActivity exerciseActivity) {
+            mExercise = new WeakReference<>(exerciseActivity);
+        }
+
+        public void handleMessage(Message msg) {
+            ExerciseActivity exerciseActivity = mExercise.get();
+            if (exerciseActivity == null) {
+                return;
+            }
+
+            if (msg.what == HIDE_EXTRA_INFO) {
+                exerciseActivity.mContactButton.setVisibility(View.GONE);
+                exerciseActivity.mHomePageButton.setVisibility(View.GONE);
+            } else {
+                if (msg.arg1 == 1) {
+                    exerciseActivity.mHomePageButton.setVisibility(View.VISIBLE);
+                }
+                if (msg.arg2 == 1) {
+                    exerciseActivity.mContactButton.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+    private Handler extraHandler = new ExtraHandler(this);
 
     private double mLastErrorTime;
 
@@ -285,7 +320,6 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
         mVideoTextures = new Vector<>();
         loadVideoTextures();
-
         mGestureDetector = new GestureDetector(this, new GestureListener());
 
         mdpiScaleIndicator = getApplicationContext().getResources()
@@ -456,6 +490,34 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
         loadingDialogHandler
                 .sendEmptyMessage(LoadingDialogHandler.SHOW_LOADING_DIALOG);
 
+        mHomePageButton = (Button) mUILayout.findViewById(R.id.overlay_homepage_button);
+        mHomePageButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mExerciseData != null) {
+                    String url = mExerciseData.getHomepage();
+                    if (url != null && url != "") {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+
+        mContactButton = (Button) mUILayout.findViewById(R.id.overlay_contact_button);
+        mContactButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mExerciseData != null) {
+                    String contact = mExerciseData.getContact();
+                    if (contact != null && contact != "") {
+                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contact));
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+
         mCloseButton = (Button) mUILayout
                 .findViewById(R.id.overlay_close_button);
 
@@ -615,6 +677,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
                     ExerciseActivity.this);
 
             updateProductView(exView, mExerciseData);
+            showExtraInfo();
 
             mDataTexture = convertViewToTexture(exView);
 
@@ -691,6 +754,8 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
                 mExerciseData.setEquipment(jsonObject.getString("Equipment"));
                 mExerciseData.setBodyParts(jsonObject.getString("BodyParts"));
                 mExerciseData.setVideoId(jsonObject.getString("VideoId"));
+                mExerciseData.setHomepage(jsonObject.getString("Url"));
+                mExerciseData.setContact(jsonObject.getString("Phone"));
 
                 String encodedImage = jsonObject.getString("Image");
 
@@ -812,8 +877,22 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
     public void hide2DOverlay() {
         overlay2DHandler.sendEmptyMessage(HIDE_2D_OVERLAY);
+        hideExtraInfo();
     }
 
+    public void showExtraInfo() {
+        if (mExerciseData != null) {
+            Message msg = new Message();
+            msg.what = SHOW_EXTRA_INFO;
+            msg.arg1 = TextUtils.isEmpty(mExerciseData.getHomepage()) ? 1 : 0;
+            msg.arg2 = TextUtils.isEmpty(mExerciseData.getContact()) ? 1 : 0;
+            extraHandler.sendMessage(msg);
+        }
+    }
+
+    public void hideExtraInfo() {
+        extraHandler.sendEmptyMessage(HIDE_EXTRA_INFO);
+    }
 
     public boolean onTouchEvent(MotionEvent event) {
         boolean result = false;
@@ -1167,8 +1246,8 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
                 getString(R.string.menu_flash), CMD_FLASH, false);
         group.addSelectionItem(getString(R.string.menu_contAutofocus),
                 CMD_AUTOFOCUS, mContAutofocus);
-        group.addSelectionItem(getString(R.string.menu_extended_tracking),
-                CMD_EXTENDED_TRACKING, false);
+        //group.addSelectionItem(getString(R.string.menu_extended_tracking),
+        //        CMD_EXTENDED_TRACKING, false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             group.addSelectionItem(getString(R.string.menu_playFullscreenVideo),
                     CMD_FULLSCREEN_VIDEO, mPlayFullscreenVideo);

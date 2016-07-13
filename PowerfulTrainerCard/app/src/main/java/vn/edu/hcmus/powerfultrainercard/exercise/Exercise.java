@@ -11,8 +11,26 @@ public class Exercise {
     private String bodyParts;
     private String videoId;
     private Bitmap thumbnail;
+    private String url;
+    private String phone;
 
     public Exercise() {
+    }
+
+    public String getHomepage() {
+        return url;
+    }
+
+    public void setHomepage(String homepage) {
+        this.url = homepage;
+    }
+
+    public String getContact() {
+        return phone;
+    }
+
+    public void setContact(String contact) {
+        this.phone = contact;
     }
 
     public String getName() {

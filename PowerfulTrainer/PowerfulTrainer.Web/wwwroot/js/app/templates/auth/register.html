@@ -61,6 +61,13 @@
                                                      mdp-format="YYYY/MM/DD" ng-model="user.birthday"></mdp-date-picker>
                                 </div>
                             </div>
+                            <md-input-container class="md-block">
+                                <md-icon md-font-icon="fa fa-phone"></md-icon>
+                                <input type="tel" name="phone" ng-model="user.phone" placeholder="Phone number" />
+                                <div ng-messages="registerForm.phone.$error">
+                                    <div ng-message="maxlength">Invalid phone number.</div>
+                                </div>
+                            </md-input-container>
                         </div>
                         <div flex layout-padding layout="column">
                             <md-input-container class="md-block">
