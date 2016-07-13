@@ -92,7 +92,8 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     Avatar = account.First().Avatar,
                     ExpireDate = account.First().ExpireDate,
                     MSAccessToken = account.First().MSAccessToken,
-                    MSExpireDate = account.First().MSExpireDate
+                    MSExpireDate = account.First().MSExpireDate,
+                    QR = "https://zxing.org/w/chart?cht=qr&chs=350x350&chld=L&choe=UTF-8&chl=" + account.First().Username
                 });
             }
             catch (Exception ex)

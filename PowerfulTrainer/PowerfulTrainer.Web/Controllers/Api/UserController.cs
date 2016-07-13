@@ -46,7 +46,8 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     Username = CurrentAccount.Username,
                     MSAccessToken = CurrentAccount.MSAccessToken,
                     MSExpireDate = CurrentAccount.MSExpireDate,
-                    Phone = CurrentAccount.Phone
+                    Phone = CurrentAccount.Phone,
+                    QR = "https://zxing.org/w/chart?cht=qr&chs=350x350&chld=L&choe=UTF-8&chl="+ CurrentAccount.Username
                 });
             }
             catch (Exception ex)
