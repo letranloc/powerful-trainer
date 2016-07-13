@@ -157,23 +157,16 @@ public class ExerciseRenderer implements GLSurfaceView.Renderer {
         mVideoPlayerHelper.setActivity(mActivity);
     }
 
-    public String getMovieUrl(String name) {
-        if (name != null)
-            return "https://az803746.vo.msecnd.net/tenant/amp/entityid/" + name + "?blobrefkey=103&$blob=1";
-        else return null;
-    }
-
     public void requestLoad(int seekPosition, boolean playImmediately) {
         mSeekPosition = seekPosition;
         mShouldPlayImmediately = playImmediately;
         mLoadRequested = true;
     }
 
-    public void getOrCreateNewTarget(String movieName) {
-
+    public void getOrCreateNewTarget(String movieName, String movieUrl) {
         if (movieName.compareTo(mMovieName) != 0) {
             mMovieName = movieName;
-            mMovieUrl = getMovieUrl(movieName);
+            mMovieUrl = movieUrl;
             mVideoPlayerHelper.unload();
             mVideoPlayerHelper.load(mMovieUrl, mCanRequestType,
                     mShouldPlayImmediately, mSeekPosition);

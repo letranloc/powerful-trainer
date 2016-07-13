@@ -122,8 +122,8 @@ public class ExerciseOverlayView extends RelativeLayout {
     }
 
     public void setVideo(String videoId) {
-        mVideoPreview.setVideoPath(VIDEO_BASE_URL + videoId);
-        setupVideoPreview();
+        //mVideoPreview.setVideoPath(VIDEO_BASE_URL + videoId);
+        //setupVideoPreview();
     }
 
     public void showVideoPreview() {

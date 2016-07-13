@@ -9,7 +9,7 @@ public class Exercise {
     private String focus;
     private String equipment;
     private String bodyParts;
-    private String videoId;
+    private String videoUrl;
     private Bitmap thumbnail;
     private String url;
     private String phone;
@@ -73,12 +73,12 @@ public class Exercise {
         this.bodyParts = bodyParts;
     }
 
-    public String getVideoId() {
-        return videoId;
+    public String getVideoUrl() {
+        return videoUrl;
     }
 
-    public void setVideoId(String videoId) {
-        this.videoId = videoId;
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 
     public Bitmap getThumbnail() {

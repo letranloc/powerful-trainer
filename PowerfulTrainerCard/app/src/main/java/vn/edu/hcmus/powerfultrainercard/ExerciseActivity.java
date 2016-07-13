@@ -82,7 +82,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
     VuforiaAppSession vuforiaAppSession;
 
-    private static final String mServerURL = "http://aloraha.com/api/exercise/video/";
+    private static final String mServerURL = "http://aloraha.com/api/exercise/";
 
     private static final int INFO_NOT_DISPLAYED = 0;
     private static final int INFO_IS_DISPLAYED = 1;
@@ -193,6 +193,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
     }
 
     public void productTextureIsCreated() {
+        mRenderer.getOrCreateNewTarget(mExerciseData.getName(), mExerciseData.getVideoUrl());
         mRenderer.setRenderState(ExerciseRenderer.RS_TEXTURE_GENERATED);
     }
 
@@ -753,7 +754,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
                 mExerciseData.setFocus(jsonObject.getString("Focus"));
                 mExerciseData.setEquipment(jsonObject.getString("Equipment"));
                 mExerciseData.setBodyParts(jsonObject.getString("BodyParts"));
-                mExerciseData.setVideoId(jsonObject.getString("VideoId"));
+                mExerciseData.setVideoUrl(jsonObject.getString("VideoId"));
                 mExerciseData.setHomepage(jsonObject.getString("Url"));
                 mExerciseData.setContact(jsonObject.getString("Phone"));
 
@@ -790,7 +791,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
         productView.setFocus(exercise.getFocus());
         productView.setEquipment(exercise.getEquipment());
         productView.setBodyParts(exercise.getBodyParts());
-        productView.setVideo(exercise.getVideoId());
+        productView.setVideo(exercise.getVideoUrl());
         productView.setThumbnail(exercise.getThumbnail());
     }
 
@@ -1135,13 +1136,8 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
 
                         if (!result.getUniqueTargetId().equals(lastTargetId)) {
                             mRenderer.deleteCurrentProductTexture();
-
                             mRenderer.setRenderState(ExerciseRenderer.RS_LOADING);
-
-                            mRenderer.getOrCreateNewTarget(result.getTargetName());
-
                             createProductTexture(result.getTargetName());
-
                         } else
                             mRenderer.setRenderState(ExerciseRenderer.RS_TEXTURE_GENERATED);
 
@@ -1183,6 +1179,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
         }
 
         return result;
+        //
     }
 
 
