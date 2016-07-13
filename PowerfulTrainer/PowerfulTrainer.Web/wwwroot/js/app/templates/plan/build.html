@@ -78,14 +78,20 @@
     </div>
     <div ui-sortable ng-model="plan.Data">
         <md-card ng-repeat="ex in plan.Data">
-            <md-card-title>
+            <md-card-title layout="row" layout-xs="column">
+                <div ng-if="hideTooltipOnXS">
+                    <img src="" ng-src="{{getThumbnail(ex)}}" class="md-media-lg pointer" ng-click="showExPreview($event, ex)" style="width:100%">
+                    <md-tooltip md-direction="left" ng-hide="hideTooltipOnXS">
+                        Show Exercise Preview
+                    </md-tooltip>
+                </div>
                 <md-card-title-text>
                     <span flex class="md-headline">
                         <md-checkbox ng-checked="selected.exists(ex)" ng-click="selected.toggle(ex)" aria-label="{{ex.Name}}"></md-checkbox>
                         {{ex.Name}}
                     </span>
                     <div class="md-body-2" layout-padding layout="column" ng-if="!ex.IsRestItem">
-                        <div layout="row" layout-xs="column">
+                        <div layout="row">
                             <span flex="50">SETS: </span>
                             <div layout="row" ng-click="editSets($event, ex)" class="pointer">
                                 <span class="dotted">{{ex.Sets||0}}</span>
@@ -93,7 +99,7 @@
                                 <span flex></span>
                             </div>
                         </div>
-                        <div layout="row" layout-xs="column">
+                        <div layout="row">
                             <span flex="50">COMPLETION: </span>
                             <div layout="row" ng-click="editCompletion($event, ex)" class="pointer">
                                 <span class="dotted" ng-class="{error:!ex.Repetitions&&!ex.Duration}">{{ex | CompletionFilter}}</span>
@@ -101,7 +107,7 @@
                                 <span flex></span>
                             </div>
                         </div>
-                        <div layout="row" ng-if="ex.Sets>1"  layout-xs="column">
+                        <div layout="row" ng-if="ex.Sets>1">
                             <span flex="50">REST BETWEEN SETS</span>
                             <div layout="row" ng-click="editRestTime($event, ex)" class="pointer">
                                 <span class="dotted">{{ex | RestTimeFilter}}</span>
@@ -111,7 +117,7 @@
                         </div>
                     </div>
                 </md-card-title-text>
-                <md-card-title-media>
+                <md-card-title-media ng-if="!hideTooltipOnXS">
                     <img src="" ng-src="{{getThumbnail(ex)}}" class="md-media-lg pointer" ng-click="showExPreview($event, ex)">
                     <md-tooltip md-direction="left" ng-hide="hideTooltipOnXS">
                         Show Exercise Preview
