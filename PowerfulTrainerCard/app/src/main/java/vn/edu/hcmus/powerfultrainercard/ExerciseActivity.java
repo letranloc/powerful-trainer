@@ -754,7 +754,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
                 mExerciseData.setFocus(jsonObject.getString("Focus"));
                 mExerciseData.setEquipment(jsonObject.getString("Equipment"));
                 mExerciseData.setBodyParts(jsonObject.getString("BodyParts"));
-                mExerciseData.setVideoUrl(jsonObject.getString("VideoId"));
+                mExerciseData.setVideoUrl(jsonObject.getString("VideoUrl"));
                 mExerciseData.setHomepage(jsonObject.getString("Url"));
                 mExerciseData.setContact(jsonObject.getString("Phone"));
 
@@ -885,8 +885,8 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
         if (mExerciseData != null) {
             Message msg = new Message();
             msg.what = SHOW_EXTRA_INFO;
-            msg.arg1 = TextUtils.isEmpty(mExerciseData.getHomepage()) ? 1 : 0;
-            msg.arg2 = TextUtils.isEmpty(mExerciseData.getContact()) ? 1 : 0;
+            msg.arg1 = TextUtils.isEmpty(mExerciseData.getHomepage()) ? 0 : 1;
+            msg.arg2 = TextUtils.isEmpty(mExerciseData.getContact()) ? 0 : 1;
             extraHandler.sendMessage(msg);
         }
     }
