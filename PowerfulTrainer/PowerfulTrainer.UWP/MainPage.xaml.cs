@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZXing.Mobile;
 
 namespace PowerfulTrainer.UWP
 {
@@ -29,6 +30,7 @@ namespace PowerfulTrainer.UWP
             this.InitializeComponent();
             var g_DisplayRequest = new DisplayRequest();
             g_DisplayRequest.RequestActive();
+            ZXing.Net.Mobile.Forms.WindowsUniversal.ZXingScannerViewRenderer.Init();
             LoadApplication(new PowerfulTrainer.App());
         }
     }

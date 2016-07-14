@@ -13,23 +13,31 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using ZXing.Net.Mobile.Forms;
+
 namespace PowerfulTrainer
 {
     public partial class MainPage : ContentPage
     {
+        bool IsFirstTime = true;
         public MainPage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
-
             InitializeComponent();
             Browser.OnJsNotify += Browser_OnJsNotify;
             AppManagement.Init();
         }
+
         VideoPlayer ExVideo = new VideoPlayer();
         Image ExImage = new Image();
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            if (!IsFirstTime)
+            {
+                return;
+            }
+            IsFirstTime = false;
             await BandManagement.Init();
             BandClient = BandManagement.BandClient;
             if (BandClient != null)
@@ -41,9 +49,14 @@ namespace PowerfulTrainer
             }
             else
             {
-                await DisplayAlert("Band connection", "Please connect to MS Band", "OK");
+                try
+                {
+                    await DisplayAlert("Band connection", "Please connect to MS Band", "OK");
+                }
+                catch { }
             }
             await Task.Delay(3000);
+
             ExImage.IsVisible = false;
             ExImage.VerticalOptions = LayoutOptions.Fill;
             ExImage.HorizontalOptions = LayoutOptions.Fill;
@@ -52,6 +65,7 @@ namespace PowerfulTrainer
             ExImage.HeightRequest = ExVideo.HeightRequest = ExGrid.Width / 16 * 9;
             ExGrid.Children.Add(ExImage);
             ExGrid.Children.Add(ExVideo);
+
         }
 
         private void Browser_OnJsNotify(WebBrowser Sender, string Data)
@@ -76,7 +90,7 @@ namespace PowerfulTrainer
                     DisplayAlert("Something went wrong", "Please try again.", "OK");
                 }
             }
-            if(Key== "ptcard")
+            if (Key == "ptcard")
             {
                 try
                 {
@@ -84,7 +98,37 @@ namespace PowerfulTrainer
                 }
                 catch { }
             }
-        }   
+            if (Key == "addfriendbyqr")
+            {
+                OnScanQr(OnAddFriend);
+            }
+            if (Key == "sharebyqr")
+            {
+                OnScanQr(OnSharePlan);
+            }
+        }
+        private async void OnScanQr(Action<string> OnFinish)
+        {
+            var scanPage = new ZXingScannerPage();
+            scanPage.OnScanResult += (Result) =>
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    scanPage.IsScanning = false;
+                    await Navigation.PopAsync();
+                    OnFinish(Result.Text);
+                });
+            };
+            await Navigation.PushAsync(scanPage);
+        }
+        private async void OnAddFriend(string Friend)
+        {
+            await HttpClient.Post<string>("http://aloraha.com/api/friends/qr/" + Friend, new object());
+        }
+        private async void OnSharePlan(string Friend)
+        {
+            await HttpClient.Post<string>("http://aloraha.com/api/friends/" + Friend, new object());
+        }
 
         Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
         BandClient BandClient = null;
@@ -207,11 +251,11 @@ namespace PowerfulTrainer
 
         private void TileManager_TileButtonPressed(object sender, BandTileButtonPressedEventArgs e)
         {
-            if(RunTimer)
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                SetWorkout();
-            });
+            if (RunTimer)
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    SetWorkout();
+                });
         }
 
         void NextBtn_Click(object sender, object args)
@@ -230,7 +274,7 @@ namespace PowerfulTrainer
                 ExIndex = -1;
                 NextBtn.Text = "Next";
                 Browser.IsVisible = false;
-                
+
                 TotalTimeSpan = new TimeSpan();
                 BeginTime = DateTime.Now;
                 SetWorkout();
@@ -267,7 +311,7 @@ namespace PowerfulTrainer
             {
                 try
                 {
-                    if (CanSetTileData && BandClient!=null)
+                    if (CanSetTileData && BandClient != null)
                     {
                         SetTileData();
                     }
@@ -288,8 +332,8 @@ namespace PowerfulTrainer
                 HeartValue.Text = (BandManagement.GetValue(BandSensorType.HeartRate)).ToString("0");
                 CalChart(HeartBar, WorkoutManagement.PlanData.AvgHeartRate, BandManagement.GetValue(BandSensorType.HeartRate));
 
-                DistanceValue.Text = (BandManagement.GetValue(BandSensorType.Step)*0.5).ToString("0");
-                CalChart(DistanceBar, WorkoutManagement.PlanData.TotalSteps * 0.5, BandManagement.GetValue(BandSensorType.Step)*0.5);
+                DistanceValue.Text = (BandManagement.GetValue(BandSensorType.Step) * 0.5).ToString("0");
+                CalChart(DistanceBar, WorkoutManagement.PlanData.TotalSteps * 0.5, BandManagement.GetValue(BandSensorType.Step) * 0.5);
             }
             return true;
         }
@@ -308,7 +352,7 @@ namespace PowerfulTrainer
                 {
                     ExImage.IsVisible = false;
                     ExVideo.IsVisible = true;
-                    ExVideo.Source =  PlanItem.VideoUrl;
+                    ExVideo.Source = PlanItem.VideoUrl;
                 }
                 else
                 {

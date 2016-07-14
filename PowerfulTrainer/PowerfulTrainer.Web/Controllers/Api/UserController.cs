@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using PowerfulTrainer.Web.Models;
 using PowerfulTrainer.Web.Models.Api;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
         {
             try
             {
+                SimpleAES AES = new SimpleAES();
                 return SuccessResult(new
                 {
                     Name = CurrentAccount.Name,
@@ -47,7 +49,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     MSAccessToken = CurrentAccount.MSAccessToken,
                     MSExpireDate = CurrentAccount.MSExpireDate,
                     Phone = CurrentAccount.Phone,
-                    QR = "https://zxing.org/w/chart?cht=qr&chs=350x350&chld=L&choe=UTF-8&chl="+ CurrentAccount.Username
+                    QR = "https://zxing.org/w/chart?cht=qr&chs=350x350&chld=L&choe=UTF-8&chl="+ AES.EncryptToString(CurrentAccount.Username)
                 });
             }
             catch (Exception ex)

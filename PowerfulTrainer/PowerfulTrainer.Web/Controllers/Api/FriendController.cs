@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerfulTrainer.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -98,6 +99,44 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     Username = CurrentAccount.Username,
                     FriendUser = username,
                     IsWaiting = 1,
+                    RequestTime = DateTime.Now
+                });
+                DB.SubmitChanges();
+                return SuccessResult(null);
+
+            }
+            catch (Exception ex)
+            {
+                return FailResult(ex);
+            }
+        }
+
+        [Route("api/friends/qr/{key}")]
+        [HttpPost]
+        public object AddFriendByQr(string key)
+        {
+            try
+            {
+                SimpleAES AES = new SimpleAES();
+                var username = AES.DecryptString(key);
+                var Account = DB.Accounts.Where(u => u.Username == username);
+                if (Account.Count() == 0)
+                {
+                    return ErrorResult(1, "Username is not exists");
+                }
+                if (DB.Friends.Count(u => u.Username == CurrentAccount.Username && u.FriendUser == username) > 0)
+                {
+                    return SuccessResult(null);
+                }
+                if (DB.Friends.Count(u => u.FriendUser == CurrentAccount.Username && u.Username == username) > 0)
+                {
+                    return SuccessResult(null);
+                }
+                DB.Friends.InsertOnSubmit(new Models.Friend()
+                {
+                    Username = CurrentAccount.Username,
+                    FriendUser = username,
+                    IsWaiting = 0,
                     RequestTime = DateTime.Now
                 });
                 DB.SubmitChanges();

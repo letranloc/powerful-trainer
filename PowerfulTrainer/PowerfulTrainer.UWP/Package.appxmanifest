@@ -35,6 +35,7 @@
     <Capability Name="internetClient" />
     <DeviceCapability Name="proximity" />
     <DeviceCapability Name="bluetooth" />
+    <DeviceCapability Name="webcam" />
     <DeviceCapability Name="bluetooth.rfcomm">
       <Device Id="any">
         <!-- Used by the Microsoft Band SDK -->
