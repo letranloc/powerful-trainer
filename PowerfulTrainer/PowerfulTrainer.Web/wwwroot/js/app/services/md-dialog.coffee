@@ -67,7 +67,8 @@
         showContactsSelector: (evt, plan) ->
             $mdDialog.show
                 templateUrl: 'dialog/share-plan.html'
-                controller: ($scope, $mdDialog, AppCfg, Contact, mdToast) ->
+                controller: ($rootScope, $scope, $mdDialog, AppCfg, Contact, mdToast) ->
+                    $scope.inApp = $rootScope.inApp
                     $scope.selected = []
                     $scope.contacts = 
                         _items: []
