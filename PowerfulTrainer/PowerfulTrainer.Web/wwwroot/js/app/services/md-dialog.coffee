@@ -156,9 +156,10 @@
                                     _self._query.total = resp.data.Data.Count
                     $scope.exercises.refresh()
                     $scope.getThumbnail = (ex) ->
-                        if ex.IsRestItem
-                            ex.Thumbnail
-                        else Exercise.getThumbnail(ex.Id)
+                        if ex
+                            if ex.IsRestItem
+                                ex.Thumbnail
+                            else Exercise.getThumbnail(ex.Id)
                     $scope.showExPreview = (ex) ->
                         if ex
                             if ex.showPreview
