@@ -245,6 +245,36 @@ namespace PowerfulTrainer.Web.Controllers.Api
             }
         }
 
+        [Route("api/plans/qr/share")]
+        [HttpPost]
+        public object ShareByQr([FromBody]SharePlanQrReq Req)
+        {
+            try
+            {
+                SimpleAES AES = new SimpleAES();
+                var Username = AES.DecryptString(Req.Key);
+                var ParentPlan = DB.WorkoutPlans.Where(u => u.Id == Req.Id).First();
+                DB.WorkoutPlans.InsertOnSubmit(new Models.WorkoutPlan()
+                {
+                    Name = ParentPlan.Name,
+                    Username = Username,
+                    ParentPlan = ParentPlan.Id,
+                    Data = ParentPlan.Data,
+                    Image = ParentPlan.Image,
+                    CreateDate = ParentPlan.CreateDate,
+                    UpdateDate = DateTime.Now,
+                    ShareTime = DateTime.Now,
+                    Owner = ParentPlan.Username
+                });
+                DB.SubmitChanges();
+                return SuccessResult(Username);
+            }
+            catch (Exception ex)
+            {
+                return FailResult(ex);
+            }
+        }
+
         [Route("api/plans/sharenotify/{milisecond}")]
         [HttpGet]
         public object ShareNotify(int milisecond)

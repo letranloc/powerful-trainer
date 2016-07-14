@@ -126,11 +126,11 @@ namespace PowerfulTrainer.Web.Controllers.Api
                 }
                 if (DB.Friends.Count(u => u.Username == CurrentAccount.Username && u.FriendUser == username) > 0)
                 {
-                    return SuccessResult(null);
+                    return SuccessResult(username);
                 }
                 if (DB.Friends.Count(u => u.FriendUser == CurrentAccount.Username && u.Username == username) > 0)
                 {
-                    return SuccessResult(null);
+                    return SuccessResult(username);
                 }
                 DB.Friends.InsertOnSubmit(new Models.Friend()
                 {
@@ -140,7 +140,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     RequestTime = DateTime.Now
                 });
                 DB.SubmitChanges();
-                return SuccessResult(null);
+                return SuccessResult(username);
 
             }
             catch (Exception ex)

@@ -23,4 +23,9 @@ namespace PowerfulTrainer.Web.Models.Api
         public int Id;
         public string Username;
     }
+    public class SharePlanQrReq
+    {
+        public int Id;
+        public string Key;
+    }
 }

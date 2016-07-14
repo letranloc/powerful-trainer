@@ -104,6 +104,7 @@ namespace PowerfulTrainer
             }
             if (Key == "sharebyqr")
             {
+                SharePlanId = int.Parse(Value);
                 OnScanQr(OnSharePlan);
             }
         }
@@ -123,11 +124,32 @@ namespace PowerfulTrainer
         }
         private async void OnAddFriend(string Friend)
         {
-            await HttpClient.Post<string>("http://aloraha.com/api/friends/qr/" + Friend, new object());
+            var Result = await HttpClient.Post<ApiResponse>("http://aloraha.com/api/friends/qr/" + Friend, new object());
+            if (Result.ReturnCode == 0)
+            {
+                await DisplayAlert("Success", "You are now friend with " + Result.Data.ToString(), "OK");
+            }
+            else
+            {
+                await DisplayAlert("Fail", "Somethings went wrong. Please try again", "OK");
+            }
         }
+        private int SharePlanId;
         private async void OnSharePlan(string Friend)
         {
-            await HttpClient.Post<string>("http://aloraha.com/api/friends/" + Friend, new object());
+            var Result = await HttpClient.Post<ApiResponse>("http://aloraha.com/api/plans/qr/share", new
+            {
+                Key = Friend,
+                Id = SharePlanId
+            });
+            if (Result.ReturnCode == 0)
+            {
+                await DisplayAlert("Success", "You shared a plan to " + Result.Data.ToString(), "OK");
+            }
+            else
+            {
+                await DisplayAlert("Fail", "Somethings went wrong. Please try again", "OK");
+            }
         }
 
         Guid pageGuid = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12);
