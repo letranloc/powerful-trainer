@@ -15,8 +15,9 @@
         simple: -> $mdToast.simple()
 
         showSimple: (message, type) ->
-            unless type
-                $mdToast.show($mdToast.simple().textContent(message).position("bottom right").hideDelay(3000))
-            else
-                $mdToast.show($mdToast.simple().textContent(message).position("bottom right").hideDelay(3000).theme(type + "-toast"))
+            if message && message isnt ''
+                unless type
+                    $mdToast.show($mdToast.simple().textContent(message).position("bottom right").hideDelay(3000))
+                else
+                    $mdToast.show($mdToast.simple().textContent(message).position("bottom right").hideDelay(3000).theme(type + "-toast"))
     }
