@@ -80,7 +80,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     account.First().ExpireDate = DateTime.Now.AddDays(60);
                     DB.SubmitChanges();
                 }
-
+                SimpleAES AES = new SimpleAES();
                 return SuccessResult(new
                 {
                     Name = account.First().Name,
@@ -93,7 +93,7 @@ namespace PowerfulTrainer.Web.Controllers.Api
                     ExpireDate = account.First().ExpireDate,
                     MSAccessToken = account.First().MSAccessToken,
                     MSExpireDate = account.First().MSExpireDate,
-                    QR = "https://zxing.org/w/chart?cht=qr&chs=350x350&chld=L&choe=UTF-8&chl=" + account.First().Username
+                    QR = "https://zxing.org/w/chart?cht=qr&chs=350x350&chld=L&choe=UTF-8&chl=" + AES.EncryptToString(account.First().Username)
                 });
             }
             catch (Exception ex)

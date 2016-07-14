@@ -7,6 +7,7 @@
     $sceDelegateProvider.resourceUrlWhitelist [
         'self'
         'https://az803746.vo.msecnd.net/tenant/amp/entityid/**'
+        'https://www.dropbox.com/s/**'
     ]
 
     $compileProvider.debugInfoEnabled(false)

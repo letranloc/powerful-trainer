@@ -27,6 +27,9 @@ namespace PowerfulTrainer.Droid
 		public static void UpdateIdValues()
 		{
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::PowerfulTrainer.Droid.Resource.Attribute.actionBarSize;
+			global::ZXing.Mobile.Resource.Id.contentFrame = global::PowerfulTrainer.Droid.Resource.Id.contentFrame;
+			global::ZXing.Mobile.Resource.Layout.zxingscanneractivitylayout = global::PowerfulTrainer.Droid.Resource.Layout.zxingscanneractivitylayout;
+			global::ZXing.Mobile.Resource.Layout.zxingscannerfragmentlayout = global::PowerfulTrainer.Droid.Resource.Layout.zxingscannerfragmentlayout;
 		}
 		
 		public partial class Animation
@@ -2306,6 +2309,9 @@ namespace PowerfulTrainer.Droid
 			// aapt resource value: 0x7f07001f
 			public const int collapseActionView = 2131165215;
 			
+			// aapt resource value: 0x7f070098
+			public const int contentFrame = 2131165336;
+			
 			// aapt resource value: 0x7f07004a
 			public const int contentPanel = 2131165258;
 			
@@ -2911,6 +2917,12 @@ namespace PowerfulTrainer.Droid
 			
 			// aapt resource value: 0x7f030036
 			public const int support_simple_spinner_dropdown_item = 2130903094;
+			
+			// aapt resource value: 0x7f030037
+			public const int zxingscanneractivitylayout = 2130903095;
+			
+			// aapt resource value: 0x7f030038
+			public const int zxingscannerfragmentlayout = 2130903096;
 			
 			static Layout()
 			{
