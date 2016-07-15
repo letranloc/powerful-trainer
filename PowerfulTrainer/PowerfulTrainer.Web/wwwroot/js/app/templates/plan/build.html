@@ -43,7 +43,7 @@
         </md-button>
     </div>
 </md-toolbar>
-<md-content layout-padding flex ng-class="{'fix-shrink-content': !enableScrollShrink}">
+<md-content fab-button-content layout-padding flex ng-class="{'fix-shrink-content': !enableScrollShrink}">
     <div>
         <md-card style="padding:0">
             <md-card-header style="padding: 5px">
@@ -130,7 +130,7 @@
         </md-card>
     </div>
 </md-content>
-<md-button class="md-fab md-primary md-fab-bottom-right" aria-label="Save" ng-disabled="plan.Data.length==0 || isSaving" ng-click="save()">
+<md-button fab-button class="md-fab md-primary md-fab-bottom-right" aria-label="Save" ng-disabled="plan.Data.length==0 || isSaving" ng-click="save()">
     <md-tooltip md-theme="default" md-direction="bottom" ng-hide="hideTooltipOnXS">
         Save
     </md-tooltip>

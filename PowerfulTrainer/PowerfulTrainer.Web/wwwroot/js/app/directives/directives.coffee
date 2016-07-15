@@ -3,4 +3,5 @@ angular.module 'app.directives', [
     'directives.focusMe'
     'directives.fixHeight'
     'directives.stateCard'
+    'directives.fabButton'
 ]

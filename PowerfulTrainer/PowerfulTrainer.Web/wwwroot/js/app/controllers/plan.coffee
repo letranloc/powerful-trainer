@@ -40,7 +40,9 @@
         mdDialog.showContactsSelector(evt, plan).then (contacts) ->
             for contact in contacts
                 Plan.share(plan.Id, contact.Username).then (resp) ->
-                    mdToast.showSimple "Shared plan \"#{plan.Name}\" to #{contact.Name||contact.Username}", "success"
+                    if resp.data.ReturnCode is 0
+                        mdToast.showSimple "Shared plan \"#{plan.Name}\" to #{contact.Name||contact.Username}", "success"
+                    else mdToast.showSimple resp.data.Message, "danger"
                 , (resp) ->
                     mdToast.showSimple resp.data.Message, "danger"
 

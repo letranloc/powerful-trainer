@@ -15,7 +15,7 @@
         </md-button>
     </div>
 </md-toolbar>
-<md-content layout-padding flex ng-class="{'fix-shrink-content': !enableScrollShrink}">
+<md-content fab-button-content layout-padding flex ng-class="{'fix-shrink-content': !enableScrollShrink}">
     <div layout="row" layout-align="center center" ng-show="plans.length==0">
         <h3>Oops...You don't have any workout plans.</h3>
     </div>
@@ -79,7 +79,7 @@
     <md-table-pagination ng-hide="query.total<=query.limit" md-limit="query.limit" md-limit-options="query.limitOptions" md-page="query.page" md-label="{page: 'Page:', rowsPerPage: 'Per page:', of: 'of'}"
                          md-total="{{query.total}}" md-on-paginate="getPlans" md-page-select></md-table-pagination>
 </md-content>
-<md-button class="md-fab md-fab-bottom-right" aria-label="Add" ui-sref="cpanel.plan.create">
+<md-button fab-button class="md-fab md-fab-bottom-right" aria-label="Add" ui-sref="cpanel.plan.create">
     <md-tooltip md-direction="bottom" ng-hide="hideTooltipOnXS">
         Add workout plan
     </md-tooltip>
