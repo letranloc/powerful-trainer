@@ -15,7 +15,7 @@
         simple: -> $mdToast.simple()
 
         showSimple: (message, type) ->
-            if message && message isnt ''
+            if message && message isnt '' && message.length > 5
                 unless type
                     $mdToast.show($mdToast.simple().textContent(message).position("bottom right").hideDelay(3000))
                 else

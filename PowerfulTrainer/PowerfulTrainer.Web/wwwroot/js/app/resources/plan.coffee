@@ -25,7 +25,7 @@
             $http.get AppCfg.apiUrl + "/plans/#{id}/share"
 
         share: (id, username) ->
-            $http.post AppCfg.apiUrl + "/plans/share", {PlanId: id, Username: username}
+            $http.post AppCfg.apiUrl + "/plans/share", {Id: id, Username: username}
 
         getNotify: (interval) ->
             interval = if interval then '/' + interval else ""
