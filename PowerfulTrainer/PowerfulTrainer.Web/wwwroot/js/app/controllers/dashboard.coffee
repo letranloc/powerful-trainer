@@ -53,6 +53,11 @@
     
     $scope.updateSummaries = ->
         $rootScope.setLoadingState(true)
+
+        $scope.summary = []
+        $scope.sleepActivities = []
+        $scope.runActivities = []
+
         utc = moment($scope.currentDate)
         MSHealth.getSummaries
             period: 'daily'

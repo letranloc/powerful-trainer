@@ -6,6 +6,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.vuforia.ImageTarget;
 import com.vuforia.Matrix34F;

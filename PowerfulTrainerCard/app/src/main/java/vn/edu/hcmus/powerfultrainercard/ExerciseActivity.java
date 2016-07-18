@@ -133,6 +133,7 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
     private Button mCloseButton;
     private Button mHomePageButton;
     private Button mContactButton;
+    private Button mYoutubeButton;
 
     private int mlastErrorCode = 0;
     private int mInitErrorCode = 0;
@@ -284,7 +285,9 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
             if (msg.what == HIDE_EXTRA_INFO) {
                 exerciseActivity.mContactButton.setVisibility(View.GONE);
                 exerciseActivity.mHomePageButton.setVisibility(View.GONE);
+                exerciseActivity.mYoutubeButton.setVisibility(View.GONE);
             } else {
+                exerciseActivity.mYoutubeButton.setVisibility(View.VISIBLE);
                 if (msg.arg1 == 1) {
                     exerciseActivity.mHomePageButton.setVisibility(View.VISIBLE);
                 }
@@ -513,6 +516,20 @@ public class ExerciseActivity extends Activity implements VuforiaAppControl, App
                     String contact = mExerciseData.getContact();
                     if (contact != null && contact != "") {
                         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contact));
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+
+        mYoutubeButton = (Button) mUILayout.findViewById(R.id.overlay_youtube_button);
+        mYoutubeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mExerciseData != null) {
+                    String name = mExerciseData.getName();
+                    if (name != null && name != "") {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query=" + name));
                         startActivity(intent);
                     }
                 }

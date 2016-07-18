@@ -57,23 +57,39 @@
 
         <Button
             android:id="@+id/overlay_homepage_button"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@color/gray"
             android:text="Homepage"
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/ic_menu_link"
             android:textColor="@color/white"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/overlay_contact_button"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@color/gray"
             android:text="Contact"
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/ic_menu_call"
             android:textColor="@color/white"
-            android:visibility="gone" />
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/overlay_youtube_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="#d22121"
+            android:text="Youtube"
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/ic_menu_youtube_red"
+            android:textColor="@color/white"
+            android:visibility="visible" />
     </LinearLayout>
 
 </RelativeLayout>
